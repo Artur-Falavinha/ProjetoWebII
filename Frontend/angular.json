@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "nome-do-projeto": {
+    "gestor-manutencao": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -18,11 +18,11 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "src/assets"
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/themes/styles.css"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -58,10 +58,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "nome-do-projeto:build:production"
+              "buildTarget": "gestor-manutencao:build:production"
             },
             "development": {
-              "buildTarget": "nome-do-projeto:build:development"
+              "buildTarget": "gestor-manutencao:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,11 +76,11 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "src/assets"
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/themes/styles.css"
             ]
           }
         }

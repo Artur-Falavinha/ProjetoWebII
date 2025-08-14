@@ -1,5 +1,5 @@
 {
-  "name": "nome-do-projeto",
+  "name": "gestor-manutencao",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:nome-do-projeto": "node dist/nome-do-projeto/server/server.mjs"
+    "serve:ssr:gestor-manutencao": "node dist/gestor-manutencao/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,
