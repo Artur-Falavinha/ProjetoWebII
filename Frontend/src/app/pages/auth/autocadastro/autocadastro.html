@@ -1,4 +1,5 @@
 <div class="auth-container">
+<<<<<<< HEAD
   <div class="auth-card">
     <div class="card-header">
       <h2>Cadastro de Cliente</h2>
@@ -64,5 +65,77 @@
     <div class="card-footer">
       <a routerLink="/login" class="back-link">← Voltar para o login</a>
     </div>
+=======
+  <div class="stepper-container">
+    <div class="stepper-header">
+      <h2>Cadastro de Cliente</h2>
+      <p>Crie sua conta para solicitar manutenções</p>
+    </div>
+    
+    <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+      <mat-stepper [linear]="true" #stepper>
+        </mat-step label="Dados Pessoais">
+          <div class="step-content">
+            <mat-form-field appearence="outline">
+              <mat-label>Nome Completo</mat-label>
+              <input matInput formControlName="nome" placeholder="Seu nome completo">
+            </mat-form-field>
+            
+            <mat-form-field appearence="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" placeholder="seu@email.com">
+            </mat-form-field>
+
+            <mat-form-field appearence="outline">
+              <mat-label>CPF</mat-label>
+              <input matInput formControlName="cpf" placeholder="000.000.000-00">
+            </mat-form-field>
+
+            <mat-form-field appearence="outline">
+              <mat-label>Telefone</mat-label>
+              <input matInput formControlName="telefone" placeholder="(00) 00000-0000">
+            </mat-form-field>
+          </div>
+          
+          <div class="step-actions">
+            <button mat-raised-button color="primary" matStepperNext>Continuar</button>
+          </div>
+        </mat-step>
+
+        <mat-step label="Endereço">
+          <div class="step-content">
+            <mat-form-field appearence="outline">
+              <mat-label>CEP</mat-label>
+              <input matInput formControlName="cep" (blur)="consultarCep()" placeholder="00000-000">
+              <small>Digite o CEP para preenchimento automático.</small>
+            </mat-form-field> 
+
+            <mat-form-field appearence="outline">
+              <mat-label>Logradouro</mat-label>
+              <input matInput formControlName="logradouro" placeholder="Rua, Avenida...">
+            </mat-form-field>
+
+            <mat-form-field appearence="outline">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="numero" placeholder="Ex: 123">
+            </mat-form-field>
+
+            <mat-form-field appearence="outline">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="bairro" placeholder="Seu bairro">
+            </mat-form-field>
+          </div>
+
+          <div class="step-actions">
+            <button mat-button matStepperPrevious>Voltar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+              <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+              <span *ngIf="!isLoading">Finalizar Cadastro</span>
+            </button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </form>
+>>>>>>> 9b108aca265ca2eed6aa94c5b91e81a27b08b3c8
   </div>
 </div>

@@ -18,7 +18,12 @@
             "assets": [
               {
                 "glob": "**/*",
+<<<<<<< HEAD
                 "input": "src/assets"
+=======
+                "input": "src/assets",
+                "output": "assets"
+>>>>>>> 9b108aca265ca2eed6aa94c5b91e81a27b08b3c8
               }
             ],
             "styles": [
@@ -76,7 +81,12 @@
             "assets": [
               {
                 "glob": "**/*",
+<<<<<<< HEAD
                 "input": "src/assets"
+=======
+                "input": "src/assets",
+                "output": "assets"
+>>>>>>> 9b108aca265ca2eed6aa94c5b91e81a27b08b3c8
               }
             ],
             "styles": [
