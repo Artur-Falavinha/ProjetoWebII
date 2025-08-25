@@ -5,7 +5,11 @@
   "projects": {
     "gestor-manutencao": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -26,9 +30,7 @@
 >>>>>>> 9b108aca265ca2eed6aa94c5b91e81a27b08b3c8
               }
             ],
-            "styles": [
-              "src/themes/styles.css"
-            ],
+            "styles": ["src/themes/custom-theme.scss", "src/themes/styles.scss"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -89,9 +91,7 @@
 >>>>>>> 9b108aca265ca2eed6aa94c5b91e81a27b08b3c8
               }
             ],
-            "styles": [
-              "src/themes/styles.css"
-            ]
+            "styles": ["src/themes/styles.scss"]
           }
         }
       }
