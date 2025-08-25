@@ -7,7 +7,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  // Permitir acesso à rota /cliente para visualizar a sidebar
+  if (state.url === '/cliente') {
+    return true;
+  }
+
+  if (authService.checkAuthStatus()) {
     return true;
   } else {
     // Redireciona para login se não autenticado

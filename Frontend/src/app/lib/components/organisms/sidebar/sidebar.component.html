@@ -1,35 +1,48 @@
-<aside class="sidebar">
-  <div class="sidebar-header">
-    <div class="logo">
-      <img src="assets/images/logo webII.png" alt="Logo">
-    </div>
-    <div class="logo-text">
-      <h2>GestorManutenção</h2>
-      <span>Cliente</span>
-    </div>
-  </div>
-
-  <nav class="sidebar-nav">
-    <a routerLink="/" class="nav-item active">
-      <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
-      Página Inicial
-    </a>
-    <a routerLink="/nova-solicitacao" class="nav-item">
-      <span class="nav-icon"><i class="fa-solid fa-plus"></i></span>
-      Nova Solicitação
-    </a>
-  </nav>
-
-  <div class="sidebar-footer">
-    <div class="user-profile">
-      <div class="user-info">
-        <h4>Nome User login</h4>
-        <span>user@email.com</span>
+<mat-sidenav-container class="sidebar-container">
+  <mat-sidenav mode="side" opened class="sidebar">
+    
+    <mat-toolbar class="sidebar-header">
+      <img src="assets/images/logo webII.png" alt="Logo" class="logo">
+      <div class="logo-text">
+        <span class="app-title">GestorManutenção</span>
+        <span class="app-type">Cliente</span>
       </div>
+    </mat-toolbar>
+
+    <mat-nav-list class="sidebar-nav">
+      @for (item of navigationItems; track item.path) {
+        <a 
+          mat-list-item 
+          [routerLink]="item.path" 
+          routerLinkActive="active"
+          [attr.aria-label]="item.label">
+          <mat-icon matListItemIcon>{{ getMatIcon(item.icon) }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+
+    <mat-divider></mat-divider>
+
+    <div class="sidebar-footer">
+      <mat-list class="user-profile">
+        <mat-list-item>
+          <mat-icon matListItemIcon>account_circle</mat-icon>
+          <div matListItemTitle>{{ userProfile().name }}</div>
+          <div matListItemLine>{{ userProfile().email }}</div>
+        </mat-list-item>
+      </mat-list>
+      
+      <button 
+        mat-stroked-button 
+        color="warn"
+        class="logout-btn" 
+        (click)="onLogout()"
+        aria-label="Fazer logout">
+        <mat-icon>logout</mat-icon>
+        Sair
+      </button>
     </div>
-    <button class="logout-btn">
-      <span class="nav-icon"><i class="fa-solid fa-door-open"></i></span>
-      Sair
-    </button>
-  </div>
-</aside>
+
+  </mat-sidenav>
+</mat-sidenav-container>
