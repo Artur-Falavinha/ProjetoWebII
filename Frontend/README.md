@@ -19,7 +19,7 @@ Sistema desenvolvido para a disciplina de Desenvolvimento Web II, focado no gere
 - **Java** (v17+)
 - **Spring Security**
 - **Spring Data JPA**
-- **MySQL** / **PostgreSQL**
+-  **PostgreSQL**
 
 ### Ferramentas de Desenvolvimento
 - **Maven** (Gerenciamento de dependências)
@@ -28,18 +28,17 @@ Sistema desenvolvido para a disciplina de Desenvolvimento Web II, focado no gere
 
 ## 🏗️ Arquitetura do Sistema
 
-```
-Sistema de Manutenção
-├── Frontend (Angular)
-│   ├── Módulo Cliente
-│   ├── Módulo Funcionário
-│   └── Módulo Compartilhado
-└── Backend (Spring Boot)
-    ├── Controllers (API REST)
-    ├── Services (Lógica de Negócio)
-    ├── Repositories (Acesso a Dados)
-    └── Models/Entities
-```
+### Sistema de Manutenção
+
+#### Front-End
+
+- Padrões Arquiteturais
+  - Atomic Design
+
+#### Back-End
+
+- Padrões Arquiteturais
+  - Default
 
 ## 👥 Perfis de Usuário
 
@@ -88,7 +87,7 @@ Sistema de Manutenção
 - **TypeScript** (v5.9.2)
 - **Java JDK** (v17+)
 - **Maven** (v3.8+)
-- **MySQL** ou **PostgreSQL**
+- **PostgreSQL**
 - **Git**
 
 ### Instalação
@@ -138,18 +137,22 @@ ProjetoWebII/
 │   │   └── config/
 │   ├── src/main/resources/
 │   └── pom.xml
-├── frontend/
-│   ├── src/app/
-│   │   ├── components/
-│   │   ├── services/
-│   │   ├── models/
-│   │   └── guards/
-│   ├── angular.json
-│   └── package.json
-├── docs/
-│   ├── api-documentation.md
-│   └── user-manual.md
-└── README.md
+└── Frontend/
+    └── src/
+        ├── app/
+        │   ├── @types/
+        │   ├── components/
+        │   ├── config/
+        │   ├── lib/
+        │   │   ├── api/
+        │   │   ├── features/
+        │   │   ├── guards/
+        │   │   ├── services/
+        │   │   └── utils/
+        │   ├── pages/
+        │   └── router/
+        ├── assets/
+        └── themes/
 ```
 
 ## 🔄 Fluxo de Desenvolvimento

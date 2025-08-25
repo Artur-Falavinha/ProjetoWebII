@@ -1,0 +1,12 @@
+<button
+  matFab
+  extended
+  [type]="submit ? 'submit' : 'button'"
+  [disabled]="disabled"
+  [routerLink]="link"
+>
+  @if (icon) {
+    <mat-icon>{{ icon }}</mat-icon>
+  }
+  {{ title }}
+</button>

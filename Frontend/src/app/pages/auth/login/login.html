@@ -1,0 +1,36 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="card-header">
+      <h2>GestorManutenção</h2>
+      <p>Entre com suas credenciais para acessar o sistema</p>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <app-form-input
+          formControlName="email"
+          placeholder="Email"
+          hint="Digite seu email"
+          error="Email inválido"
+          appearance="outline"
+          type="email"
+        />
+
+        <app-form-input
+          formControlName="password"
+          placeholder="Senha"
+          hint="Mínimo 6 caracteres"
+          error="Senha inválida"
+          appearance="outline"
+          type="password"
+        />
+
+        <app-button title="Entrar" (submit)="(true)" [disabled]="loginForm.invalid"></app-button>
+      </form>
+    </div>
+
+    <div class="card-footer">
+      <p>Não tem uma conta?</p>
+      <a routerLink="/autocadastro" class="back-link">Cadastre-se aqui</a>
+    </div>
+  </div>
+</div>
