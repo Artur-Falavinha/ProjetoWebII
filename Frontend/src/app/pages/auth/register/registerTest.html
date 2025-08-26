@@ -1,0 +1,129 @@
+<div class="auth-container">
+   <div class="auth-card">
+     <div class="card-header">
+       <h2>Cadastro de Cliente</h2>
+       <p>Crie sua conta para solicitar manutenções</p>
+     </div>
+
+      <div class="card-body">
+        <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+
+        <app-form-input
+          formControlName="name"
+          placeholder="Nome Completo"
+          hint="Digite seu nome completo"
+          appearance="outline"
+          type="text"
+        />
+
+        <app-form-input
+          formControlName="email"
+          placeholder="seu@email.com"
+          hint="Digite seu email"
+          error="Email inválido"
+          appearance="outline"
+          type="email"
+        />
+
+        <app-form-input
+          formControlName="cpf"
+          placeholder="000.000.000-00"
+          hint="Digite seu CPF (somente números)"
+          error="CPF inválido"
+          appearance="outline"
+          type="text"
+        />
+
+        <app-form-input
+          formControlName="telefone"
+          placeholder="(00) 00000-0000"
+          hint="Digite seu telefone"
+          error="Telefone inválido"
+          appearance="outline"
+          type="text"
+        />
+
+        <hr style="margin: 24px 0;">
+
+        <app-form-input
+          formControlName="cep"
+          placeholder="Digite o seu CEP"
+          hint="Digite o CEP para preenchimento automático"
+          error="CEP inválido"
+          appearance="outline"
+          type="text"
+        />
+
+        <app-form-input
+          formControlName="logradouro"
+          placeholder="Digite a sua rua"
+          hint="Rua, avenida..."
+          error="//"
+          appearance="outline"
+          type="text"
+        />
+
+        <app-form-input
+          formControlName="numero"
+          placeholder="Digite a sua rua"
+          hint="Rua, avenida..."
+          error="//"
+          appearance="outline"
+          type="text"
+        />        
+
+        <app-form-input
+          formControlName="Complemento"
+          placeholder="Complemento"
+          hint="Apto, bloco..."
+          error="//"
+          appearance="outline"
+          type="text"
+        />
+
+        <app-form-input
+          formControlName="bairro"
+          placeholder="Bairro"
+          hint="Digite seu bairro"
+          error="//"
+          appearance="outline"
+          type="text"
+        />
+
+        <app-form-input
+          formControlName="cidade"
+          placeholder="Cidade"
+          hint="Digite sua cidade"
+          error="Campo obrigatório"
+          appearance="outline"
+          type="text"
+        />
+
+        <app-form-input
+          formControlName="estado"
+          placeholder="Estado (UF)"
+          hint="Ex: PR, SP"
+          error="Campo obrigatório"
+          appearance="outline"
+          type="text"
+        />
+
+        <app-button 
+          title="{{ isLoading ? 'Cadastrando...' : 'Cadastrar' }}" 
+          type="submit"
+          [disabled]="isLoading || cadastroForm.invalid">
+        </app-button>
+      </form>
+    </div>
+
+    <div class="card-footer">
+      <a routerLink="/login" class="back-link">← Voltar para o login</a>
+    </div>
+  </div>
+</div>
+
+
+        </form>
+      </div>
+   </div>
+</div>
