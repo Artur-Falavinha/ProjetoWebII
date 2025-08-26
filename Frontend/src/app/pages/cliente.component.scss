@@ -1,0 +1,11 @@
+.cliente-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.cliente-content {
+  flex: 1;
+  padding: 24px;
+  background: #fafafa;
+  overflow-y: auto;
+}

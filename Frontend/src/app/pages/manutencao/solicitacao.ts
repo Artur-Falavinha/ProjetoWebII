@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 interface SolicitacaoManutencao {
   descricaoEquipamento: string;
@@ -10,6 +11,7 @@ interface SolicitacaoManutencao {
 
 @Component({
   selector: 'app-solicitacao-manutencao',
+  imports: [FormsModule],
   template: `
     <div class="min-h-screen bg-gray-50 flex flex-col items-center p-6">
       

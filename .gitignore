@@ -35,3 +35,6 @@
 # System files
 */.DS_Store
 */Thumbs.db
+
+# Amazon Q rules
+.amazonq/
