@@ -1,0 +1,81 @@
+<div class="auth-container">
+  <div class="auth-card">
+
+    <div class="card-header">
+      <h2>Nova Solicitação</h2>
+      <p>Descreva seu equipamento e o problema encontrado</p>
+    </div>
+
+    <div class="card-body">
+      <form #formSolicitacao="ngForm" (ngSubmit)="registrarSolicitacao()">
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Descrição do equipamento</mat-label>
+          <input 
+            matInput 
+            type="text" 
+            name="descricaoEquipamento"
+            [(ngModel)]="novaSolicitacao.descricaoEquipamento" 
+            maxlength="100"
+            required
+            placeholder="Ex: Notebook Dell Inspiron 15, TV Samsung 50 polegadas...">
+          <mat-hint align="end">{{ novaSolicitacao.descricaoEquipamento.length }}/100</mat-hint>
+          <mat-icon matSuffix>build</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Categoria</mat-label>
+          <mat-select 
+            name="categoriaEquipamento" 
+            [(ngModel)]="novaSolicitacao.categoriaEquipamento" 
+            required>
+            <mat-option value="Informática">Informática</mat-option>
+            <mat-option value="Eletrônicos">Eletrônicos</mat-option>
+            <mat-option value="Eletrodomésticos">Eletrodomésticos</mat-option>
+            <mat-option value="Outros">Outros</mat-option>
+          </mat-select>
+          <mat-icon matSuffix>category</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Descrição do defeito</mat-label>
+          <textarea 
+            matInput 
+            rows="4"
+            name="descricaoDefeito" 
+            [(ngModel)]="novaSolicitacao.descricaoDefeito"
+            maxlength="500"
+            required
+            placeholder="Descreva detalhadamente o problema encontrado no equipamento...">
+          </textarea>
+          <mat-hint align="end">{{ novaSolicitacao.descricaoDefeito.length }}/500</mat-hint>
+          <mat-icon matSuffix>report_problem</mat-icon>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button 
+            mat-stroked-button 
+            type="button" 
+            color="warn" 
+            (click)="cancelarSolicitacao()">
+            <mat-icon>close</mat-icon>
+            Cancelar
+          </button>
+
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit" 
+            [disabled]="!formSolicitacao.form.valid">
+            <mat-icon>send</mat-icon>
+            Enviar Solicitação
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-footer">
+      <a routerLink="/" class="back-link">← Voltar</a>
+    </div>
+  </div>
+</div>
