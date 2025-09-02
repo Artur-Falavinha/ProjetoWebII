@@ -1,12 +1,13 @@
 .sidebar-container {
+  width: 280px;
   height: 100vh;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
   width: 280px;
-  border-right: 1px solid #e0e0e0;
-  display: flex;
-  flex-direction: column;
 }
 
 .sidebar-header {
@@ -47,11 +48,14 @@
 }
 
 .sidebar-footer {
+  margin-top: 520px !important;
   padding: 16px;
   margin-top: auto;
   
   .user-profile {
-    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .logout-btn {

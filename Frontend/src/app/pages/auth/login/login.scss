@@ -1,0 +1,106 @@
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+}
+
+.card-header {
+  text-align: center;
+  padding: 40px 32px 24px;
+  background: #3f51b5;
+  color: white;
+  
+  h2 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  
+  p {
+    margin-top: 20px;
+    opacity: 0.9;
+    font-size: 14px;
+  }
+}
+
+.card-body {
+  padding: 32px;
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  app-form-input {
+    width: 100%;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  .login-btn {
+    width: 100%;
+    height: 48px;
+    background: #3f51b5;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    
+    &:hover:not(:disabled) {
+      background: #5c6bc0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(63, 81, 181, 0.3);
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.card-footer {
+  padding: 24px 32px 32px;
+  text-align: center;
+  border-top: 1px solid #e0e0e0;
+  
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    display: inline;
+  }
+  
+  .back-link {
+    color: #3f51b5;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    margin-left: 4px;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: #5c6bc0;
+      text-decoration: underline;
+    }
+  }
+}
