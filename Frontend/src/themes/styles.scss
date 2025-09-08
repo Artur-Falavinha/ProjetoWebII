@@ -1,3 +1,6 @@
+
+@use '@angular/material' as mat;
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -10,8 +13,15 @@ body {
   top: 0 !important;
 }
 
-:root {
-  font-size: 62.5%;
+:root {  
+  --4px: 0.25rem; 
+  --8px: 0.5rem 
+  --12px: 0.75rem;
+  --16px: 1rem;   
+  --20px: 1.25rem;
+  --24px: 1.5rem; 
+  --28px: 1.75rem;
+  --32px: 2rem;   
 
   --neutrals_light_100: #ffffff;
   --neutrals_light_200: #fafafa;
@@ -32,7 +42,7 @@ body {
   --neutrals_dark_500: #000000;
 
   --tints_aqua_100: #4ddde0;
-  
+
   --tints_blue_100: #4270b6;
   --tints_blue_200: #1a0dab;
 
@@ -55,8 +65,16 @@ body {
   --box_shadow_input: rgba(27, 101, 151, 0.075);
   --box_shadow_error_input: rgba(151, 27, 27, 0.075);
 
-  --tints_gradient_purple_aqua: linear-gradient(90deg, #cf00ee 0%, #80d0d3 100%);
-  --tints_gradient_aqua_purple: linear-gradient(90.07deg, #80D0D3 0.06%, #CF00EE 159.09%);
+  --tints_gradient_purple_aqua: linear-gradient(
+    90deg,
+    #cf00ee 0%,
+    #80d0d3 100%
+  );
+  --tints_gradient_aqua_purple: linear-gradient(
+    90.07deg,
+    #80d0d3 0.06%,
+    #cf00ee 159.09%
+  );
 }
 
 ::selection {
@@ -75,5 +93,20 @@ body {
   border-radius: 2px;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+

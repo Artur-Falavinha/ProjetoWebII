@@ -1,238 +1,59 @@
-# Sistema de Manutenção de Equipamentos
+# TestProject
 
-> Sistema web para controle e gerenciamento de solicitações de manutenção de equipamentos
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
 
-## 📋 Sobre o Projeto
+## Development server
 
-Sistema desenvolvido para a disciplina de Desenvolvimento Web II, focado no gerenciamento eficiente de solicitações de manutenção de equipamentos. O sistema permite que clientes solicitem serviços e funcionários gerenciem essas solicitações através de diferentes perfis de acesso.
+To start a local development server, run:
 
-## 🚀 Tecnologias Utilizadas
-
-### Frontend
-- **Angular CLI** (v20.1.6)
-- **TypeScript** (v5.9.2)
-- **Bootstrap** / **Angular Material**
-- **RxJS**
-
-### Backend
-- **Spring Boot** (v3.x)
-- **Java** (v17+)
-- **Spring Security**
-- **Spring Data JPA**
--  **PostgreSQL**
-
-### Ferramentas de Desenvolvimento
-- **Maven** (Gerenciamento de dependências)
-- **Git** (Controle de versão)
-- **Postman** (Testes de API)
-
-## 🏗️ Arquitetura do Sistema
-
-### Sistema de Manutenção
-
-#### Front-End
-
-- Padrões Arquiteturais
-  - Atomic Design
-
-#### Back-End
-
-- Padrões Arquiteturais
-  - Default
-
-## 👥 Perfis de Usuário
-
-### 🔵 Cliente
-- Solicitar manutenção de equipamentos
-- Acompanhar status das solicitações
-- Visualizar histórico de serviços
-- Avaliar serviços prestados
-
-### 🔴 Funcionário
-- Gerenciar solicitações de manutenção
-- Atualizar status dos serviços
-- Gerar relatórios
-- Cadastrar equipamentos
-
-## 📊 Funcionalidades Principais
-
-- [ ] **Autenticação e Autorização**
-  - [ ] Login/Logout
-  - [ ] Controle de acesso por perfil
-  - [ ] Recuperação de senha
-
-- [ ] **Gestão de Equipamentos**
-  - [ ] Cadastro de equipamentos
-  - [ ] Listagem e busca
-  - [ ] Histórico de manutenções
-
-- [ ] **Solicitações de Manutenção**
-  - [ ] Criar nova solicitação
-  - [ ] Acompanhar status
-  - [ ] Anexar documentos/fotos
-  - [ ] Sistema de prioridades
-
-- [ ] **Dashboard e Relatórios**
-  - [ ] Painel administrativo
-  - [ ] Relatórios de produtividade
-  - [ ] Métricas de atendimento
-
-## 🛠️ Configuração do Ambiente
-
-### Pré-requisitos
-
-- **Node.js** (v22.18.0)
-- **npm** (v10.9.3)
-- **Angular CLI** (v20.1.6)
-- **TypeScript** (v5.9.2)
-- **Java JDK** (v17+)
-- **Maven** (v3.8+)
-- **PostgreSQL**
-- **Git**
-
-### Instalação
-
-1. **Clone o repositório**
-   ```bash
-   git clone <url-do-repositorio>
-   cd ProjetoWebII
-   ```
-
-2. **Configuração do Backend**
-   ```bash
-   cd backend
-   # Configurar application.properties
-   mvn clean install
-   mvn spring-boot:run
-   ```
-
-3. **Configuração do Frontend**
-   ```bash
-   cd frontend
-   npm install
-   ng serve
-   ```
-   
-   **Versões utilizadas:**
-   - Node.js: v22.18.0
-   - npm: v10.9.3
-   - Angular CLI: v20.1.6
-   - TypeScript: v5.9.2
-
-4. **Configuração do Banco de Dados**
-   ```sql
-   CREATE DATABASE manutencao_equipamentos;
-   ```
-
-## 📁 Estrutura do Projeto
-
-```
-ProjetoWebII/
-├── backend/
-│   ├── src/main/java/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── repositories/
-│   │   ├── models/
-│   │   └── config/
-│   ├── src/main/resources/
-│   └── pom.xml
-└── Frontend/
-    └── src/
-        ├── app/
-        │   ├── @types/
-        │   ├── components/
-        │   ├── config/
-        │   ├── lib/
-        │   │   ├── api/
-        │   │   ├── features/
-        │   │   ├── guards/
-        │   │   ├── services/
-        │   │   └── utils/
-        │   ├── pages/
-        │   └── router/
-        ├── assets/
-        └── themes/
-```
-
-## 🔄 Fluxo de Desenvolvimento
-
-### Branches
-- `main` - Produção
-- `develop-own` - Desenvolvimento (cada membro do projeto terá sua branch para dev)
-- `feature/nome-da-feature` - Novas funcionalidades
-- `hotfix/nome-do-fix` - Correções urgentes
-
-### Commits
-Seguir padrão de commits convencionais:
-```
-feat: adiciona nova funcionalidade
-fix: corrige bug
-docs: atualiza documentação
-style: formatação de código
-refactor: refatoração
-test: adiciona testes
-```
-
-## 🧪 Testes
-
-### Backend
 ```bash
-cd backend
-mvn test
+ng serve
 ```
 
-### Frontend
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+## Code scaffolding
+
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+
 ```bash
-cd frontend
-npm test
-npm run e2e
+ng generate component component-name
 ```
 
-## 📚 Documentação
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-- [Documentação da API](docs/api-documentation.md)
-- [Manual do Usuário](docs/user-manual.md)
-- [Guia de Contribuição](CONTRIBUTING.md)
+```bash
+ng generate --help
+```
 
-## 🚀 Deploy
+## Building
 
-### Desenvolvimento
-- Frontend: `http://localhost:4200`
-- Backend: `http://localhost:8080`
-- Banco: `localhost:3306`
+To build the project run:
 
-### Produção
-*Instruções de deploy serão adicionadas conforme necessário*
+```bash
+ng build
+```
 
-## 👨💻 Equipe de Desenvolvimento
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-- **[Nome do Membro 1]** - Frontend Developer
-- **[Nome do Membro 2]** - Backend Developer
-- **[Nome do Membro 3]** - Full Stack Developer
-- **[Nome do Membro 4]** - Database/DevOps
+## Running unit tests
 
-## 📝 Changelog
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-### [Unreleased]
-- Configuração inicial do projeto
-- Estrutura base do README
+```bash
+ng test
+```
 
-### [v0.1.0] - 2024-XX-XX
-- Setup inicial do projeto
-- Configuração do ambiente de desenvolvimento
+## Running end-to-end tests
 
-## 🤝 Contribuindo
+For end-to-end (e2e) testing, run:
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'feat: Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+```bash
+ng e2e
+```
 
-## 📄 Licença
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
-Este projeto é desenvolvido para fins acadêmicos na disciplina de Desenvolvimento Web II.
----
+## Additional Resources
 
-**Status do Projeto:** 🚧 Em Desenvolvimento
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

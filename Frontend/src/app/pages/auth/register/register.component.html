@@ -1,0 +1,148 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="loading-overlay" *ngIf="isLoading">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+
+    <div class="card-header">
+      <h2>
+        Cadastro de {{ tipoCadastro === "CLIENTE" ? "Cliente" : "Funcionário" }}
+      </h2>
+      <p>Crie sua conta para continuar</p>
+    </div>
+
+    <div class="profile-selector">
+      <button
+        mat-flat-button
+        [color]="tipoCadastro === 'CLIENTE' ? 'primary' : ''"
+        (click)="setTipoCadastro('CLIENTE')"
+      >
+        Sou Cliente
+      </button>
+      <button
+        mat-flat-button
+        [color]="tipoCadastro === 'FUNCIONARIO' ? 'primary' : ''"
+        (click)="setTipoCadastro('FUNCIONARIO')"
+      >
+        Sou Funcionário
+      </button>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <mat-stepper [linear]="true" #stepper>
+          <mat-step
+            label="Dados Pessoais"
+            [stepControl]="registerForm.get('dadosPessoais')!"
+          >
+            <div class="step-content" formGroupName="dadosPessoais">
+              <app-input
+                [control]="nomeControl"
+                label="Nome completo"
+                placeholder="Digite seu nome completo"
+                [errorMessages]="{ required: 'O nome é obrigatório.' }"
+              ></app-input>
+
+              <app-input
+                [control]="emailControl"
+                label="Email"
+                placeholder="Digite seu email"
+                type="email"
+                icon="email"
+                [errorMessages]="{
+                  required: 'O email é obrigatório.',
+                  email: 'Formato de email inválido.'
+                }"
+              ></app-input>
+
+              <app-input
+                [control]="cpfControl"
+                label="CPF"
+                placeholder="Digite 11 números"
+                [mask]="'000.000.000-00'"
+                [errorMessages]="{
+                  required: 'CPF é obrigatório.',
+                  pattern: 'CPF deve conter 11 dígitos.'
+                }"
+              ></app-input>
+
+              <app-input
+                [control]="telefoneControl"
+                label="Telefone"
+                placeholder="DDD + 8 ou 9 números"
+                [mask]="'00000000000'"
+                [errorMessages]="{
+                  required: 'Telefone é obrigatório.',
+                  pattern: 'Telefone deve conter 10 ou 11 dígitos.'
+                }"
+              ></app-input>
+            </div>
+
+            <div class="step-actions">
+              <button
+                *ngIf="tipoCadastro === 'CLIENTE'"
+                mat-raised-button
+                color="primary"
+                matStepperNext
+              >
+                Continuar
+              </button>
+              <button
+                *ngIf="tipoCadastro === 'FUNCIONARIO'"
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="registerForm.get('dadosPessoais')?.invalid"
+              >
+                Finalizar Cadastro
+              </button>
+            </div>
+          </mat-step>
+
+          <ng-container *ngIf="tipoCadastro === 'CLIENTE'">
+            <mat-step
+              label="Endereço"
+              [stepControl]="registerForm.get('endereco')!"
+            >
+              <div class="step-content" formGroupName="endereco">
+                <app-input
+                  [control]="cepControl"
+                  label="CEP"
+                  placeholder="Digite 8 números"
+                  [mask]="'00000000'"
+                  [errorMessages]="{
+                    required: 'CEP é obrigatório.',
+                    pattern: 'CEP deve conter 8 dígitos.'
+                  }"
+                ></app-input>
+
+                <app-input
+                  [control]="logradouroControl"
+                  label="Logradouro"
+                  placeholder="Digite o logradouro"
+                  [errorMessages]="{ required: 'Logradouro é obrigatório.' }"
+                ></app-input>
+              </div>
+              <div class="step-actions">
+                <button mat-button matStepperPrevious>Voltar</button>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="submit"
+                  [disabled]="registerForm.invalid"
+                >
+                  Finalizar Cadastro
+                </button>
+              </div>
+            </mat-step>
+          </ng-container>
+        </mat-stepper>
+      </form>
+    </div>
+
+    <div class="card-footer">
+      <p>Já tem uma conta?</p>
+      <a routerLink="/login" class="back-link">Faça login aqui</a>
+    </div>
+  </div>
+</div>

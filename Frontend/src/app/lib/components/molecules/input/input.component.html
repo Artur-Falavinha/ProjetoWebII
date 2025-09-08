@@ -1,0 +1,24 @@
+<mat-form-field [appearance]="appearance" class="app-field">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    [type]="inputType"
+    [formControl]="control"
+    [placeholder]="placeholder"
+    [mask]="mask || null"
+    [attr.autocomplete]="type === 'password' ? 'new-password' : 'off'"
+  />
+  <mat-icon *ngIf="icon && type !== 'password'" matSuffix>{{ icon }}</mat-icon>
+  <button
+    *ngIf="type == 'password'"
+    mat-icon-button
+    matSuffix
+    (click)="toggleShowPassword()"
+    type="button"
+  >
+    <mat-icon>{{ passwordIcon }}</mat-icon>
+  </button>
+  <mat-error *ngIf="control.invalid && control.touched">
+    {{ errorMessage }}
+  </mat-error>
+</mat-form-field>

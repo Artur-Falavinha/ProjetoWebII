@@ -1,0 +1,77 @@
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  padding: 16px;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-header {
+  text-align: center;
+  padding: 32px 24px 20px;
+  background: #3f51b5;
+  color: white;
+  h2 { margin: 0 0 4px; font-size: 24px; font-weight: 600; }
+  p { margin: 0; opacity: 0.9; font-size: 14px; }
+}
+
+.profile-selector {
+  display: flex;
+  gap: 8px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+
+  button {
+    flex-grow: 1;
+  }
+}
+
+.step-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 24px 24px;
+}
+
+.card-footer {
+  padding: 16px 24px;
+  text-align: center;
+  border-top: 1px solid #e0e0e0;
+  p { display: inline; margin: 0; color: #666; font-size: 14px; }
+  .back-link {
+    color: #3f51b5;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    margin-left: 4px;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}

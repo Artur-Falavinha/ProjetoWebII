@@ -1,0 +1,46 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="card-header">
+      <h2>GestorManutenção</h2>
+      <p>Entre com suas credenciais para acessar o sistema</p>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <app-input
+          [control]="emailControl"
+          label="Email"
+          placeholder="Digite seu email"
+          type="email"
+          icon="email"
+          [errorMessages]="{
+            required: 'Email é obrigatório',
+            email: 'Email inválido'
+          }"
+        />
+        <app-input
+          [control]="passwordControl"
+          label="Senha"
+          placeholder="Digite sua senha"
+          type="password"
+          [errorMessages]="{ required: 'Senha obrigatória' }"
+        />
+
+        <button
+          mat-raised-button
+          type="submit"
+          [disabled]="loginForm.invalid"
+          class="login-btn"
+        >
+          <mat-icon>login</mat-icon>
+          Entrar
+        </button>
+      </form>
+    </div>
+
+    <div class="card-footer">
+      <p>Não tem uma conta?</p>
+      <a routerLink="/register" class="back-link">Cadastre-se aqui</a>
+    </div>
+  </div>
+</div>

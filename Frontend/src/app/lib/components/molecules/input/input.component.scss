@@ -1,0 +1,15 @@
+.app-field {
+  width: 100%;
+
+  mat-label, input::placeholder {
+    font-size: var(--8px);
+  }
+
+  button {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-right: 1.2rem;
+    
+  }
+}

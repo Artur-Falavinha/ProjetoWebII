@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "gestor-manutencao": {
+    "test-project": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -15,23 +15,27 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "outputPath": "dist/test-project",
+            "index": "src/index.html",
             "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
+                "input": "public"
               }
             ],
-            "styles": ["src/themes/custom-theme.scss", "src/themes/styles.scss"],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/themes/styles.scss"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -58,38 +62,43 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "gestor-manutencao:build:production"
+              "buildTarget": "test-project:build:production"
             },
             "development": {
-              "buildTarget": "gestor-manutencao:build:development"
+              "buildTarget": "test-project:build:development"
             }
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
+                "input": "public"
               }
             ],
-            "styles": ["src/themes/styles.scss"]
+            "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/themes/styles.scss"
+            ],
+            "scripts": []
           }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "276df867-a4a9-492b-879e-ef8c1b84c10b"
   }
 }

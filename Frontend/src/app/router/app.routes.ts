@@ -1,40 +1,42 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from '@/app/pages';
-import { ClienteComponent } from '../pages/cliente.component';
-import { RegisterComponent } from '../pages/auth/register/register';
-import { SolicitacaoManutencaoComponent } from '../pages/manutencao/solicitacao';
-import { FuncionarioComponent } from '../pages/auth/pagina-funcionario/funcionario';
+import {
+  LoginComponent,
+  RegisterComponent,
+  ClientHomeComponent,
+  SolicitacaoManutencaoComponent,
+  FuncionarioComponent,
+} from '@/app/pages';
 
 // Configurar AuthGuard
 export const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
-    path: 'cliente',
-    component: ClienteComponent
+    path: 'client',
+    component: ClientHomeComponent,
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
   },
   {
     path: 'solicitacao',
-    component: SolicitacaoManutencaoComponent
+    component: SolicitacaoManutencaoComponent,
   },
-{
+  {
     path: 'admin',
-    component: FuncionarioComponent
+    component: FuncionarioComponent,
   },
   {
     // TODO: Pág. 404
     path: '**',
-    redirectTo: 'login'
-  }
+    redirectTo: 'login',
+  },
 ];
