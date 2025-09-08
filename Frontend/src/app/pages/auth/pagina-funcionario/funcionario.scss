@@ -1,0 +1,60 @@
+.funcionario-layout {
+  display: flex;
+  min-height: 100vh;
+}
+.funcionario-content {
+  flex-grow: 1; 
+  padding: 24px 32px;
+  background-color: #f4f7fa; 
+  h1 {
+    margin-top: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 24px;
+  }
+}
+
+.solicitacoes-table {
+  width: 100%;
+  border-collapse: collapse; 
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden; 
+
+  thead tr {
+    background-color: #3f51b5; 
+    color: white;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  th, td {
+    padding: 12px 15px;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  color: #777;
+}

@@ -1,11 +1,14 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+
+// Imports do Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-login',
@@ -17,20 +20,26 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
   ],
   templateUrl: './login.html',
-  styleUrls: ['./login.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./login.scss']
 })
-export class LoginComponent {
-  loginForm: FormGroup;
+export class LoginComponent implements OnInit {
+
+  loginForm!: FormGroup;
   hidePassword = true;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required]]
     });
   }
 
@@ -41,6 +50,28 @@ export class LoginComponent {
     }
 
     const { email, password } = this.loginForm.value;
-    console.log('Login attempt:', { email, password });
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+    const usuarioEncontrado = usuarios.find(
+      (user: any) => user.email === email && user.senha === password
+    );
+
+    if (usuarioEncontrado) {
+      alert(`Bem-vindo(a), ${usuarioEncontrado.nome}!`);
+      sessionStorage.setItem('usuario_logado', JSON.stringify(usuarioEncontrado));
+
+      if (usuarioEncontrado.perfil === 'FUNCIONARIO') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/cliente']);
+      }
+
+    } else {
+      alert('Email ou senha inválidos. Verifique os dados e tente novamente.');
+    }
+  }
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 }

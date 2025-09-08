@@ -1,0 +1,39 @@
+<div class="funcionario-layout">
+  <app-sidebar></app-sidebar>
+
+  <main class="funcionario-content">
+    <h1>Solicitações em Aberto</h1>
+    <p>Abaixo estão as solicitações que necessitam de um orçamento.</p>
+
+    <div *ngIf="solicitacoesAbertas.length === 0" class="empty-state">
+      <p>Não há solicitações em aberto no momento. Bom trabalho!</p>
+    </div>
+
+    <table *ngIf="solicitacoesAbertas.length > 0" class="solicitacoes-table">
+      <thead>
+        <tr>
+          <th>Data/Hora Abertura</th>
+          <th>Cliente</th>
+          <th>Equipamento</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let solicitacao of solicitacoesAbertas">
+          <td>{{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</td>
+
+          <td>{{ solicitacao.clienteNome }}</td>
+
+          <td>
+            {{ (solicitacao.equipamento.length > 30) ? (solicitacao.equipamento | slice:0:30) + '...' : solicitacao.equipamento }}
+          </td>
+          
+          <td>
+            <button mat-stroked-button color="primary">Efetuar Orçamento</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </main>
+</div>

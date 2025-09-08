@@ -3,6 +3,7 @@ import { LoginComponent } from '@/app/pages';
 import { ClienteComponent } from '../pages/cliente.component';
 import { RegisterComponent } from '../pages/auth/register/register';
 import { SolicitacaoManutencaoComponent } from '../pages/manutencao/solicitacao';
+import { FuncionarioComponent } from '../pages/auth/pagina-funcionario/funcionario';
 
 // Configurar AuthGuard
 export const routes: Routes = [
@@ -26,6 +27,10 @@ export const routes: Routes = [
   {
     path: 'solicitacao',
     component: SolicitacaoManutencaoComponent
+  },
+{
+    path: 'admin',
+    component: FuncionarioComponent
   },
   {
     // TODO: Pág. 404
