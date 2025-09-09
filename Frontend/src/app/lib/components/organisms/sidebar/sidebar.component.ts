@@ -34,18 +34,53 @@ export class SidebarComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  readonly navigationItems: NavigationItem[] = [
-    {
-      path: '/',
-      label: 'Página Inicial',
-      icon: 'fa-solid fa-house'
-    },
-    {
-      path: '/nova-solicitacao',
-      label: 'Nova Solicitação',
-      icon: 'fa-solid fa-plus'
+  readonly navigationItems = computed(() => {
+    const user = this.userProfile();
+    
+    if (user.role === 'EMPLOYEE') {
+      return [
+        {
+          path: '/admin',
+          label: 'Página Inicial',
+          icon: 'home'
+        },
+        {
+          path: '/admin/solicitacoes',
+          label: 'Solicitações',
+          icon: 'assignment'
+        },
+        {
+          path: '/admin/categorias',
+          label: 'Categorias',
+          icon: 'category'
+        },
+        {
+          path: '/admin/funcionarios',
+          label: 'Funcionários',
+          icon: 'people'
+        },
+        {
+          path: '/admin/relatorios',
+          label: 'Relatórios',
+          icon: 'assessment'
+        }
+      ];
     }
-  ];
+    
+    // Default para CLIENT
+    return [
+      {
+        path: '/',
+        label: 'Página Inicial',
+        icon: 'home'
+      },
+      {
+        path: '/nova-solicitacao',
+        label: 'Nova Solicitação',
+        icon: 'add'
+      }
+    ];
+  });
 
   readonly userProfile = computed(() => {
     const currentUser = this.authService.getCurrentUser();
@@ -74,11 +109,8 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/auth/login']);
   }
 
-  getMatIcon(faIcon: string): string {
-    const iconMap: Record<string, string> = {
-      'fa-solid fa-house': 'home',
-      'fa-solid fa-plus': 'add'
-    };
-    return iconMap[faIcon] || 'help';
+  getUserTypeLabel(): string {
+    const user = this.userProfile();
+    return user.role === 'EMPLOYEE' ? 'Funcionário' : 'Cliente';
   }
 }

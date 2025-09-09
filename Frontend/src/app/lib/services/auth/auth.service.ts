@@ -5,7 +5,7 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  role: 'CLIENT' | 'ADMIN';
+  role: 'CLIENT' | 'ADMIN' | 'EMPLOYEE';
 }
 
 export interface AuthState {
@@ -28,11 +28,14 @@ export class AuthService {
 
   login(credentials: { email: string; password: string }): Observable<AuthState> {
     // TODO: Implementar chamada para API de login
+    // Simular funcionário se email contém 'funcionario' ou 'admin'
+    const isEmployee = credentials.email.includes('funcionario') || credentials.email.includes('admin');
+    
     const mockUser: UserProfile = {
-      id: '1',
-      name: 'Nome User login',
-      email: credentials.email,
-      role: 'CLIENT'
+      id: isEmployee ? '2' : '1',
+      name: isEmployee ? 'Maria Santos' : 'Nome User login',
+      email: isEmployee ? 'funcionario@email.com' : credentials.email,
+      role: isEmployee ? 'EMPLOYEE' : 'CLIENT'
     };
 
     const newState: AuthState = {

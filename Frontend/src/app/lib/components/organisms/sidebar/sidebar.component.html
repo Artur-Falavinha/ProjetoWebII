@@ -2,21 +2,23 @@
   <mat-sidenav mode="side" opened class="sidebar">
     
     <mat-toolbar class="sidebar-header">
-      <img src="assets/images/logo webII ajustada.png" alt="Logo" class="logo">
+      <div class="logo-container">
+        <mat-icon class="logo-icon">build</mat-icon>
+      </div>
       <div class="logo-text">
         <span class="app-title">GestorManutenção</span>
-        <span class="app-type">Cliente</span>
+        <span class="app-type">{{ getUserTypeLabel() }}</span>
       </div>
     </mat-toolbar>
 
     <mat-nav-list class="sidebar-nav">
-      @for (item of navigationItems; track item.path) {
+      @for (item of navigationItems(); track item.path) {
         <a 
           mat-list-item 
           [routerLink]="item.path" 
           routerLinkActive="active"
           [attr.aria-label]="item.label">
-          <mat-icon matListItemIcon>{{ getMatIcon(item.icon) }}</mat-icon>
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
           <span matListItemTitle>{{ item.label }}</span>
         </a>
       }

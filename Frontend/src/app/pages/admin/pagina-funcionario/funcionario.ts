@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '@/app/lib/components/organisms/sidebar/sidebar.component';
+import { AuthService } from '@/app/lib/services/auth/auth.service';
 
 interface Solicitacao {
   id: number;
@@ -22,10 +23,13 @@ interface Solicitacao {
   styleUrls: ['./funcionario.scss']
 })
 export class FuncionarioComponent implements OnInit {
-
+  private readonly authService = inject(AuthService);
   solicitacoesAbertas: Solicitacao[] = [];
 
-  constructor() {}
+  constructor() {
+    // Simular login de funcionário para visualização
+    this.authService.login({ email: 'funcionario@email.com', password: 'senha' }).subscribe();
+  }
 
   ngOnInit(): void {
     this.carregarSolicitacoesAbertas();

@@ -35,6 +35,22 @@ export const routes: Routes = [
     component: FuncionarioComponent,
   },
   {
+    path: 'admin/solicitacoes',
+    component: FuncionarioComponent,
+  },
+  {
+    path: 'admin/categorias',
+    component: FuncionarioComponent,
+  },
+  {
+    path: 'admin/funcionarios',
+    component: FuncionarioComponent,
+  },
+  {
+    path: 'admin/relatorios',
+    component: FuncionarioComponent,
+  },
+  {
     // TODO: Pág. 404
     path: '**',
     redirectTo: 'login',
