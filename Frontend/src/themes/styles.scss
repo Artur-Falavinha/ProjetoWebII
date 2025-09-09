@@ -17,6 +17,7 @@ body {
   --4px: 0.25rem; 
   --8px: 0.5rem;
   --12px: 0.75rem;
+  --14px: 0.875rem;
   --16px: 1rem;   
   --20px: 1.25rem;
   --24px: 1.5rem; 
@@ -102,7 +103,7 @@ body {
       tertiary: mat.$blue-palette,
     ),
     typography: Roboto,
-    density: 0,
+    density: -2,
   ));
 }
 body {
