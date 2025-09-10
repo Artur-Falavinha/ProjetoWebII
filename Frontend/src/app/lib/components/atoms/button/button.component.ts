@@ -17,12 +17,6 @@ export class ButtonComponent {
   @Input() icon?: string;
   @Input() disabled?: boolean;
   @Input() submit?: boolean;
+  @Input() variant: 'primary' | 'secondary' = 'primary';
 
-  @Output() clicked = new EventEmitter<void>();
-
-  handleClick() {
-    if (!this.link) {
-      this.clicked.emit();
-    }
-  }
 }

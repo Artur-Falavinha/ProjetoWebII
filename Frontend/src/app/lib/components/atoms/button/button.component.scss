@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+
+.app-button {
+  width: fit-content;
+  border-radius: var(--4px);
+}
+
+.primary-button {
+  background-color: hsl(var(--primary_color)) !important;
+}
+
+.primary-button:hover {
+  background-color: hsl(var(--primary_color) / 0.9) !important;
+}
+
+.secondary-button {
+    color: #000 !important;
+}
+
+.secondary-button:hover {
+  background-color: hsl(var(--primary_color)) !important;
+  color: var(--neutrals_light_200) !important;
+  border-color: #fafafa;
+}
