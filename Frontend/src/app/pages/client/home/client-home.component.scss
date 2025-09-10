@@ -1,15 +1,15 @@
-h1 {
+.page-title {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 0.5px;
   line-height: 2rem;
 }
 
-p {
+.page-subtitle {
   font-size: var(--16px);
   color: hsl(215, 15%, 55%);
   font-weight: 300;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.25px;
 }
 
 .cliente-layout {

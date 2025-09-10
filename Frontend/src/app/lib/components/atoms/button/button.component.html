@@ -1,21 +1,3 @@
-<!-- <button
-  mat-flat-button
-  extended
-  [type]="submit ? 'submit' : 'button'"
-  [disabled]="disabled"
-  [routerLink]="link"
-  class="app-button transition-colors"
-  [ngClass]="{
-    'primary-button': variant == 'primary',
-    'secondary-button': variant == 'secondary'
-  }"
->
-  @if (icon) {
-  <mat-icon>{{ icon }}</mat-icon>
-  }
-  {{ title }}
-</button> -->
-
 <ng-container [ngSwitch]="variant">
   <button
     *ngSwitchCase="'primary'"
@@ -40,6 +22,36 @@
     [disabled]="disabled"
     [routerLink]="link"
     class="app-button secondary-button transition-colors"
+  >
+    @if (icon) {
+    <mat-icon>{{ icon }}</mat-icon>
+    }
+    {{ title }}
+  </button>
+
+  <button
+    *ngSwitchCase="'success'"
+    mat-stroked-button
+    extended
+    [type]="submit ? 'submit' : 'button'"
+    [disabled]="disabled"
+    [routerLink]="link"
+    class="app-button success-button transition-colors"
+  >
+    @if (icon) {
+    <mat-icon>{{ icon }}</mat-icon>
+    }
+    {{ title }}
+  </button>
+
+  <button
+    *ngSwitchCase="'destructive'"
+    mat-stroked-button
+    extended
+    [type]="submit ? 'submit' : 'button'"
+    [disabled]="disabled"
+    [routerLink]="link"
+    class="app-button destructive-button transition-colors"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>

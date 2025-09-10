@@ -1,4 +1,4 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 .app-button {
   width: fit-content;
@@ -14,11 +14,35 @@
 }
 
 .secondary-button {
-    color: #000 !important;
+  background-color: var(--neutrals_light_200) !important;
+  border-color: var(--neutrals_light_300) !important;
+  border-width: 2px !important;
+  color: #000 !important;
 }
 
 .secondary-button:hover {
   background-color: hsl(var(--primary_color)) !important;
-  color: var(--neutrals_light_200) !important;
-  border-color: #fafafa;
+  color: var(--neutrals_light_100) !important;
+  border-color: hsl(var(--primary_color));
 }
+
+.success-button {
+  background-color: hsl(var(--status_success)) !important;
+}
+
+.success-button:hover {
+  background-color: hsl(var(--status_success) / 0.9) !important;
+}
+
+.destructive-button {
+  background-color: var(--neutrals_light_100) !important;
+  color: #000 !important;
+}
+
+.destructive-button:hover {
+  background-color: hsl(var(--status_destructive)) !important;
+  color: var(--neutrals_light_100) !important;
+  border-color: hsl(var(--status_destructive));
+}
+
+

@@ -23,10 +23,21 @@ body {
   --28px: 1.75rem;
   --32px: 2rem;
 
+  /* CUSTOM */ 
   --text-light-gray: hsl(215, 15%, 55%);
 
   --primary_color: 215 85% 55%;
 
+  /* --status_success: */ 
+  
+  .transition-colors {
+    transition-property: color, background-color, border-color,
+      text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  /* GENERICS */ 
   --neutrals_light_100: #ffffff;
   --neutrals_light_200: #fafafa;
   --neutrals_light_300: #f3f3f3;
@@ -57,35 +68,18 @@ body {
 
   --tints_yellow_100: #f69c08;
 
+  --status_danger_200: #e5313d;
   --status_danger_100: #fee4e3;
-  --status_danger_200: #c2575e;
 
-  --status_success_100: #dcf8e9;
   --status_success_200: #619d7a;
-
+  --status_success_100: #dcf8e9;
+  
   --input_border_100: #4096ff;
   --input_border_200: #1677ff;
 
   --box_shadow_input: rgba(27, 101, 151, 0.075);
   --box_shadow_error_input: rgba(151, 27, 27, 0.075);
 
-  --tints_gradient_purple_aqua: linear-gradient(
-    90deg,
-    #cf00ee 0%,
-    #80d0d3 100%
-  );
-  --tints_gradient_aqua_purple: linear-gradient(
-    90.07deg,
-    #80d0d3 0.06%,
-    #cf00ee 159.09%
-  );
-
-  .transition-colors {
-    transition-property: color, background-color, border-color,
-      text-decoration-color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
 }
 
 ::selection {
