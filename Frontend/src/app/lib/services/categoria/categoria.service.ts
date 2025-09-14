@@ -11,34 +11,29 @@ export class CategoriaService {
   constructor() { }
 
   listarTodas() : Categoria[] {
-
     const categorias = localStorage[LS_CHAVE];
-
     return categorias ? JSON.parse(categorias) : [];     
   } 
 
-  inserir(categoria: Categoria): void{
-
+  inserir(categoria: Categoria): void {
     const categorias = this.listarTodas();
-
-    categoria.id = new Date().getTime();
-
+    if (categorias.length === 0) {
+      categoria.id = 1; 
+    } else {
+      const maxId = Math.max(...categorias.map(c => c.id));
+      categoria.id = maxId + 1;
+    }
     categorias.push(categoria);
-
-   localStorage[LS_CHAVE] = JSON.stringify(categorias);
+    localStorage.setItem(LS_CHAVE, JSON.stringify(categorias));
   }
 
   buscaPorId(id: number): Categoria | undefined {
-
     const categorias = this.listarTodas();
-
      return categorias.find(categoria => categoria.id === id);
   }
   
-  atualizar(categoria: Categoria): void {
-        
+  atualizar(categoria: Categoria): void {       
     const categorias = this.listarTodas();
-
     categorias.forEach((obj, index, objs) => {
       if (categoria.id === obj.id) {
          objs[index] = categoria
@@ -50,9 +45,7 @@ export class CategoriaService {
 
   remover(id: number): void {
     let categorias = this.listarTodas();
-
     categorias = categorias.filter(categoria => categoria.id !== id);
-
     localStorage[LS_CHAVE] = JSON.stringify(categorias);
   }
 
