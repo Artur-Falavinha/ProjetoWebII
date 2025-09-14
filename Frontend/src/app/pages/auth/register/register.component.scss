@@ -1,71 +1,113 @@
+// Estilos gerais do container
 .auth-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #fafafa;
-  padding: 16px;
+  padding: 20px;
 }
 
+// Card principal
 .auth-card {
   background: white;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 450px;
+  max-width: 400px;
   overflow: hidden;
   position: relative;
 }
 
+// Cabeçalho
 .card-header {
   text-align: center;
-  padding: 32px 24px 20px;
-  background: #3f51b5;
+  padding: 40px 32px 24px;
+  background: #3f51b5; // Mantendo o cabeçalho com o azul original
   color: white;
-  h2 { margin: 0 0 4px; font-size: 24px; font-weight: 600; }
-  p { margin: 0; opacity: 0.9; font-size: 14px; }
-}
 
-.profile-selector {
-  display: flex;
-  gap: 8px;
-  padding: 16px 24px;
-  border-bottom: 1px solid #e0e0e0;
-
-  button {
-    flex-grow: 1;
+  h2 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 14px;
   }
 }
 
+// Seletor de perfil
+.profile-selector {
+  display: flex;
+  gap: 8px;
+  padding: 24px 32px 0;
+  
+  // Estilo padrão (INATIVO)
+  button {
+    flex-grow: 1;
+    background-color: #5c6bc0; // Cor clara para o botão não selecionado
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  // ✅ COR UNIFICADA PARA O BOTÃO ATIVO
+  button.mat-primary {
+    background-color: #00458f; 
+  }
+}
+
+// Conteúdo das etapas do formulário
+// Em register.scss
+
 .step-content {
-  padding: 24px;
+  padding: 18px 10px 20px; 
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  mat-form-field {
+    width: 100%;
+  }
 }
 
+// Ações dentro de cada etapa (botões Continuar, etc.)
 .step-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  padding: 0 24px 24px;
+
+  button[mat-raised-button] {
+    // ✅ COR UNIFICADA PARA O BOTÃO DE AÇÃO
+    background-color: #00458f;
+    color: white;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0059b8; // Um tom mais claro para o hover
+    }
+  }
 }
 
+// Rodapé
 .card-footer {
-  padding: 16px 24px;
+  padding: 24px 32px 32px;
   text-align: center;
   border-top: 1px solid #e0e0e0;
-  p { display: inline; margin: 0; color: #666; font-size: 14px; }
+  p { margin: 0; color: #666; font-size: 14px; display: inline; }
   .back-link {
     color: #3f51b5;
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
     margin-left: 4px;
-    &:hover { text-decoration: underline; }
+    transition: color 0.3s ease;
+    &:hover { color: #5c6bc0; text-decoration: underline; }
   }
 }
 
+// Overlay de carregamento
 .loading-overlay {
   position: absolute;
   inset: 0;
