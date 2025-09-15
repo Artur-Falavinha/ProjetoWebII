@@ -1,0 +1,28 @@
+<div class="modal">
+  <div class="modal-content">
+
+    <h2>Adicionar Nova Categoria</h2>
+    <p>Crie uma nova categoria para classificar equipamentos</p>
+
+    <form #formCategoria="ngForm" (ngSubmit)="inserir()">
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Nome da Categoria</mat-label>
+        <input
+          matInput
+          name="nome"
+          [(ngModel)]="categoria.nome"
+          required
+          placeholder="Ex: Eletrônicos, Eletrodomésticos..."
+        />
+        <mat-error *ngIf="formCategoria.submitted && !categoria.nome">
+          O nome da categoria é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-button type="button" (click)="closeModal()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="formCategoria.invalid">Adicionar</button>
+      </div>
+    </form>
+  </div>
+</div>

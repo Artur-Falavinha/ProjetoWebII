@@ -5,144 +5,110 @@
     </div>
 
     <div class="card-header">
-      <h2>
-        Cadastro de {{ tipoCadastro === "CLIENTE" ? "Cliente" : "Funcionário" }}
-      </h2>
+      <h2>Cadastro de {{ tipoCadastro === "CLIENTE" ? "Cliente" : "Funcionário" }}</h2>
       <p>Crie sua conta para continuar</p>
     </div>
 
     <div class="profile-selector">
-      <button
-        mat-flat-button
-        [color]="tipoCadastro === 'CLIENTE' ? 'primary' : ''"
-        (click)="setTipoCadastro('CLIENTE')"
-      >
-        Sou Cliente
-      </button>
-      <button
-        mat-flat-button
-        [color]="tipoCadastro === 'FUNCIONARIO' ? 'primary' : ''"
-        (click)="setTipoCadastro('FUNCIONARIO')"
-      >
-        Sou Funcionário
-      </button>
+      <button mat-flat-button [color]="tipoCadastro === 'CLIENTE' ? 'primary' : ''" (click)="setTipoCadastro('CLIENTE')">Sou Cliente</button>
+      <button mat-flat-button [color]="tipoCadastro === 'FUNCIONARIO' ? 'primary' : ''" (click)="setTipoCadastro('FUNCIONARIO')">Sou Funcionário</button>
     </div>
 
     <div class="card-body">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <mat-stepper [linear]="true" #stepper>
-          <mat-step
-            label="Dados Pessoais"
-            [stepControl]="registerForm.get('dadosPessoais')!"
-          >
+          <mat-step label="Dados Pessoais" [stepControl]="registerForm.get('dadosPessoais')!">
             <div class="step-content" formGroupName="dadosPessoais">
-              <app-input
-                [control]="nomeControl"
-                label="Nome completo"
-                placeholder="Digite seu nome completo"
-                [errorMessages]="{ required: 'O nome é obrigatório.' }"
-              ></app-input>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Nome completo</mat-label>
+                <input matInput formControlName="nome" placeholder="Digite seu nome completo">
+                <mat-error *ngIf="submitted && nomeControl?.hasError('required')">O nome é obrigatório.</mat-error>
+              </mat-form-field>
 
-              <app-input
-                [control]="emailControl"
-                label="Email"
-                placeholder="Digite seu email"
-                type="email"
-                icon="email"
-                [errorMessages]="{
-                  required: 'O email é obrigatório.',
-                  email: 'Formato de email inválido.'
-                }"
-              ></app-input>
+              <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" placeholder="Digite seu email">
+                <mat-error *ngIf="submitted && emailControl?.hasError('required')">O email é obrigatório.</mat-error>
+                <mat-error *ngIf="submitted && emailControl?.hasError('email')">Formato de email inválido.</mat-error>
+              </mat-form-field>
 
-              <app-input
-                [control]="cpfControl"
-                label="CPF"
-                placeholder="Digite 11 números"
-                [mask]="'000.000.000-00'"
-                [errorMessages]="{
-                  required: 'CPF é obrigatório.',
-                  pattern: 'CPF deve conter 11 dígitos.'
-                }"
-              ></app-input>
+              <mat-form-field appearance="outline">
+                <mat-label>CPF</mat-label>
+                <input matInput formControlName="cpf" placeholder="Digite 11 números">
+                <mat-error *ngIf="submitted && cpfControl?.hasError('required')">CPF é obrigatório.</mat-error>
+                <mat-error *ngIf="submitted && cpfControl?.hasError('pattern')">CPF deve conter 11 dígitos.</mat-error>
+              </mat-form-field>
 
-              <app-input
-                [control]="telefoneControl"
-                label="Telefone"
-                placeholder="DDD + 8 ou 9 números"
-                [mask]="'00000000000'"
-                [errorMessages]="{
-                  required: 'Telefone é obrigatório.',
-                  pattern: 'Telefone deve conter 10 ou 11 dígitos.'
-                }"
-              ></app-input>
+              <mat-form-field appearance="outline">
+                <mat-label>Telefone</mat-label>
+                <input matInput formControlName="telefone" placeholder="DDD + 8 ou 9 números">
+                <mat-error *ngIf="submitted && telefoneControl?.hasError('required')">Telefone é obrigatório.</mat-error>
+                <mat-error *ngIf="submitted && telefoneControl?.hasError('pattern')">Telefone deve conter 10 ou 11 dígitos.</mat-error>
+              </mat-form-field>
+              
             </div>
-
+            
             <div class="step-actions">
-              <button
-                *ngIf="tipoCadastro === 'CLIENTE'"
-                mat-raised-button
-                color="primary"
-                matStepperNext
-              >
-                Continuar
-              </button>
-              <button
-                *ngIf="tipoCadastro === 'FUNCIONARIO'"
-                mat-raised-button
-                color="primary"
-                type="submit"
-                [disabled]="registerForm.get('dadosPessoais')?.invalid"
-              >
-                Finalizar Cadastro
-              </button>
+              <button *ngIf="tipoCadastro === 'CLIENTE'" mat-raised-button color="primary" matStepperNext>Continuar</button>
+              <button *ngIf="tipoCadastro === 'FUNCIONARIO'" mat-raised-button color="primary" type="submit" [disabled]="registerForm.get('dadosPessoais')?.invalid">Finalizar Cadastro</button>
             </div>
           </mat-step>
 
           <ng-container *ngIf="tipoCadastro === 'CLIENTE'">
-            <mat-step
-              label="Endereço"
-              [stepControl]="registerForm.get('endereco')!"
-            >
+            <mat-step label="Endereço" [stepControl]="registerForm.get('endereco')!">
               <div class="step-content" formGroupName="endereco">
-                <app-input
-                  [control]="cepControl"
-                  label="CEP"
-                  placeholder="Digite 8 números"
-                  [mask]="'00000000'"
-                  [errorMessages]="{
-                    required: 'CEP é obrigatório.',
-                    pattern: 'CEP deve conter 8 dígitos.'
-                  }"
-                ></app-input>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>CEP</mat-label>
+                  <input matInput formControlName="cep" placeholder="Digite 8 números" (blur)="consultarCep()">
+                  <mat-error *ngIf="submitted && cepControl?.hasError('required')">CEP é obrigatório.</mat-error>
+                  <mat-error *ngIf="submitted && cepControl?.hasError('pattern')">CEP deve conter 8 dígitos.</mat-error>
+                </mat-form-field>
 
-                <app-input
-                  [control]="logradouroControl"
-                  label="Logradouro"
-                  placeholder="Digite o logradouro"
-                  [errorMessages]="{ required: 'Logradouro é obrigatório.' }"
-                ></app-input>
+                <mat-form-field appearance="outline">
+                  <mat-label>Logradouro</mat-label>
+                  <input matInput formControlName="logradouro" placeholder="Ex: Rua das Flores">
+                  <mat-error *ngIf="submitted && logradouroControl?.hasError('required')">Logradouro é obrigatório.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Número</mat-label>
+                  <input matInput formControlName="numero" placeholder="Ex: 123">
+                  <mat-error *ngIf="registerForm.get('endereco.numero')?.hasError('required')">Número é obrigatório.</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Complemento</mat-label>
+                  <input matInput formControlName="complemento" placeholder="Ex: Apto 45, Bloco B">
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Bairro</mat-label>
+                  <input matInput formControlName="bairro">
+                  <mat-error *ngIf="registerForm.get('endereco.bairro')?.hasError('required')">Bairro é obrigatório.</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Cidade</mat-label>
+                  <input matInput formControlName="cidade">
+                  <mat-error *ngIf="registerForm.get('endereco.cidade')?.hasError('required')">Cidade é obrigatória.</mat-error>
+                </mat-form-field>
               </div>
+              
               <div class="step-actions">
                 <button mat-button matStepperPrevious>Voltar</button>
-                <button
-                  mat-raised-button
-                  color="primary"
-                  type="submit"
-                  [disabled]="registerForm.invalid"
-                >
-                  Finalizar Cadastro
-                </button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Finalizar Cadastro</button>
               </div>
             </mat-step>
           </ng-container>
         </mat-stepper>
       </form>
     </div>
-
+    
     <div class="card-footer">
-      <p>Já tem uma conta?</p>
-      <a routerLink="/login" class="back-link">Faça login aqui</a>
+        <p>Já tem uma conta?</p>
+        <a routerLink="/login" class="back-link">Faça login aqui</a>
     </div>
   </div>
 </div>

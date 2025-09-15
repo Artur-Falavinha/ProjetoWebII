@@ -3,8 +3,10 @@ import {
   LoginComponent,
   RegisterComponent,
   ClientHomeComponent,
-  // SolicitacaoManutencaoComponent,
+  //SolicitacaoManutencaoComponent,
   FuncionarioComponent,
+  ListarCategoriaComponent,
+  InserirCategoriaComponent
 } from '@/app/pages';
 
 // Configurar AuthGuard
@@ -40,7 +42,11 @@ export const routes: Routes = [
   },
   {
     path: 'admin/categorias',
-    component: FuncionarioComponent,
+    component: ListarCategoriaComponent,
+  },
+  {
+    path: 'admin/categorias/new',
+    component: InserirCategoriaComponent,
   },
   {
     path: 'admin/funcionarios',
@@ -50,6 +56,7 @@ export const routes: Routes = [
     path: 'admin/relatorios',
     component: FuncionarioComponent,
   },
+  
   {
     // TODO: Pág. 404
     path: '**',
