@@ -5,7 +5,73 @@
 
 .cliente-content {
   flex: 1;
-  padding: 24px;
-  background: #fafafa;
+  padding: 2rem;
+  background: #f5f5f5;
   overflow-y: auto;
+  min-height: 100vh;
+}
+
+// Header da página
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .header-content {
+    h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #1a202c;
+    }
+
+    p {
+      margin: 0.5rem 0 0 0;
+      color: #64748b;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+  }
+
+  .header-actions {
+    app-button {
+      display: block;
+    }
+  }
+}
+
+// Container da lista de solicitações
+.solicitations-list-section {
+  .solicitations-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .cliente-content {
+    padding: 1rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+
+    .header-actions {
+      width: 100%;
+      
+      button {
+        width: 100%;
+      }
+    }
+  }
+
 }

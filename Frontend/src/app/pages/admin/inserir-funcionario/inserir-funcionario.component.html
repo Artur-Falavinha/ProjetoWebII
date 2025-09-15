@@ -1,0 +1,98 @@
+<div class="modal">
+  <div class="modal-content">
+
+    <h2>Adicionar Novo Funcionário</h2>
+    <p>Cadastre um novo funcionário no sistema</p>
+
+    <form #formFuncionario="ngForm" (ngSubmit)="inserir()">
+      
+      <!-- Nome -->
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Nome Completo</mat-label>
+        <input
+          matInput
+          name="nome"
+          [(ngModel)]="funcionario.nome"
+          required
+          placeholder="Ex: João Silva"
+        />
+        <mat-error *ngIf="formFuncionario.submitted && !funcionario.nome">
+          O nome é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Email -->
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="funcionario.email"
+          required
+          placeholder="Ex: joao.silva@empresa.com"
+        />
+        <mat-error *ngIf="formFuncionario.submitted && !funcionario.email">
+          O email é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Cargo -->
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Cargo</mat-label>
+        <mat-select
+          name="cargo"
+          [(ngModel)]="funcionario.cargo"
+          required>
+          <mat-option *ngFor="let cargo of cargos" [value]="cargo">
+            {{ cargo }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formFuncionario.submitted && !funcionario.cargo">
+          O cargo é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Telefone -->
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Telefone</mat-label>
+        <input
+          matInput
+          name="telefone"
+          [(ngModel)]="funcionario.telefone"
+          placeholder="Ex: (11) 99999-9999"
+        />
+      </mat-form-field>
+
+      <!-- Data de Admissão -->
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Data de Admissão</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          name="dataAdmissao"
+          [(ngModel)]="funcionario.dataAdmissao"
+          required>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="formFuncionario.submitted && !funcionario.dataAdmissao">
+          A data de admissão é obrigatória.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Status Ativo -->
+      <div class="checkbox-field">
+        <mat-checkbox
+          name="ativo"
+          [(ngModel)]="funcionario.ativo">
+          Funcionário ativo
+        </mat-checkbox>
+      </div>
+
+      <div class="actions">
+        <button mat-button type="button" (click)="closeModal()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="formFuncionario.invalid">Adicionar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -6,7 +6,9 @@ import {
   //SolicitacaoManutencaoComponent,
   FuncionarioComponent,
   ListarCategoriaComponent,
-  InserirCategoriaComponent
+  InserirCategoriaComponent,
+  ListarFuncionarioComponent,
+  InserirFuncionarioComponent
 } from '@/app/pages';
 
 // Configurar AuthGuard
@@ -50,7 +52,11 @@ export const routes: Routes = [
   },
   {
     path: 'admin/funcionarios',
-    component: FuncionarioComponent,
+    component: ListarFuncionarioComponent,
+  },
+  {
+    path: 'admin/funcionarios/new',
+    component: InserirFuncionarioComponent,
   },
   {
     path: 'admin/relatorios',

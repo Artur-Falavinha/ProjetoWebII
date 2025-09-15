@@ -1,0 +1,164 @@
+.solicitation-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+
+    .equipment-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      .equipment-icon {
+        color: #1976d2;
+        font-size: 20px;
+      }
+
+      .equipment-name {
+        font-weight: 600;
+        color: #1a202c;
+        font-size: 1rem;
+      }
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+
+      &.status-aberta {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+
+      &.status-orcamento {
+        background: #fff3e0;
+        color: #f57c00;
+      }
+
+      &.status-concluida {
+        background: #e8f5e8;
+        color: #2e7d32;
+      }
+    }
+  }
+
+  .card-body {
+    margin-bottom: 1.5rem;
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+
+        .info-icon {
+          font-size: 16px;
+          color: #64748b;
+        }
+
+        span {
+          font-size: 0.9rem;
+          color: #64748b;
+        }
+
+        &:first-child {
+          .info-icon {
+            color: #1976d2;
+          }
+        }
+
+        &:last-child {
+          .info-icon {
+            color: #9c27b0;
+          }
+        }
+      }
+    }
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+
+    app-button {
+      &.view-btn {
+        ::ng-deep button {
+          color: #1976d2;
+          border-color: #1976d2;
+          background: transparent;
+
+          &:hover {
+            background: #f0f9ff;
+          }
+
+          mat-icon {
+            color: #1976d2;
+          }
+        }
+      }
+
+      &.approve-btn {
+        ::ng-deep button {
+          background: #1976d2;
+          color: #fff;
+
+          &:hover {
+            background: #1565c0;
+          }
+
+          mat-icon {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .solicitation-card {
+    .card-header {
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: center;
+    }
+
+    .card-body .info-row {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .card-actions {
+      flex-direction: column;
+    }
+  }
+}
