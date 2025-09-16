@@ -5,18 +5,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButton } from "@angular/material/button";
 
 @Component({
-  selector: 'app-button',
+  selector: 'app-tag',
   standalone: true,                     
   imports: [CommonModule, RouterModule, MatIconModule, MatButton], 
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  templateUrl: './tag.component.html',
+  styleUrls: ['./tag.component.scss']
 })
-export class ButtonComponent {
+export class TagComponent {
   @Input() title: string = '';
-  @Input() link?: string;
-  @Input() icon?: string;
-  @Input() disabled?: boolean;
-  @Input() submit?: boolean;
-  @Input() variant: 'primary' | 'secondary' | 'success' | 'destructive' = 'primary';
-
+  @Input() color: 
 }

@@ -28,10 +28,10 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
-/*  {
-    path: 'solicitacao',
-    component: SolicitacaoManutencaoComponent,
-  },*/
+  // {
+  //   path: 'solicitacao',
+  //   component: SolicitacaoManutencaoComponent,
+  // },
   {
     path: 'admin',
     component: FuncionarioComponent,
