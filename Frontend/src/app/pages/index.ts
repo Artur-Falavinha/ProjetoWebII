@@ -4,5 +4,6 @@ export { ClientHomeComponent } from "./client/home/client-home.component";
 //export { SolicitacaoManutencaoComponent } from "./client/manutencao/solicitacao.component"
 export { FuncionarioComponent } from "./admin/pagina-funcionario/funcionario";
 export { ListarCategoriaComponent } from "./admin/listar-categoria/listar-categoria.component";
-
-
+export { InserirCategoriaComponent } from  './admin/inserir-categoria/inserir-categoria.component';
+export { ListarFuncionarioComponent } from './admin/listar-funcionario/listar-funcionario.component';
+export { InserirFuncionarioComponent } from './admin/inserir-funcionario/inserir-funcionario.component';

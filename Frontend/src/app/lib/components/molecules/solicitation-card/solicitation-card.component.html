@@ -1,0 +1,50 @@
+<div class="solicitation-card">
+  <div class="card-header">
+    <div class="equipment-info">
+      <mat-icon class="equipment-icon">computer</mat-icon>
+      <span class="equipment-name">Equipamento: {{ solicitacao.descricaoEquipamento }}</span>
+    </div>
+    <span class="status-badge" [ngClass]="getStatusClass()">
+      {{ getStatusLabel() }}
+    </span>
+  </div>
+  
+  <div class="card-body">
+    <div class="info-row">
+      <div class="info-item">
+        <mat-icon class="info-icon">schedule</mat-icon>
+        <span>Data: {{ formatarData(solicitacao.dataHora) }}</span>
+      </div>
+      <div class="info-item" *ngIf="solicitacao.valor">
+        <mat-icon class="info-icon">monetization_on</mat-icon>
+        <span>Valor: R$ {{ solicitacao.valor | number:'1.2-2' }}</span>
+      </div>
+    </div>
+    
+    <div class="info-row">
+      <div class="info-item">
+        <mat-icon class="info-icon">local_offer</mat-icon>
+        <span>Categoria: {{ solicitacao.categoriaEquipamento }}</span>
+      </div>
+      <div class="info-item" *ngIf="solicitacao.tecnico">
+        <mat-icon class="info-icon">person</mat-icon>
+        <span>Técnico: {{ solicitacao.tecnico }}</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card-actions" *ngIf="showActions">
+    <app-button 
+      title="Visualizar"
+      icon="visibility"
+      class="view-btn"
+      (clicked)="onViewClick()">
+    </app-button>
+    <app-button 
+      title="Aprovar/Rejeitar"
+      icon="monetization_on"
+      class="approve-btn"
+      (clicked)="onApproveClick()">
+    </app-button>
+  </div>
+</div>

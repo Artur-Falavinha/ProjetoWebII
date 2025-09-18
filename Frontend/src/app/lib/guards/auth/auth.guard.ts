@@ -8,7 +8,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   // Permitir acesso à rota /cliente para visualizar a sidebar
-  if (state.url === '/cliente') {
+  if (state.url === '/client') {
     return true;
   }
 

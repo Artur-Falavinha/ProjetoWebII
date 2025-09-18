@@ -2,38 +2,205 @@
   <app-sidebar></app-sidebar>
 
   <main class="funcionario-content">
-    <h1>Solicitações em Aberto</h1>
-    <p>Abaixo estão as solicitações que necessitam de um orçamento.</p>
-
-    <div *ngIf="solicitacoesAbertas.length === 0" class="empty-state">
-      <p>Não há solicitações em aberto no momento. Bom trabalho!</p>
+    <!-- Header -->
+    <div class="page-header">
+      <div class="header-content">
+        <h1>Painel do Funcionário</h1>
+        <p>Solicitações aguardando orçamento</p>
+      </div>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" (click)="verTodasSolicitacoes()">
+          <mat-icon>list</mat-icon>
+          Ver todas as solicitações
+        </button>
+      </div>
     </div>
 
-    <table *ngIf="solicitacoesAbertas.length > 0" class="solicitacoes-table">
-      <thead>
-        <tr>
-          <th>Data/Hora Abertura</th>
-          <th>Cliente</th>
-          <th>Equipamento</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let solicitacao of solicitacoesAbertas">
-          <td>{{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</td>
+    <!-- Cards de Estatísticas -->
+    <div class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-card abertas">
+          <div class="stat-icon">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ estatisticas.abertas }}</div>
+            <div class="stat-label">Abertas</div>
+          </div>
+        </div>
 
-          <td>{{ solicitacao.clienteNome }}</td>
+        <div class="stat-card orcadas">
+          <div class="stat-icon">
+            <mat-icon>monetization_on</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ estatisticas.orcadas }}</div>
+            <div class="stat-label">Orçadas</div>
+          </div>
+        </div>
 
-          <td>
-            {{ (solicitacao.equipamento.length > 30) ? (solicitacao.equipamento | slice:0:30) + '...' : solicitacao.equipamento }}
-          </td>
-          
-          <td>
-            <button mat-stroked-button color="primary">Efetuar Orçamento</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <div class="stat-card aprovadas">
+          <div class="stat-icon">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ estatisticas.aprovadas }}</div>
+            <div class="stat-label">Aprovadas</div>
+          </div>
+        </div>
+
+        <div class="stat-card finalizadas">
+          <div class="stat-icon">
+            <mat-icon>done_all</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ estatisticas.finalizadas }}</div>
+            <div class="stat-label">Finalizadas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Solicitações Abertas -->
+    <div class="solicitacoes-section">
+      <h2>Solicitações Abertas</h2>
+      
+      <div class="solicitacoes-list" *ngIf="solicitacoesAbertas.length > 0">
+        <mat-card *ngFor="let solicitacao of solicitacoesAbertas" class="solicitacao-card">
+          <mat-card-header>
+            <div class="card-header-content">
+              <div class="equipamento-info">
+                <h3>{{ solicitacao.equipamento }}</h3>
+              </div>
+              <mat-chip [class]="getStatusClass(solicitacao.status)">
+                {{ getStatusText(solicitacao.status) }}
+              </mat-chip>
+            </div>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="cliente-info">
+              <mat-icon>person</mat-icon>
+              <span>Cliente: {{ solicitacao.cliente }} • {{ formatarData(solicitacao.dataHora) }}</span>
+            </div>
+
+            <div class="categoria-info">
+              <mat-icon>local_offer</mat-icon>
+              <span>{{ solicitacao.categoria }}</span>
+            </div>
+
+            <div class="problema-info">
+              <p>{{ solicitacao.descricaoProblema }}</p>
+            </div>
+
+            <div class="data-info">
+              <mat-icon>calendar_today</mat-icon>
+              <span>Solicitado em {{ formatarDataSimples(solicitacao.dataHora) }}</span>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-button (click)="verDetalhes(solicitacao)">
+              <mat-icon>visibility</mat-icon>
+              Ver detalhes
+            </button>
+            <button mat-raised-button color="primary" (click)="efetuarOrcamento(solicitacao)">
+              <mat-icon>monetization_on</mat-icon>
+              Efetuar Orçamento
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="empty-state" *ngIf="solicitacoesAbertas.length === 0">
+        <mat-icon class="empty-icon">inbox</mat-icon>
+        <h3>Não há solicitações em aberto</h3>
+        <p>Bom trabalho! Todas as solicitações estão em dia.</p>
+      </div>
+    </div>
 
   </main>
+</div>
+
+<!-- Modal de Detalhes da Solicitação -->
+<div class="modal-overlay" *ngIf="modalAberto" (click)="fecharModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Detalhes da Solicitação</h2>
+      <button class="close-btn" (click)="fecharModal()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+    <div class="modal-content" *ngIf="solicitacaoSelecionada">
+      <!-- Informações do Equipamento -->
+      <div class="info-section">
+        <h3>Equipamento</h3>
+        <div class="info-item">
+          <mat-icon>build</mat-icon>
+          <span>{{ solicitacaoSelecionada.equipamento }}</span>
+        </div>
+        <div class="info-item">
+          <mat-icon>local_offer</mat-icon>
+          <span>{{ solicitacaoSelecionada.categoria }}</span>
+        </div>
+      </div>
+
+      <!-- Informações do Cliente -->
+      <div class="info-section">
+        <h3>Cliente</h3>
+        <div class="info-item">
+          <mat-icon>person</mat-icon>
+          <span>{{ solicitacaoSelecionada.cliente }}</span>
+        </div>
+        <div class="info-item">
+          <mat-icon>email</mat-icon>
+          <span>{{ solicitacaoSelecionada.clienteEmail }}</span>
+        </div>
+      </div>
+
+      <!-- Descrição do Problema -->
+      <div class="info-section">
+        <h3>Problema Relatado</h3>
+        <div class="problema-descricao">
+          <p>{{ solicitacaoSelecionada.descricaoProblema }}</p>
+        </div>
+      </div>
+
+      <!-- Informações de Data e Status -->
+      <div class="info-section">
+        <h3>Informações da Solicitação</h3>
+        <div class="info-item">
+          <mat-icon>schedule</mat-icon>
+          <span>Solicitado em: {{ formatarData(solicitacaoSelecionada.dataHora) }}</span>
+        </div>
+        <div class="info-item">
+          <mat-icon>info</mat-icon>
+          <span>Status: </span>
+          <mat-chip [class]="getStatusClass(solicitacaoSelecionada.status)">
+            {{ getStatusText(solicitacaoSelecionada.status) }}
+          </mat-chip>
+        </div>
+      </div>
+
+      <!-- Observações (se houver) -->
+      <div class="info-section" *ngIf="solicitacaoSelecionada.observacoes">
+        <h3>Observações</h3>
+        <div class="problema-descricao">
+          <p>{{ solicitacaoSelecionada.observacoes }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button mat-button (click)="fecharModal()">
+        <mat-icon>close</mat-icon>
+        Fechar
+      </button>
+      <button mat-raised-button color="primary" (click)="efetuarOrcamento(solicitacaoSelecionada!)">
+        <mat-icon>monetization_on</mat-icon>
+        Efetuar Orçamento
+      </button>
+    </div>
+  </div>
 </div>

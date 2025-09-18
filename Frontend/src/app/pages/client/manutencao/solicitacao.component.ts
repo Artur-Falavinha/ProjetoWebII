@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { ButtonComponent } from '@/app/lib/components';
 
 interface SolicitacaoManutencao {
   descricaoEquipamento: string;
@@ -27,7 +27,7 @@ interface SolicitacaoManutencao {
     MatInputModule,
     MatSelectModule,
     MatIconModule,
-    MatButtonModule
+    ButtonComponent
   ],
   templateUrl: './solicitacao.component.html',
   styleUrls: ['./solicitacao.component.scss'],
@@ -182,66 +182,29 @@ export class SolicitacaoManutencaoComponent {
     };
     this.editandoIndex = null;
   }
-}
 
-export class SolicitacaoManutencaoComponent {
-  solicitacoes: SolicitacaoManutencao[] = [];
-  filtroEstado: string = 'TODAS';
-  editandoIndex: number | null = null;
-  lastUpdated: Date | null = null;
-  modoCompacto: boolean = false;
-  limiteSolicitacoes: number = 100;
-
-  // ...
-
-  registrarSolicitacao() {
-    if (this.solicitacoes.length >= this.limiteSolicitacoes) {
-      alert('Limite de solicitações atingido!');
-      return;
-    }
-    if (this.existeDuplicada(this.novaSolicitacao)) {
-      alert('Solicitação já registrada!');
-      return;
-    }
-
-    this.novaSolicitacao.dataHora = new Date();
-    if (this.editandoIndex !== null) {
-      this.solicitacoes[this.editandoIndex] = { ...this.novaSolicitacao };
-      this.editandoIndex = null;
-    } else {
-      this.solicitacoes.push({ ...this.novaSolicitacao });
-    }
-    this.lastUpdated = new Date();
-    this.salvarLocalStorage();
-    this.cancelarSolicitacao();
+  // Método para formatar data e hora
+  formatarDataHora(data: Date): string {
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(data);
   }
 
-  clonarSolicitacao(index: number) {
-    const copia = { ...this.solicitacoes[index], dataHora: new Date() };
-    this.solicitacoes.push(copia);
-    this.salvarLocalStorage();
+  // Métodos para estatísticas (reutilizando lógica existente)
+  getTotalSolicitacoes(): number {
+    return this.solicitacoes.length;
   }
 
-  existeDuplicada(s: SolicitacaoManutencao): boolean {
-    return this.solicitacoes.some(
-      x => x.descricaoEquipamento === s.descricaoEquipamento &&
-           x.descricaoDefeito === s.descricaoDefeito
-    );
+  getSolicitacoesAbertas(): number {
+    return this.solicitacoes.filter(s => s.estado === 'ABERTA').length;
   }
 
-  contarCategorias() {
-    return new Set(this.solicitacoes.map(s => s.categoriaEquipamento)).size;
-  }
-
-  maisRecente() {
-    return this.solicitacoes.reduce((a, b) => a.dataHora > b.dataHora ? a : b, this.solicitacoes[0]);
-  }
-
-  maisAntiga() {
-    return this.solicitacoes.reduce((a, b) => a.dataHora < b.dataHora ? a : b, this.solicitacoes[0]);
-  }
-
-  get temSolicitacoes() {
-    return this.solicitacoes.length > 0;
+  getSolicitacoesConcluidas(): number {
+    return this.solicitacoes.filter(s => s.estado === 'CONCLUIDA').length;
   }
 }
+
