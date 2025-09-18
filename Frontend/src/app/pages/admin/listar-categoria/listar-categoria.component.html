@@ -13,10 +13,10 @@
       </div>
 
       <button
-      class="btn-primary"
-      extended
+        class="btn-primary"
+        extended
         type="button"
-        (click)="abrirModal()"
+        (click)="abrirModalInserir()"
       >
         <mat-icon>add</mat-icon>
          Nova Categoria
@@ -39,10 +39,19 @@
           </div>
 
           <div class="categoria-actions">
-            <button class="btn-icon edit">
+
+            <button
+              class="btn-icon edit"
+              extended
+              type="button"
+              (click)="abrirModalEditar(categoria)"
+            >
               <mat-icon>edit</mat-icon>
             </button>
-            <button class="btn-icon delete">
+
+            <button 
+              class="btn-icon delete"
+              (click)="remover($event, categoria)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

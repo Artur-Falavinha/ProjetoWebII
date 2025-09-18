@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { InserirCategoriaComponent } from '../inserir-categoria/inserir-categoria.component';
+import { EditarCategoriaComponent } from '../editar-categoria/editar-categoria.component';
 
 @Component({
   selector: 'app-listar-categoria',
@@ -31,7 +32,7 @@ export class ListarCategoriaComponent implements OnInit {
     return this.categoriaService.listarTodas();
   }
 
-  abrirModal(): void {
+  abrirModalInserir(): void {
     const dialogRef = this.dialog.open(InserirCategoriaComponent, {
       width: '400px'
     });
@@ -41,5 +42,26 @@ export class ListarCategoriaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.categorias = this.listarTodas();
     });
+  }
+
+  abrirModalEditar(categoria: Categoria): void {
+    const dialogRef = this.dialog.open(EditarCategoriaComponent, {
+      width: '400px',
+      data: categoria
+    });
+
+    dialogRef.componentInstance.close.subscribe(() => dialogRef.close());
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.categorias = this.listarTodas();
+    });
+  }
+
+  remover($event: any, categoria: Categoria): void {
+    $event.preventDefault();
+    if(confirm(`Deseja remover a categoria ${categoria.nome}?`)){
+      this.categoriaService.remover(categoria.id!);
+      this.categorias = this.listarTodas();
+    }
   }
 }
