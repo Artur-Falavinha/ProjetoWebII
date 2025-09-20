@@ -1,0 +1,44 @@
+<mat-card class="solicitacao-card">
+  <mat-card-header>
+    <div class="card-header-content">
+      <div class="equipamento-info">
+        <h3>{{ solicitacao.equipamento }}</h3>
+      </div>
+      <mat-chip [class]="getStatusClass(solicitacao.status)">
+        {{ getStatusText(solicitacao.status) }}
+      </mat-chip>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="cliente-info">
+      <mat-icon>person</mat-icon>
+      <span>Cliente: {{ solicitacao.cliente }} • {{ formatarData(solicitacao.dataHora) }}</span>
+    </div>
+
+    <div class="categoria-info">
+      <mat-icon>local_offer</mat-icon>
+      <span>{{ solicitacao.categoria }}</span>
+    </div>
+
+    <div class="problema-info">
+      <p>{{ solicitacao.descricaoProblema }}</p>
+    </div>
+
+    <div class="data-info">
+      <mat-icon>calendar_today</mat-icon>
+      <span>Solicitado em {{ formatarDataSimples(solicitacao.dataHora) }}</span>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions *ngIf="showActions">
+    <button mat-button (click)="onVerDetalhes()">
+      <mat-icon>visibility</mat-icon>
+      Ver detalhes
+    </button>
+    <button mat-raised-button color="primary" (click)="onEfetuarOrcamento()">
+      <mat-icon>monetization_on</mat-icon>
+      Efetuar Orçamento
+    </button>
+  </mat-card-actions>
+</mat-card>

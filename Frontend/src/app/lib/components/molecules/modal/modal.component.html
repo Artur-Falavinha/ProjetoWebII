@@ -1,0 +1,36 @@
+<div class="modal">
+  <div class="modal-content">
+    
+    <!-- Cabeçalho do Modal -->
+    <div class="modal-header" *ngIf="title || description">
+      <h2 *ngIf="title">{{ title }}</h2>
+      <p *ngIf="description">{{ description }}</p>
+    </div>
+
+    <!-- Conteúdo do Modal -->
+    <div class="modal-body">
+      <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+    </div>
+
+    <!-- Rodapé do Modal -->
+    <div class="modal-footer" *ngIf="showCancelButton || submitButtonText">
+      <button 
+        mat-button 
+        type="button" 
+        (click)="onClose()"
+        *ngIf="showCancelButton">
+        Cancelar
+      </button>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="button"
+        [disabled]="!isFormValid || isLoading"
+        (click)="onSubmit()"
+        *ngIf="submitButtonText">
+        <mat-icon *ngIf="isLoading">refresh</mat-icon>
+        {{ submitButtonText }}
+      </button>
+    </div>
+  </div>
+</div>

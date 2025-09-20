@@ -1,0 +1,32 @@
+<div class="funcionario-item">
+  
+  <div class="funcionario-info">
+    <div class="icon-box">
+      <mat-icon>person</mat-icon>
+    </div>
+        <div class="funcionario-details">
+          <h3>{{ funcionario.nome }}</h3>
+          <p class="email">{{ funcionario.email }}</p>
+          <div class="funcionario-meta">
+            <span class="cargo">{{ funcionario.cargo }}</span>
+            <span class="nascimento">Nascimento: {{ formatarDataSimples(funcionario.dataNascimento) }}</span>
+            <span class="telefone" *ngIf="funcionario.telefone">{{ funcionario.telefone }}</span>
+            <span class="admissao">Admissão: {{ formatarDataSimples(funcionario.dataAdmissao) }}</span>
+          </div>
+          <div class="status-container">
+            <span class="status-badge" [ngClass]="getStatusClass(funcionario.ativo)">
+              {{ getStatusText(funcionario.ativo) }}
+            </span>
+          </div>
+        </div>
+  </div>
+
+  <div class="funcionario-actions" *ngIf="showActions">
+    <button class="btn-icon edit" (click)="onEditClick()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button class="btn-icon delete" (click)="onDeleteClick()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>

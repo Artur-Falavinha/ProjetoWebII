@@ -1,0 +1,143 @@
+<!-- Modal reutilizável com formulário de funcionário -->
+<app-modal
+  [title]="modalTitle"
+  [description]="modalDescription"
+  [submitButtonText]="submitButtonText"
+  [isFormValid]="isFormValid"
+  (close)="onFormClose()"
+  (submit)="onFormSubmit()">
+  
+  <!-- Conteúdo do formulário -->
+  <ng-template #modalContent>
+        <!-- Exibição de erro geral -->
+        <div class="error-message" *ngIf="erroGeral">
+          <mat-icon>error</mat-icon>
+          <span>{{ erroGeral }}</span>
+        </div>
+
+        <form #formFuncionario="ngForm">
+          
+          <!-- Nome -->
+          <mat-form-field appearance="outline" class="app-field">
+            <mat-label>Nome Completo</mat-label>
+            <input
+              matInput
+              name="nome"
+              [(ngModel)]="funcionario.nome"
+              required
+              placeholder="Ex: João Silva"
+            />
+            <mat-error *ngIf="formFuncionario.submitted && !funcionario.nome">
+              O nome é obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Email -->
+          <mat-form-field appearance="outline" class="app-field">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              name="email"
+              [(ngModel)]="funcionario.email"
+              required
+              placeholder="Ex: joao.silva@empresa.com"
+            />
+            <mat-error *ngIf="formFuncionario.submitted && !funcionario.email">
+              O email é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="erroEmail">
+              {{ erroEmail }}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Data de Nascimento -->
+          <mat-form-field appearance="outline" class="app-field">
+            <mat-label>Data de Nascimento</mat-label>
+            <input
+              matInput
+              [matDatepicker]="pickerNascimento"
+              name="dataNascimento"
+              [(ngModel)]="funcionario.dataNascimento"
+              required>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerNascimento"></mat-datepicker-toggle>
+            <mat-datepicker #pickerNascimento></mat-datepicker>
+            <mat-error *ngIf="formFuncionario.submitted && !funcionario.dataNascimento">
+              A data de nascimento é obrigatória.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Senha -->
+          <mat-form-field appearance="outline" class="app-field">
+            <mat-label>Senha</mat-label>
+            <input
+              matInput
+              type="password"
+              name="senha"
+              [(ngModel)]="funcionario.senha"
+              required
+              placeholder="Mínimo 6 caracteres"
+              minlength="6"
+            />
+            <mat-error *ngIf="formFuncionario.submitted && !funcionario.senha">
+              A senha é obrigatória.
+            </mat-error>
+            <mat-error *ngIf="formFuncionario.submitted && funcionario.senha && funcionario.senha.length < 6">
+              A senha deve ter pelo menos 6 caracteres.
+            </mat-error>
+          </mat-form-field>
+
+      <!-- Cargo -->
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Cargo</mat-label>
+        <mat-select
+          name="cargo"
+          [(ngModel)]="funcionario.cargo"
+          required>
+          <mat-option *ngFor="let cargo of cargos" [value]="cargo">
+            {{ cargo }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formFuncionario.submitted && !funcionario.cargo">
+          O cargo é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Telefone -->
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Telefone</mat-label>
+        <input
+          matInput
+          name="telefone"
+          [(ngModel)]="funcionario.telefone"
+          placeholder="Ex: (11) 99999-9999"
+        />
+      </mat-form-field>
+
+      <!-- Data de Admissão -->
+      <mat-form-field appearance="outline" class="app-field">
+        <mat-label>Data de Admissão</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          name="dataAdmissao"
+          [(ngModel)]="funcionario.dataAdmissao"
+          required>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="formFuncionario.submitted && !funcionario.dataAdmissao">
+          A data de admissão é obrigatória.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Status Ativo -->
+      <div class="checkbox-field">
+        <mat-checkbox
+          name="ativo"
+          [(ngModel)]="funcionario.ativo">
+          Funcionário ativo
+        </mat-checkbox>
+      </div>
+    </form>
+  </ng-template>
+</app-modal>

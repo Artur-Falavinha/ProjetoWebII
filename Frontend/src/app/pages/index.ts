@@ -7,3 +7,5 @@ export { ListarCategoriaComponent } from "./admin/listar-categoria/listar-catego
 export { InserirCategoriaComponent } from  './admin/inserir-categoria/inserir-categoria.component';
 export { ListarFuncionarioComponent } from './admin/listar-funcionario/listar-funcionario.component';
 export { InserirFuncionarioComponent } from './admin/inserir-funcionario/inserir-funcionario.component';
+export { EditarFuncionarioComponent } from './admin/editar-funcionario/editar-funcionario.component';
+export { FuncionarioFormComponent } from './admin/funcionario-form/funcionario-form.component';

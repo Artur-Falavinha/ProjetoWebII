@@ -13,10 +13,10 @@
       </div>
 
       <button
-      class="btn-primary"
-      extended
+        class="btn-primary"
+        extended
         type="button"
-        (click)="abrirModal()"
+        (click)="abrirModalInserir()"
       >
         <mat-icon>add</mat-icon>
          Novo Funcionário
@@ -31,37 +31,29 @@
             <div class="icon-box">
               <mat-icon>person</mat-icon>
             </div>
-            <div class="funcionario-details">
+            <div>
               <h3>{{ funcionario.nome }}</h3>
-              <p class="email">{{ funcionario.email }}</p>
-              <div class="funcionario-meta">
-                <span class="cargo">{{ funcionario.cargo }}</span>
-                <span class="telefone" *ngIf="funcionario.telefone">{{ funcionario.telefone }}</span>
-                <span class="admissao">Admissão: {{ formatarData(funcionario.dataAdmissao) }}</span>
-              </div>
-              <div class="status-container">
-                <span class="status-badge" [ngClass]="getStatusClass(funcionario.ativo)">
-                  {{ getStatusText(funcionario.ativo) }}
-                </span>
-              </div>
+              <p>{{ funcionario.email }}</p>
+              <p>{{ funcionario.cargo }}</p>
             </div>
           </div>
 
           <div class="funcionario-actions">
-            <button class="btn-icon edit" (click)="editarFuncionario(funcionario)">
+            <button
+              class="btn-icon edit"
+              extended
+              type="button"
+              (click)="abrirModalEditar(funcionario)"
+            >
               <mat-icon>edit</mat-icon>
             </button>
-            <button class="btn-icon delete" (click)="excluirFuncionario(funcionario.id)">
+
+            <button 
+              class="btn-icon delete"
+              (click)="remover($event, funcionario)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
-        </div>
-
-        <!-- Estado vazio -->
-        <div class="empty-state" *ngIf="funcionarios.length === 0">
-          <mat-icon class="empty-icon">people</mat-icon>
-          <h3>Nenhum funcionário cadastrado</h3>
-          <p>Clique em "Novo Funcionário" para começar</p>
         </div>
       </div>
     </div>

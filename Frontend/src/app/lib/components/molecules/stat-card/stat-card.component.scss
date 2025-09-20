@@ -1,0 +1,92 @@
+/**
+ * Card de estatística reutilizável
+ * Segue o design system do projeto
+ */
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .stat-content {
+    flex: 1;
+    
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+  }
+
+  // Variantes de cor
+  &.stat-card-primary {
+    .stat-icon {
+      background: var(--tints_purple_100);
+      color: var(--tints_blue_100);
+    }
+    .stat-number {
+      color: var(--tints_blue_100);
+    }
+  }
+
+  &.stat-card-success {
+    .stat-icon {
+      background: var(--status_success_100);
+      color: var(--status_success_200);
+    }
+    .stat-number {
+      color: var(--status_success_200);
+    }
+  }
+
+  &.stat-card-warning {
+    .stat-icon {
+      background: #fef3c7;
+      color: #f59e0b;
+    }
+    .stat-number {
+      color: #f59e0b;
+    }
+  }
+
+  &.stat-card-info {
+    .stat-icon {
+      background: #dbeafe;
+      color: var(--tints_blue_100);
+    }
+    .stat-number {
+      color: var(--tints_blue_100);
+    }
+  }
+}

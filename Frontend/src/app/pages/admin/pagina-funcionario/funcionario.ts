@@ -1,6 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '@/app/lib/components/organisms/sidebar/sidebar.component';
+import { StatCardComponent } from '@/app/lib/components/molecules/stat-card/stat-card.component';
+import { SolicitacaoCardComponent as SolicitacaoCardNewComponent } from '@/app/lib/components/molecules/solicitacao-card/solicitacao-card.component';
+import { ModalComponent } from '@/app/lib/components/molecules/modal/modal.component';
 import { AuthService } from '@/app/lib/services/auth/auth.service';
 import { Solicitacao } from '@/app/shared/models/solicitacao.model';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,6 +18,9 @@ import { Router } from '@angular/router';
   imports: [
     CommonModule,              
     SidebarComponent,
+    StatCardComponent,
+    SolicitacaoCardNewComponent,
+    ModalComponent,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
@@ -27,7 +33,7 @@ export class FuncionarioComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   
-  // Dados simulados para o dashboard
+  /**Dados simulados para o dashboard**/
   solicitacoesAbertas: Solicitacao[] = [];
   estatisticas = {
     abertas: 0,
@@ -36,12 +42,12 @@ export class FuncionarioComponent implements OnInit {
     finalizadas: 0
   };
 
-  // Modal de detalhes
+  /**Modal de detalhes**/
   modalAberto = false;
   solicitacaoSelecionada: Solicitacao | null = null;
 
   constructor() {
-    // Simular login de funcionário para visualização
+    /**Simular login de funcionário para visualização**/
     this.authService.login({ email: 'funcionario@email.com', password: 'senha' }).subscribe();
   }
 
@@ -50,7 +56,7 @@ export class FuncionarioComponent implements OnInit {
   }
 
   carregarDadosDashboard(): void {
-    // Dados simulados para demonstração
+    /**Dados simulados para demonstração**/
     this.solicitacoesAbertas = [
       new Solicitacao(
         1,
@@ -74,7 +80,7 @@ export class FuncionarioComponent implements OnInit {
       )
     ];
 
-    // Estatísticas simuladas
+    /**Estatísticas simuladas**/
     this.estatisticas = {
       abertas: 1,
       orcadas: 1,
@@ -133,7 +139,7 @@ export class FuncionarioComponent implements OnInit {
 
   efetuarOrcamento(solicitacao: Solicitacao): void {
     console.log('Efetuar orçamento:', solicitacao);
-    // TODO: Implementar modal de orçamento
+    /**TODO: Implementar modal de orçamento**/
   }
 
   verTodasSolicitacoes(): void {
