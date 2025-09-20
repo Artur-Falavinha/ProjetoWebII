@@ -5,13 +5,13 @@
     </div>
 
     <div class="card-header">
-      <h2>Cadastro de {{ tipoCadastro === "CLIENTE" ? "Cliente" : "Funcionário" }}</h2>
+      <h2>Cadastro de {{ tipoCadastro === "CLIENT" ? "Cliente" : "Funcionário" }}</h2>
       <p>Crie sua conta para continuar</p>
     </div>
 
     <div class="profile-selector">
-      <button mat-flat-button [color]="tipoCadastro === 'CLIENTE' ? 'primary' : ''" (click)="setTipoCadastro('CLIENTE')">Sou Cliente</button>
-      <button mat-flat-button [color]="tipoCadastro === 'FUNCIONARIO' ? 'primary' : ''" (click)="setTipoCadastro('FUNCIONARIO')">Sou Funcionário</button>
+      <button mat-flat-button [color]="tipoCadastro === 'CLIENT' ? 'primary' : ''" (click)="setTipoCadastro('CLIENT')">Sou Cliente</button>
+      <button mat-flat-button [color]="tipoCadastro === 'EMPLOYEE' ? 'primary' : ''" (click)="setTipoCadastro('EMPLOYEE')">Sou Funcionário</button>
     </div>
 
     <div class="card-body">
@@ -50,12 +50,12 @@
             </div>
             
             <div class="step-actions">
-              <button *ngIf="tipoCadastro === 'CLIENTE'" mat-raised-button color="primary" matStepperNext>Continuar</button>
-              <button *ngIf="tipoCadastro === 'FUNCIONARIO'" mat-raised-button color="primary" type="submit" [disabled]="registerForm.get('dadosPessoais')?.invalid">Finalizar Cadastro</button>
+              <button *ngIf="tipoCadastro === 'CLIENT'" mat-raised-button color="primary" matStepperNext>Continuar</button>
+              <button *ngIf="tipoCadastro === 'EMPLOYEE'" mat-raised-button color="primary" type="submit" [disabled]="registerForm.get('dadosPessoais')?.invalid">Finalizar Cadastro</button>
             </div>
           </mat-step>
 
-          <ng-container *ngIf="tipoCadastro === 'CLIENTE'">
+          <ng-container *ngIf="tipoCadastro === 'CLIENT'">
             <mat-step label="Endereço" [stepControl]="registerForm.get('endereco')!">
               <div class="step-content" formGroupName="endereco">
                 
