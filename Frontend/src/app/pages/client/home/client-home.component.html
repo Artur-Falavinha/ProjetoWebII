@@ -1,12 +1,17 @@
 <div class="cliente-layout">
   <app-sidebar></app-sidebar>
   <main class="cliente-content">
-    <h1 class="page-title">Minhas Solicitações</h1>
-    <p class="page-subtitle"> Gerencie suas solicitações de manutenção</p>
-      <app-button
-        title="test"
-        icon="search"
-        variant="secondary"
-      />
+    <div class="text-wrap">
+      <h1 class="page-title">Minhas Solicitações</h1>
+      <p class="page-subtitle"> Gerencie suas solicitações de manutenção</p>
+    </div>
+    
+    <div class="order-card-wrap">
+      @for (item of items; track $index) {
+        <app-order-card
+          [order]="item"
+        />
+      }
+    </div>
   </main>
 </div>

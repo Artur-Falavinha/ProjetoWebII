@@ -1,3 +1,17 @@
-<button mat-flat-button disabled>
-  {{ title }}
+<button
+  mat-flat-button
+  disabled
+  class="app-tag"
+  [ngClass]="{
+    aberta: variant === SituationEnum.ABERTA,
+    orcada: variant === SituationEnum.ORCADA,
+    rejeitada: variant === SituationEnum.REJEITADA,
+    aprovada: variant === SituationEnum.APROVADA,
+    redirecionada: variant === SituationEnum.REDIRECIONADA,
+    arrumada: variant === SituationEnum.ARRUMADA,
+    paga: variant === SituationEnum.PAGA,
+    finalizada: variant === SituationEnum.FINALIZADA
+  }"
+>
+  {{ getVariantLabel() }}
 </button>

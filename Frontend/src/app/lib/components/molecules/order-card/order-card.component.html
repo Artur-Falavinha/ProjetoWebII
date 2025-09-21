@@ -1,0 +1,23 @@
+<mat-card class="app-request-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>{{ order.product }}</mat-card-title>
+      <mat-card-subtitle>{{ order.order_date }}</mat-card-subtitle>
+    </mat-card-title-group>
+    <app-tag [variant]="order.situation" />
+  </mat-card-header>
+  <mat-card-footer>
+    <p>Categoria: {{ order.category }}</p>
+    <span>Valor: {{ order.price }} </span>
+  </mat-card-footer>
+  <mat-card-actions>
+    @if (action) {
+      <app-button
+        title="{{ action.title }}"
+        link="{{ action.link }}"
+        icon="{{ action.icon }}"
+        [variant]="action.variant"
+      />
+    }
+  </mat-card-actions>
+</mat-card>
