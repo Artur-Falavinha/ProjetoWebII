@@ -1,6 +1,6 @@
 import { Component, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Categoria } from '@/app/shared/models/categoria.model';
+import { CategoriaRequest } from '@/app/@types';
 import { CategoriaService } from '@/app/lib/services/categoria/categoria.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -27,7 +27,7 @@ export class InserirCategoriaComponent {
 @Output() close = new EventEmitter<void>();
 @ViewChild('formCategoria') formCategoria!: NgForm;
 
-  categoria : Categoria = new Categoria();
+  categoria : CategoriaRequest = { id: 0, nome: '' };
 
   constructor(
     private categoriaService: CategoriaService,

@@ -5,7 +5,7 @@ import { StatCardComponent } from '@/app/lib/components/molecules/stat-card/stat
 import { SolicitacaoCardComponent as SolicitacaoCardNewComponent } from '@/app/lib/components/molecules/solicitacao-card/solicitacao-card.component';
 import { ModalComponent } from '@/app/lib/components/molecules/modal/modal.component';
 import { AuthService } from '@/app/lib/services/auth/auth.service';
-import { Solicitacao } from '@/app/shared/models/solicitacao.model';
+import { SolicitacaoRequest, SituationEnum } from '@/app/@types';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -34,7 +34,7 @@ export class FuncionarioComponent implements OnInit {
   private readonly router = inject(Router);
   
   /**Dados simulados para o dashboard**/
-  solicitacoesAbertas: Solicitacao[] = [];
+  solicitacoesAbertas: SolicitacaoRequest[] = [];
   estatisticas = {
     abertas: 0,
     orcadas: 0,
@@ -44,7 +44,7 @@ export class FuncionarioComponent implements OnInit {
 
   /**Modal de detalhes**/
   modalAberto = false;
-  solicitacaoSelecionada: Solicitacao | null = null;
+  solicitacaoSelecionada: SolicitacaoRequest | null = null;
 
   constructor() {
     /**Simular login de funcionário para visualização**/
@@ -58,26 +58,26 @@ export class FuncionarioComponent implements OnInit {
   carregarDadosDashboard(): void {
     /**Dados simulados para demonstração**/
     this.solicitacoesAbertas = [
-      new Solicitacao(
-        1,
-        'Mesa de escritório',
-        'João Silva',
-        'joao.silva@email.com',
-        'Móveis',
-        'Gaveta não abre, trava emperrada',
-        new Date('2024-01-16T05:00:00'),
-        'ABERTA'
-      ),
-      new Solicitacao(
-        2,
-        'Notebook Dell',
-        'Maria Santos',
-        'maria.santos@email.com',
-        'Informática',
-        'Tela com linhas horizontais',
-        new Date('2024-01-15T14:30:00'),
-        'ABERTA'
-      )
+      {
+        id: 1,
+        equipamento: 'Mesa de escritório',
+        cliente: 'João Silva',
+        clienteEmail: 'joao.silva@email.com',
+        categoria: 'Móveis',
+        descricaoProblema: 'Gaveta não abre, trava emperrada',
+        dataHora: '2024-01-16T05:00:00',
+        status: SituationEnum.ABERTA
+      },
+      {
+        id: 2,
+        equipamento: 'Notebook Dell',
+        cliente: 'Maria Santos',
+        clienteEmail: 'maria.santos@email.com',
+        categoria: 'Informática',
+        descricaoProblema: 'Tela com linhas horizontais',
+        dataHora: '2024-01-15T14:30:00',
+        status: SituationEnum.ABERTA
+      }
     ];
 
     /**Estatísticas simuladas**/
@@ -89,45 +89,45 @@ export class FuncionarioComponent implements OnInit {
     };
   }
 
-  formatarData(data: Date): string {
+  formatarData(data: string): string {
     return new Intl.DateTimeFormat('pt-BR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    }).format(data);
+    }).format(new Date(data));
   }
 
-  formatarDataSimples(data: Date): string {
+  formatarDataSimples(data: string): string {
     return new Intl.DateTimeFormat('pt-BR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
-    }).format(data);
+    }).format(new Date(data));
   }
 
-  getStatusClass(status: string): string {
+  getStatusClass(status: SituationEnum): string {
     switch(status) {
-      case 'ABERTA': return 'status-aberta';
-      case 'ORCADA': return 'status-orcada';
-      case 'APROVADA': return 'status-aprovada';
-      case 'FINALIZADA': return 'status-finalizada';
+      case SituationEnum.ABERTA: return 'status-aberta';
+      case SituationEnum.ORCADA: return 'status-orcada';
+      case SituationEnum.APROVADA: return 'status-aprovada';
+      case SituationEnum.FINALIZADA: return 'status-finalizada';
       default: return 'status-aberta';
     }
   }
 
-  getStatusText(status: string): string {
+  getStatusText(status: SituationEnum): string {
     switch(status) {
-      case 'ABERTA': return 'Aberta';
-      case 'ORCADA': return 'Orçada';
-      case 'APROVADA': return 'Aprovada';
-      case 'FINALIZADA': return 'Finalizada';
+      case SituationEnum.ABERTA: return 'Aberta';
+      case SituationEnum.ORCADA: return 'Orçada';
+      case SituationEnum.APROVADA: return 'Aprovada';
+      case SituationEnum.FINALIZADA: return 'Finalizada';
       default: return 'Aberta';
     }
   }
 
-  verDetalhes(solicitacao: Solicitacao): void {
+  verDetalhes(solicitacao: SolicitacaoRequest): void {
     this.solicitacaoSelecionada = solicitacao;
     this.modalAberto = true;
   }
@@ -137,7 +137,7 @@ export class FuncionarioComponent implements OnInit {
     this.solicitacaoSelecionada = null;
   }
 
-  efetuarOrcamento(solicitacao: Solicitacao): void {
+  efetuarOrcamento(solicitacao: SolicitacaoRequest): void {
     console.log('Efetuar orçamento:', solicitacao);
     /**TODO: Implementar modal de orçamento**/
   }

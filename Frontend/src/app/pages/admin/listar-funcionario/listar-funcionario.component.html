@@ -33,8 +33,13 @@
             </div>
             <div>
               <h3>{{ funcionario.nome }}</h3>
-              <p>{{ funcionario.email }}</p>
-              <p>{{ funcionario.cargo }}</p>
+              <p>Email: {{ funcionario.email }}</p>
+              <p>Cargo: {{ funcionario.cargo }}</p>
+              <p>Telefone: {{ funcionario.telefone }}</p>
+              <p>Nascimento: {{ funcionario.dataNascimento }}</p>
+              <p>Admissão: {{ funcionario.dataAdmissao }}</p>
+              <p>Status: {{ funcionario.ativo ? 'Ativo' : 'Inativo' }}</p>
+              <p>ID: {{ funcionario.id }}</p>
             </div>
           </div>
 

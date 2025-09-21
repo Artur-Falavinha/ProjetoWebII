@@ -4,21 +4,54 @@
     <div class="icon-box">
       <mat-icon>person</mat-icon>
     </div>
-        <div class="funcionario-details">
-          <h3>{{ funcionario.nome }}</h3>
-          <p class="email">{{ funcionario.email }}</p>
-          <div class="funcionario-meta">
-            <span class="cargo">{{ funcionario.cargo }}</span>
-            <span class="nascimento">Nascimento: {{ formatarDataSimples(funcionario.dataNascimento) }}</span>
-            <span class="telefone" *ngIf="funcionario.telefone">{{ funcionario.telefone }}</span>
-            <span class="admissao">Admissão: {{ formatarDataSimples(funcionario.dataAdmissao) }}</span>
-          </div>
-          <div class="status-container">
-            <span class="status-badge" [ngClass]="getStatusClass(funcionario.ativo)">
-              {{ getStatusText(funcionario.ativo) }}
-            </span>
-          </div>
+    
+    <div class="funcionario-details">
+      <!-- Cabeçalho com nome e status -->
+      <div class="funcionario-header">
+        <h3>{{ funcionario.nome }}</h3>
+        <span class="status-badge" [ngClass]="getStatusClass(funcionario.ativo)">
+          {{ getStatusText(funcionario.ativo) }}
+        </span>
+      </div>
+
+      <!-- Informações principais -->
+      <div class="funcionario-main-info">
+        <div class="info-row">
+          <mat-icon>email</mat-icon>
+          <span class="email">{{ funcionario.email }}</span>
         </div>
+        
+        <div class="info-row" *ngIf="funcionario.telefone">
+          <mat-icon>phone</mat-icon>
+          <span class="telefone">{{ funcionario.telefone }}</span>
+        </div>
+        
+        <div class="info-row">
+          <mat-icon>work</mat-icon>
+          <span class="cargo">{{ funcionario.cargo }}</span>
+        </div>
+      </div>
+
+      <!-- Informações de datas -->
+      <div class="funcionario-dates">
+        <div class="date-info">
+          <mat-icon>cake</mat-icon>
+          <span class="label">Nascimento:</span>
+          <span class="value">{{ funcionario.dataNascimento }}</span>
+        </div>
+        
+        <div class="date-info">
+          <mat-icon>event</mat-icon>
+          <span class="label">Admissão:</span>
+          <span class="value">{{ funcionario.dataAdmissao }}</span>
+        </div>
+      </div>
+
+      <!-- ID do funcionário (para referência) -->
+      <div class="funcionario-id">
+        <span class="id-label">ID: {{ funcionario.id }}</span>
+      </div>
+    </div>
   </div>
 
   <div class="funcionario-actions" *ngIf="showActions">

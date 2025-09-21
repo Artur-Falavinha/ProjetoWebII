@@ -3,7 +3,7 @@ import { SidebarComponent } from '@/app/lib/components/organisms/sidebar/sidebar
 import { MatIconModule } from '@angular/material/icon';
 import { FuncionarioService } from '@/app/lib/services/funcionario/funcionario.service';
 import { AuthService } from '@/app/lib/services/auth/auth.service';
-import { Funcionario } from '@/app/shared/models/funcionario.model';
+import { FuncionarioRequest } from '@/app/@types';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ import { EditarFuncionarioComponent } from '../editar-funcionario/editar-funcion
   styleUrl: './listar-funcionario.component.scss'
 })
 export class ListarFuncionarioComponent implements OnInit {
-  funcionarios: Funcionario[] = [];
+  funcionarios: FuncionarioRequest[] = [];
 
   constructor(
     private funcionarioService: FuncionarioService,
@@ -30,7 +30,7 @@ export class ListarFuncionarioComponent implements OnInit {
     this.funcionarios = this.listarTodas();
   }
 
-  listarTodas(): Funcionario[] {
+  listarTodas(): FuncionarioRequest[] {
     return this.funcionarioService.listarTodas();
   }
 
@@ -46,7 +46,7 @@ export class ListarFuncionarioComponent implements OnInit {
     });
   }
 
-  abrirModalEditar(funcionario: Funcionario): void {
+  abrirModalEditar(funcionario: FuncionarioRequest): void {
     const dialogRef = this.dialog.open(EditarFuncionarioComponent, {
       width: '600px',
       data: funcionario
@@ -59,8 +59,7 @@ export class ListarFuncionarioComponent implements OnInit {
     });
   }
 
-  remover($event: any, funcionario: Funcionario): void {
-    $event.preventDefault();
+  remover($event: any, funcionario: FuncionarioRequest): void {
     if (confirm(`Deseja remover o funcionário ${funcionario.nome}?`)) {
       const usuarioLogado = this.authService.getCurrentUser();
       const usuarioLogadoId = usuarioLogado ? parseInt(usuarioLogado.id) : undefined;

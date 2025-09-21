@@ -56,13 +56,13 @@
             <mat-label>Data de Nascimento</mat-label>
             <input
               matInput
-              [matDatepicker]="pickerNascimento"
+              type="text"
               name="dataNascimento"
-              [(ngModel)]="funcionario.dataNascimento"
+              [(ngModel)]="dataNascimentoDisplay"
+              mask="00/00/0000"
+              placeholder="DD/MM/AAAA"
               required>
-            <mat-datepicker-toggle matIconSuffix [for]="pickerNascimento"></mat-datepicker-toggle>
-            <mat-datepicker #pickerNascimento></mat-datepicker>
-            <mat-error *ngIf="formFuncionario.submitted && !funcionario.dataNascimento">
+            <mat-error *ngIf="formFuncionario.submitted && !dataNascimentoDisplay">
               A data de nascimento é obrigatória.
             </mat-error>
           </mat-form-field>
@@ -119,13 +119,13 @@
         <mat-label>Data de Admissão</mat-label>
         <input
           matInput
-          [matDatepicker]="picker"
+          type="text"
           name="dataAdmissao"
-          [(ngModel)]="funcionario.dataAdmissao"
+          [(ngModel)]="dataAdmissaoDisplay"
+          mask="00/00/0000"
+          placeholder="DD/MM/AAAA"
           required>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="formFuncionario.submitted && !funcionario.dataAdmissao">
+        <mat-error *ngIf="formFuncionario.submitted && !dataAdmissaoDisplay">
           A data de admissão é obrigatória.
         </mat-error>
       </mat-form-field>

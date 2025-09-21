@@ -13,7 +13,7 @@
   <mat-card-content>
     <div class="cliente-info">
       <mat-icon>person</mat-icon>
-      <span>Cliente: {{ solicitacao.cliente }} • {{ formatarData(solicitacao.dataHora) }}</span>
+      <span>Cliente: {{ solicitacao.cliente }} • {{ solicitacao.dataHora }}</span>
     </div>
 
     <div class="categoria-info">
@@ -27,7 +27,7 @@
 
     <div class="data-info">
       <mat-icon>calendar_today</mat-icon>
-      <span>Solicitado em {{ formatarDataSimples(solicitacao.dataHora) }}</span>
+      <span>Solicitado em {{ solicitacao.dataHora }}</span>
     </div>
   </mat-card-content>
 
