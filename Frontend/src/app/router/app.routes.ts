@@ -8,7 +8,9 @@ import {
   ListarCategoriaComponent,
   InserirCategoriaComponent,
   ListarFuncionarioComponent,
-  InserirFuncionarioComponent
+  InserirFuncionarioComponent,
+  ListarSolicitacoesComponent,
+  EfetuarOrcamentoComponent
 } from '@/app/pages';
 
 // Configurar AuthGuard
@@ -16,7 +18,7 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full',
+    pathMatch: 'full',  
   },
   {
     path: 'client',
@@ -40,7 +42,11 @@ export const routes: Routes = [
   },
   {
     path: 'admin/solicitacoes',
-    component: FuncionarioComponent,
+    component: ListarSolicitacoesComponent,
+  },
+  {
+    path: 'admin/orcamento/:id',
+    component: EfetuarOrcamentoComponent,
   },
   {
     path: 'admin/categorias',

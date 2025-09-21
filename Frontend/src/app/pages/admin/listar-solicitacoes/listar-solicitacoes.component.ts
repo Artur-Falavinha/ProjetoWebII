@@ -13,7 +13,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-funcionario', 
+  selector: 'app-solicitacoes-component', 
   standalone: true,           
   imports: [
     CommonModule,              
@@ -26,21 +26,15 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatChipsModule
   ],
-  templateUrl: './funcionario.html',
-  styleUrls: ['./funcionario.scss']
+  templateUrl: './listar-solicitacoes.component.html',
+  styleUrls: ['./listar-solicitacoes.component.scss']
 })
-export class FuncionarioComponent implements OnInit {
+export class ListarSolicitacoesComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   
   /**Dados simulados para o dashboard**/
-  solicitacoesAbertas: Solicitacao[] = [];
-  estatisticas = {
-    abertas: 0,
-    orcadas: 0,
-    aprovadas: 0,
-    finalizadas: 0
-  };
+  Solicitacoes: Solicitacao[] = [];
 
   /**Modal de detalhes**/
   modalAberto = false;
@@ -57,7 +51,7 @@ export class FuncionarioComponent implements OnInit {
 
   carregarDadosDashboard(): void {
     /**Dados simulados para demonstração**/
-    this.solicitacoesAbertas = [
+    this.Solicitacoes = [
       new Solicitacao(
         1,
         'Mesa de escritório',
@@ -79,14 +73,6 @@ export class FuncionarioComponent implements OnInit {
         'ABERTA'
       )
     ];
-
-    /**Estatísticas simuladas**/
-    this.estatisticas = {
-      abertas: 1,
-      orcadas: 1,
-      aprovadas: 1,
-      finalizadas: 1
-    };
   }
 
   formatarData(data: Date): string {
@@ -141,7 +127,4 @@ export class FuncionarioComponent implements OnInit {
     this.router.navigate(['/admin/orcamento', solicitacao.id]);
   }
 
-  verTodasSolicitacoes(): void {
-    this.router.navigate(['/admin/solicitacoes']);
-  }
 }
