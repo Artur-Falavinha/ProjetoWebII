@@ -18,16 +18,16 @@
     <!-- Seção de Solicitações -->
     <div class="solicitacoes-section">
       
-      <div class="solicitacoes-list" *ngIf="Solicitacoes.length > 0">
+      <div class="solicitacoes-list" *ngIf="solicitacoes.length > 0">
         <app-solicitacao-card
-          *ngFor="let solicitacao of Solicitacoes"
+          *ngFor="let solicitacao of solicitacoes"
           [solicitacao]="solicitacao"
           (verDetalhes)="verDetalhes($event)"
           (efetuarOrcamento)="efetuarOrcamento($event)">
         </app-solicitacao-card>
       </div>
 
-      <div class="empty-state" *ngIf="Solicitacoes.length === 0">
+      <div class="empty-state" *ngIf="solicitacoes.length === 0">
         <mat-icon class="empty-icon">inbox</mat-icon>
         <h3>Não há solicitações</h3>
       </div>

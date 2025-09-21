@@ -53,6 +53,25 @@
     font-size: 15px;
     color: #6b7280;
   }
+
+  .btn-primary {
+    color: black;
+    border: 2px ;
+    padding: 6px 15px;
+    font-size: 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: inline-flex;      
+    align-items: center;      
+    gap: 8px;   
+
+    &:hover {
+      background: #1e40af;
+      color: white;
+    }
+  }
 }
 
 // Cards de seção
@@ -142,7 +161,8 @@
 
   button {
     min-width: 140px;
-    font-weight: 500;
+    font-weight: 500; 
+    
   }
 }
 

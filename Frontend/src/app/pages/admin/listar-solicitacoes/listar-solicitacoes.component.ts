@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
+import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-solicitacoes-component', 
@@ -24,56 +26,33 @@ import { Router } from '@angular/router';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDialogModule
   ],
   templateUrl: './listar-solicitacoes.component.html',
   styleUrls: ['./listar-solicitacoes.component.scss']
 })
 export class ListarSolicitacoesComponent implements OnInit {
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
-  
-  /**Dados simulados para o dashboard**/
-  Solicitacoes: Solicitacao[] = [];
+  solicitacoes: Solicitacao[] = [];
+  router: any;
+
+  constructor(
+    private solicitacaoService: SolicitacaoService,
+    private dialog: MatDialog,
+  ) {}
+
+  ngOnInit(): void {
+    this.solicitacoes = this.listarTodas();
+  }
+
+  listarTodas(): Solicitacao[] {
+    return this.solicitacaoService.listarTodas();
+  }
 
   /**Modal de detalhes**/
   modalAberto = false;
   solicitacaoSelecionada: Solicitacao | null = null;
 
-  constructor() {
-    /**Simular login de funcionário para visualização**/
-    this.authService.login({ email: 'funcionario@email.com', password: 'senha' }).subscribe();
-  }
-
-  ngOnInit(): void {
-    this.carregarDadosDashboard();
-  }
-
-  carregarDadosDashboard(): void {
-    /**Dados simulados para demonstração**/
-    this.Solicitacoes = [
-      new Solicitacao(
-        1,
-        'Mesa de escritório',
-        'João Silva',
-        'joao.silva@email.com',
-        'Móveis',
-        'Gaveta não abre, trava emperrada',
-        new Date('2024-01-16T05:00:00'),
-        'ABERTA'
-      ),
-      new Solicitacao(
-        2,
-        'Notebook Dell',
-        'Maria Santos',
-        'maria.santos@email.com',
-        'Informática',
-        'Tela com linhas horizontais',
-        new Date('2024-01-15T14:30:00'),
-        'ABERTA'
-      )
-    ];
-  }
 
   formatarData(data: Date): string {
     return new Intl.DateTimeFormat('pt-BR', {
