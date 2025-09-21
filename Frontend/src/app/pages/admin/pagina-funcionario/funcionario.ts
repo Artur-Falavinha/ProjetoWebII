@@ -65,7 +65,7 @@ export class FuncionarioComponent implements OnInit {
         clienteEmail: 'joao.silva@email.com',
         categoria: 'Móveis',
         descricaoProblema: 'Gaveta não abre, trava emperrada',
-        dataHora: '2024-01-16T05:00:00',
+        dataHora: '16/01/2024 05:00',
         status: SituationEnum.ABERTA
       },
       {
@@ -75,7 +75,7 @@ export class FuncionarioComponent implements OnInit {
         clienteEmail: 'maria.santos@email.com',
         categoria: 'Informática',
         descricaoProblema: 'Tela com linhas horizontais',
-        dataHora: '2024-01-15T14:30:00',
+        dataHora: '15/01/2024 14:30',
         status: SituationEnum.ABERTA
       }
     ];
@@ -89,23 +89,6 @@ export class FuncionarioComponent implements OnInit {
     };
   }
 
-  formatarData(data: string): string {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(new Date(data));
-  }
-
-  formatarDataSimples(data: string): string {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    }).format(new Date(data));
-  }
 
   getStatusClass(status: SituationEnum): string {
     switch(status) {
@@ -138,8 +121,7 @@ export class FuncionarioComponent implements OnInit {
   }
 
   efetuarOrcamento(solicitacao: SolicitacaoRequest): void {
-    console.log('Efetuar orçamento:', solicitacao);
-    /**TODO: Implementar modal de orçamento**/
+    this.router.navigate(['/admin/orcamento', solicitacao.id]);
   }
 
   verTodasSolicitacoes(): void {
