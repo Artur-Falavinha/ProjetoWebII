@@ -12,79 +12,37 @@
   letter-spacing: 0.25px;
 }
 
+.text-wrap {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: #fafafa;
+  padding-top: var(--24px);
+  padding-bottom: var(--8px);
+}
+
 .cliente-layout {
   display: flex;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .cliente-content {
   flex: 1;
-  padding: 2rem;
-  background: #f5f5f5;
+  padding-bottom: var(--24px);
+  padding-left: var(--24px);
+  padding-right: var(--24px);
+  background: #fafafa;
   overflow-y: auto;
   min-height: 100vh;
 }
 
-// Header da página
-.page-header {
+.order-card-wrap {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding: 1.5rem 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-  .header-content {
-    h1 {
-      margin: 0;
-      font-size: 1.75rem;
-      font-weight: 600;
-      color: #1a202c;
-    }
-
-    p {
-      margin: 0.5rem 0 0 0;
-      color: #64748b;
-      font-size: 0.9rem;
-      font-style: italic;
-    }
-  }
-
-  .header-actions {
-    app-button {
-      display: block;
-    }
-  }
+  flex-direction: column;
+  margin-top: 1.5rem;
+  gap: 1rem;
 }
 
-// Container da lista de solicitações
-.solicitations-list-section {
-  .solicitations-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-}
-
-// Responsividade
-@media (max-width: 768px) {
-  .cliente-content {
-    padding: 1rem;
-  }
-
-  .page-header {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-
-    .header-actions {
-      width: 100%;
-      
-      button {
-        width: 100%;
-      }
-    }
-  }
-
-}

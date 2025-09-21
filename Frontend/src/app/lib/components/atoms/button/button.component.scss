@@ -23,7 +23,7 @@
 .secondary-button:hover {
   background-color: hsl(var(--primary_color)) !important;
   color: var(--neutrals_light_100) !important;
-  border-color: hsl(var(--primary_color));
+  border-color: hsl(var(--primary_color)) !important;
 }
 
 .success-button {

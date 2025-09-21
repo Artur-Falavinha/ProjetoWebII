@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButton } from "@angular/material/button";
+import { ButtonVariant } from '@/app/@types';
 
 @Component({
   selector: 'app-button',
@@ -17,6 +18,6 @@ export class ButtonComponent {
   @Input() icon?: string;
   @Input() disabled?: boolean;
   @Input() submit?: boolean;
-  @Input() variant: 'primary' | 'secondary' | 'success' | 'destructive' = 'primary';
+  @Input() variant: ButtonVariant = 'primary';
 
 }

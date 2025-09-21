@@ -1,0 +1,10 @@
+export enum SituationEnum {
+  ABERTA,
+  ORCADA,
+  REJEITADA,
+  APROVADA,
+  REDIRECIONADA,
+  ARRUMADA,
+  PAGA,
+  FINALIZADA,
+}

@@ -1,42 +1,17 @@
 <div class="cliente-layout">
   <app-sidebar></app-sidebar>
   <main class="cliente-content">
+    <div class="text-wrap">
+      <h1 class="page-title">Minhas Solicitações</h1>
+      <p class="page-subtitle"> Gerencie suas solicitações de manutenção</p>
+    </div>
     
-    <!-- Header da página -->
-    <div class="page-header">
-      <div class="header-content">
-        <h1>Lista de Solicitações</h1>
-        <p>(Por enquanto não temos solicitações cadastradas)</p>
-      </div>
-      <div class="header-actions">
-        <app-button 
-          title="Nova Solicitação"
-          icon="add"
-          link="/client/manutencao">
-        </app-button>
-      </div>
+    <div class="order-card-wrap">
+      @for (item of items; track $index) {
+        <app-order-card
+          [order]="item"
+        />
+      }
     </div>
-
-    <!-- Lista de Solicitações -->
-    <div class="solicitations-list-section">
-      <div class="solicitations-container">
-        
-        <!-- Card de exemplo 1 -->
-        <app-solicitation-card 
-          [solicitacao]="exemplo1"
-          (viewClicked)="onViewSolicitacao($event)"
-          (approveClicked)="onApproveSolicitacao($event)">
-        </app-solicitation-card>
-
-        <!-- Card de exemplo 2 -->
-        <app-solicitation-card 
-          [solicitacao]="exemplo2"
-          (viewClicked)="onViewSolicitacao($event)"
-          (approveClicked)="onApproveSolicitacao($event)">
-        </app-solicitation-card>
-
-      </div>
-    </div>
-
   </main>
 </div>
