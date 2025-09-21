@@ -1,3 +1,7 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { SidebarComponent, ButtonComponent, OrderCardComponent } from '@/app/lib/components';
+import { OrderRequest, SituationEnum } from '@/app/@types';
+
 @Component({
   selector: 'app-client',
   imports: [SidebarComponent, ButtonComponent, OrderCardComponent],
