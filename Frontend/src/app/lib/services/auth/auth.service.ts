@@ -27,25 +27,31 @@ export class AuthService {
   readonly isAuthenticated = this.authState.asReadonly();
 
   login(credentials: { email: string; password: string }): Observable<AuthState> {
-    // TODO: Implementar chamada para API de login
-    // Simular funcionário se email contém 'funcionario' ou 'admin'
-    const isEmployee = credentials.email.includes('funcionario') || credentials.email.includes('admin');
-    
-    const mockUser: UserProfile = {
-      id: isEmployee ? '2' : '1',
-      name: isEmployee ? 'Maria Santos' : 'Nome User login',
-      email: isEmployee ? 'funcionario@email.com' : credentials.email,
-      role: isEmployee ? 'EMPLOYEE' : 'CLIENT'
-    };
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
 
-    const newState: AuthState = {
-      isAuthenticated: true,
-      user: mockUser,
-      token: 'mock-jwt-token'
-    };
+    const usuarioEncontrado = usuarios.find(
+      (user: any) => user.email === credentials.email && user.senha === credentials.password
+    );
 
-    this.authState.set(newState);
-    return of(newState);
+    if (usuarioEncontrado) {
+      const userProfile: UserProfile = {
+        id: usuarioEncontrado.id || '1',
+        name: usuarioEncontrado.nome,
+        email: usuarioEncontrado.email,
+        role: usuarioEncontrado.role
+      };
+
+      const newState: AuthState = {
+        isAuthenticated: true,
+        user: userProfile,
+        token: 'mock-jwt-token-from-localstorage'
+      };
+
+      this.authState.set(newState);
+      return of(newState);
+    }
+
+    return new Observable(observer => observer.error({ message: 'Credenciais inválidas' }));
   }
 
   logout(): void {
@@ -54,7 +60,23 @@ export class AuthService {
       user: null,
       token: null
     });
-    localStorage.removeItem('auth-token');
+    localStorage.removeItem('auth-token'); 
+  }
+
+  register(userData: any): Observable<{ user: any; password: string }> {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+    if (usuarios.some((user: any) => user.email === userData.email)) {
+      return new Observable(observer => observer.error({ message: 'Este email já está cadastrado!' }));
+    }
+
+    const senhaAleatoria = Math.floor(1000 + Math.random() * 9000).toString();
+    const novoUsuario = { ...userData, senha: senhaAleatoria };
+
+    usuarios.push(novoUsuario);
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+    return of({ user: novoUsuario, password: senhaAleatoria });
   }
 
   getCurrentUser(): UserProfile | null {

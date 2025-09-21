@@ -1,60 +1,190 @@
+/**
+ * Layout específico da página funcionário
+ * Componentes de estatísticas e solicitações são reutilizáveis
+ */
 .funcionario-layout {
   display: flex;
   min-height: 100vh;
 }
+
 .funcionario-content {
   flex-grow: 1; 
   padding: 24px 32px;
-  background-color: #f4f7fa; 
-  h1 {
-    margin-top: 0;
-    font-size: 28px;
+  background-color: var(--neutrals_light_200);
+  overflow-y: auto;
+}
+
+// Header da página
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  
+  .header-content {
+    flex: 1;
+    
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--neutrals_dark_100);
+    }
+
+    p {
+      margin: 0;
+      font-size: 16px;
+      color: var(--neutrals_gray_500);
+    }
+  }
+  
+  .header-actions {
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      background: var(--tints_blue_100);
+      color: white;
+    }
+  }
+}
+
+// Seção de estatísticas
+.stats-section {
+  margin-bottom: 40px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+// Seção de solicitações
+.solicitacoes-section {
+  h2 {
+    margin: 0 0 24px 0;
+    font-size: 24px;
     font-weight: 600;
-    color: #333;
-  }
-
-  p {
-    color: #666;
-    margin-bottom: 24px;
+    color: var(--neutrals_dark_100);
   }
 }
 
-.solicitacoes-table {
-  width: 100%;
-  border-collapse: collapse; 
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
-  overflow: hidden; 
-
-  thead tr {
-    background-color: #3f51b5; 
-    color: white;
-    text-align: left;
-    font-weight: bold;
-  }
-
-  th, td {
-    padding: 12px 15px;
-  }
-
-  tbody tr {
-    border-bottom: 1px solid #dddddd;
-
-    &:hover {
-      background-color: #f5f5f5;
-    }
-
-    &:last-of-type {
-      border-bottom: none;
-    }
-  }
+.solicitacoes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
+
+// Estado vazio
 .empty-state {
   text-align: center;
-  padding: 40px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  color: #777;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  .empty-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: var(--neutrals_gray_400);
+    margin-bottom: 16px;
+  }
+  
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--neutrals_dark_100);
+  }
+  
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--neutrals_gray_500);
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .funcionario-content {
+    padding: 16px;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+    
+    .header-actions {
+      button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+// Estilos específicos para o modal de detalhes
+.info-section {
+  margin-bottom: 32px;
+
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--neutrals_dark_100);
+    border-bottom: 2px solid var(--neutrals_gray_200);
+    padding-bottom: 8px;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--neutrals_gray_500);
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: var(--neutrals_gray_400);
+      flex-shrink: 0;
+    }
+
+    span {
+      flex: 1;
+    }
+
+    mat-chip {
+      margin-left: 8px;
+    }
+  }
+
+  .problema-descricao {
+    background: var(--neutrals_light_300);
+    border: 1px solid var(--neutrals_gray_200);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--neutrals_dark_100);
+    }
+  }
 }

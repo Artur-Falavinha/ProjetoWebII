@@ -1,50 +1,43 @@
-<mat-sidenav-container class="sidebar-container">
-  <mat-sidenav mode="side" opened class="sidebar">
-    
-    <mat-toolbar class="sidebar-header">
-      <div class="logo-container">
-        <mat-icon class="logo-icon">build</mat-icon>
-      </div>
-      <div class="logo-text">
-        <span class="app-title">GestorManutenção</span>
-        <span class="app-type">{{ getUserTypeLabel() }}</span>
-      </div>
-    </mat-toolbar>
+<div class="sidebar-container">
+  <!-- Header da sidebar -->
+  <div class="sidebar-header">
+    <div class="logo-container">
+      <mat-icon class="logo-icon">build</mat-icon>
+    </div>
+    <div class="logo-text">
+      <span class="app-title">GestorManutenção</span>
+      <span class="app-type">{{ getUserTypeLabel() }}</span>
+    </div>
+  </div>
 
-    <mat-nav-list class="sidebar-nav">
+    <!-- Navegação -->
+    <div class="sidebar-nav">
       @for (item of navigationItems(); track item.path) {
         <a 
-          mat-list-item 
+          class="nav-item"
           [routerLink]="item.path" 
           routerLinkActive="active"
+          [routerLinkActiveOptions]="item.path === '/admin' ? {exact: true} : {exact: false}"
           [attr.aria-label]="item.label">
-          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-          <span matListItemTitle>{{ item.label }}</span>
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span class="nav-label">{{ item.label }}</span>
         </a>
       }
-    </mat-nav-list>
-
-    <mat-divider></mat-divider>
-
-    <div class="sidebar-footer">
-      <mat-list class="user-profile">
-        <mat-list-item>
-          <mat-icon matListItemIcon>account_circle</mat-icon>
-          <div matListItemTitle>{{ userProfile().name }}</div>
-          <div matListItemLine>{{ userProfile().email }}</div>
-        </mat-list-item>
-      </mat-list>
-      
-      <button 
-        mat-stroked-button 
-        color="warn"
-        class="logout-btn" 
-        (click)="onLogout()"
-        aria-label="Fazer logout">
-        <mat-icon>logout</mat-icon>
-        Sair
-      </button>
     </div>
 
-  </mat-sidenav>
-</mat-sidenav-container>
+  <!-- Footer com informações do usuário -->
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-name">{{ userProfile().name }}</div>
+      <div class="user-email">{{ userProfile().email }}</div>
+    </div>
+    
+    <button 
+      class="logout-btn" 
+      (click)="onLogout()"
+      aria-label="Fazer logout">
+      <mat-icon class="logout-icon">logout</mat-icon>
+      <span class="logout-text">Sair</span>
+    </button>
+  </div>
+</div>

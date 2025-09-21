@@ -1,0 +1,61 @@
+<div class="funcionario-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="auth-card">
+    <div class="card-header-top">
+      <h3>GestorManutenção - Funcionário</h3>
+    </div>
+
+    <div class="card-header">
+      <div>
+        <h2>Funcionários</h2>
+        <p>Gerencie os funcionários do sistema</p>
+      </div>
+
+      <button
+        class="btn-primary"
+        extended
+        type="button"
+        (click)="abrirModalInserir()"
+      >
+        <mat-icon>add</mat-icon>
+         Novo Funcionário
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="funcionario-list">
+        <div class="funcionario-item" *ngFor="let funcionario of funcionarios">
+
+          <div class="funcionario-info">
+            <div class="icon-box">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div>
+              <h3>{{ funcionario.nome }}</h3>
+              <p>{{ funcionario.email }}</p>
+              <p>{{ funcionario.cargo }}</p>
+            </div>
+          </div>
+
+          <div class="funcionario-actions">
+            <button
+              class="btn-icon edit"
+              extended
+              type="button"
+              (click)="abrirModalEditar(funcionario)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button 
+              class="btn-icon delete"
+              (click)="remover($event, funcionario)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

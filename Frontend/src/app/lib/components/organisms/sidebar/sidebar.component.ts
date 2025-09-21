@@ -47,22 +47,22 @@ export class SidebarComponent implements OnInit {
         {
           path: '/admin/solicitacoes',
           label: 'Solicitações',
-          icon: 'assignment'
+          icon: 'list'
         },
         {
           path: '/admin/categorias',
           label: 'Categorias',
-          icon: 'category'
+          icon: 'local_offer'
         },
         {
           path: '/admin/funcionarios',
           label: 'Funcionários',
-          icon: 'people'
+          icon: 'group'
         },
         {
           path: '/admin/relatorios',
           label: 'Relatórios',
-          icon: 'assessment'
+          icon: 'bar_chart'
         }
       ];
     }
@@ -84,11 +84,21 @@ export class SidebarComponent implements OnInit {
 
   readonly userProfile = computed(() => {
     const currentUser = this.authService.getCurrentUser();
-    return currentUser || {
+    
+    // Se usuário logado, usar o perfil real
+    if (currentUser) {
+      return currentUser;
+    }
+    
+    // Se não logado, detectar pela rota atual
+    const currentUrl = this.router.url;
+    const isAdminRoute = currentUrl.startsWith('/admin');
+    
+    return {
       id: '',
-      name: 'Usuário não logado',
-      email: '',
-      role: 'CLIENT' as const
+      name: isAdminRoute ? 'Funcionário' : 'Usuário não logado',
+      email: isAdminRoute ? 'funcionario@email.com' : '',
+      role: isAdminRoute ? 'EMPLOYEE' as const : 'CLIENT' as const
     };
   });
 
