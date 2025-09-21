@@ -1,4 +1,4 @@
-import { Component, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, ViewChild, EventEmitter, Output, Input, Inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Funcionario } from '@/app/shared/models/funcionario.model';
 import { FuncionarioService } from '@/app/lib/services/funcionario/funcionario.service';
@@ -11,31 +11,32 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-inserir-funcionario',
+  selector: 'app-editar-funcionario',
   standalone: true,
-  imports: [CommonModule, 
-            FormsModule,
-            RouterModule,
-            MatButtonModule,
-            MatInputModule,
-            MatFormFieldModule,
-            MatSelectModule,
-            MatDatepickerModule,
-            MatNativeDateModule,
-            MatCheckboxModule,
-          ],
-  templateUrl: './inserir-funcionario.component.html',
-  styleUrl: './inserir-funcionario.component.scss'
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+  ],
+  templateUrl: './editar-funcionario.component.html',
+  styleUrl: './editar-funcionario.component.scss'
 })
 
-export class InserirFuncionarioComponent {
-  
+export class EditarFuncionarioComponent {
+
   @Output() close = new EventEmitter<void>();
   @ViewChild('formFuncionario') formFuncionario!: NgForm;
-
-  funcionario: Funcionario = new Funcionario();
+  funcionario: Funcionario;
   erroGeral: string = '';
   erroDataNascimento: string = '';
   erroDataAdmissao: string = '';
@@ -53,10 +54,16 @@ export class InserirFuncionarioComponent {
 
   constructor(
     private funcionarioService: FuncionarioService,
-    private router: Router
-  ) { }
+    private router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: Funcionario 
+  ) {
+    this.funcionario = { ...data };
+    // Converte as datas para objetos Date se necessário
+    this.funcionario.dataNascimento = new Date(this.funcionario.dataNascimento);
+    this.funcionario.dataAdmissao = new Date(this.funcionario.dataAdmissao);
+  }
 
-  inserir(): void {
+  atualizar(): void {
     this.erroGeral = '';
     this.erroDataNascimento = '';
     this.erroDataAdmissao = '';
@@ -75,17 +82,17 @@ export class InserirFuncionarioComponent {
     }
     
     if (this.formFuncionario.form.valid && this.funcionario.dataNascimento && this.funcionario.dataAdmissao) {
-      const resultado = this.funcionarioService.inserir(this.funcionario);
+      const resultado = this.funcionarioService.atualizar(this.funcionario);
       
       if (resultado.sucesso) {
         this.close.emit();
       } else {
-        this.erroGeral = resultado.erro || 'Erro ao inserir funcionário';
+        this.erroGeral = resultado.erro || 'Erro ao atualizar funcionário';
       }
     }
   }
 
   closeModal(): void {
-    this.close.emit(); 
+    this.close.emit();
   }
 }

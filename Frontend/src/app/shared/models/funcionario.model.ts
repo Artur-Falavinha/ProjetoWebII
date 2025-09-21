@@ -3,6 +3,8 @@ export class Funcionario {
         public id: number = 0,
         public nome: string = "",
         public email: string = "",
+        public dataNascimento: Date = new Date(),
+        public senha: string = "",
         public cargo: string = "",
         public telefone: string = "",
         public dataAdmissao: Date = new Date(),

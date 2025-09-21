@@ -1,0 +1,35 @@
+<div class="data-list">
+  
+  <!-- Botão de Adicionar -->
+  <div class="list-header" *ngIf="showAddButton">
+    <button
+      class="btn-primary"
+      type="button"
+      (click)="onAddClick()">
+      <mat-icon>{{ addButtonIcon }}</mat-icon>
+      {{ addButtonText }}
+    </button>
+  </div>
+
+  <!-- Lista de Itens -->
+  <div class="list-content">
+    <div class="list-items" *ngIf="!isEmpty">
+      <ng-container *ngFor="let item of items">
+        <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+      </ng-container>
+    </div>
+
+    <!-- Estado Vazio -->
+    <div class="empty-state" *ngIf="isEmpty">
+      <ng-container *ngIf="emptyTemplate; else defaultEmptyState">
+        <ng-container *ngTemplateOutlet="emptyTemplate"></ng-container>
+      </ng-container>
+      
+      <ng-template #defaultEmptyState>
+        <mat-icon class="empty-icon">{{ emptyStateIcon }}</mat-icon>
+        <h3>{{ emptyStateTitle }}</h3>
+        <p>{{ emptyStateDescription }}</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+/**
+ * Modal reutilizável para formulários
+ * Segue o design system do projeto
+ */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid var(--neutrals_gray_200);
+
+  h2 {
+    color: var(--tints_blue_100);
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: var(--neutrals_gray_500);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
+
+.modal-body {
+  padding: 2rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  padding: 1rem 2rem 2rem;
+  border-top: 1px solid var(--neutrals_gray_200);
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+
+  button {
+    min-width: 120px;
+    height: 40px;
+    font-weight: 500;
+    border-radius: 8px;
+    
+    &[mat-button] {
+      color: var(--neutrals_gray_500);
+      
+      &:hover {
+        background-color: var(--neutrals_light_300);
+      }
+    }
+    
+    &[mat-raised-button] {
+      background-color: var(--tints_blue_100);
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background-color: var(--tints_blue_200);
+      }
+      
+      &:disabled {
+        background-color: var(--neutrals_gray_200);
+        color: var(--neutrals_gray_400);
+      }
+    }
+  }
+}
+
+/**Responsividade**/
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 1rem;
+    width: calc(100% - 2rem);
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column-reverse;
+    
+    button {
+      width: 100%;
+    }
+  }
+}

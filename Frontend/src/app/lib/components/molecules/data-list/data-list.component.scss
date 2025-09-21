@@ -1,0 +1,84 @@
+/**
+ * Lista de dados reutilizável
+ * Segue o design system do projeto
+ */
+
+.data-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.list-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+
+  .btn-primary {
+    background: var(--tints_blue_100);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      background: var(--tints_blue_200);
+    }
+  }
+}
+
+.list-content {
+  flex: 1;
+}
+
+.list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid var(--neutrals_gray_200);
+
+  .empty-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: var(--neutrals_gray_400);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--neutrals_dark_100);
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--neutrals_gray_500);
+  }
+}
+
+/**Responsividade**/
+@media (max-width: 768px) {
+  .list-header {
+    .btn-primary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

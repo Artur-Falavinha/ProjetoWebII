@@ -1,15 +1,15 @@
 <div class="modal">
   <div class="modal-content">
 
-    <h2>Adicionar Novo Funcionário</h2>
-    <p>Cadastre um novo funcionário no sistema</p>
+    <h2>Editar Funcionário</h2>
+    <p>Atualize as informações do funcionário</p>
 
     <!-- Exibição de erro geral -->
     <div class="error-message" *ngIf="erroGeral">
       <span>{{ erroGeral }}</span>
     </div>
 
-    <form #formFuncionario="ngForm" (ngSubmit)="inserir()">
+    <form #formFuncionario="ngForm" (ngSubmit)="atualizar()">
       
       <!-- Nome -->
       <mat-form-field appearance="outline" class="app-field">
@@ -136,7 +136,7 @@
 
       <div class="actions">
         <button mat-button type="button" (click)="closeModal()">Cancelar</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="formFuncionario.invalid">Adicionar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="formFuncionario.invalid">Salvar</button>
       </div>
     </form>
   </div>
