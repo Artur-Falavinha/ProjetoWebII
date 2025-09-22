@@ -1,12 +1,43 @@
 @use "@angular/material" as mat;
 
 .app-button {
-  width: fit-content;
+  width: 100%;
   border-radius: var(--4px);
+  display: flex;
+}
+
+.app-fab-button {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.fab-secondary-button {
+  cursor: pointer;
+  color: #000 !important;
+  background-color: #fafafa !important;
+  border-color: hsl(210 20% 90%) !important;
+  color: #fafafa;
+  border-radius: 3px !important;
+  border-width: 0.5px;
+  border-style: solid !important;
+}
+
+.fab-secondary-button:hover {
+  background-color: hsl(var(--primary_color)) !important;
+  border-color: hsl(210 20% 90%) !important;
+  color: #fafafa !important;
 }
 
 .primary-button {
   background-color: hsl(var(--primary_color)) !important;
+}
+
+.primary-button:disabled {
+  color: #fafafa !important;
 }
 
 .primary-button:hover {
@@ -44,5 +75,3 @@
   color: var(--neutrals_light_100) !important;
   border-color: hsl(var(--status_destructive));
 }
-
-

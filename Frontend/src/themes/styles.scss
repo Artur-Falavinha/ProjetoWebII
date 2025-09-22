@@ -23,13 +23,13 @@ body {
   --28px: 1.75rem;
   --32px: 2rem;
 
-  /* CUSTOM */ 
+  /* CUSTOM */
   --text-light-gray: hsl(215, 15%, 55%);
 
   --primary_color: 215 85% 55%;
 
-  /* --status_success: */ 
-  
+  /* --status_success: */
+
   .transition-colors {
     transition-property: color, background-color, border-color,
       text-decoration-color, fill, stroke;
@@ -37,7 +37,18 @@ body {
     transition-duration: 150ms;
   }
 
-  /* GENERICS */ 
+  .disabled:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .separator {
+    height: 1px;
+    width: 100%;
+    background-color: hsl(210 20% 90%);
+  }
+
+  /* GENERICS */
   --neutrals_light_100: #ffffff;
   --neutrals_light_200: #fafafa;
   --neutrals_light_300: #f3f3f3;
@@ -73,13 +84,12 @@ body {
 
   --status_success_200: #619d7a;
   --status_success_100: #dcf8e9;
-  
+
   --input_border_100: #4096ff;
   --input_border_200: #1677ff;
 
   --box_shadow_input: rgba(27, 101, 151, 0.075);
   --box_shadow_error_input: rgba(151, 27, 27, 0.075);
-
 }
 
 ::selection {
@@ -107,8 +117,8 @@ body {
         primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
-      // typography: Roboto,
-      density: -2,
+      typography: Roboto,
+      density: -1,
     )
   );
 }

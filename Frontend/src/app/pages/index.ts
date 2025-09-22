@@ -9,5 +9,6 @@ export { ListarFuncionarioComponent } from './admin/listar-funcionario/listar-fu
 export { InserirFuncionarioComponent } from './admin/inserir-funcionario/inserir-funcionario.component';
 export { EditarFuncionarioComponent } from './admin/editar-funcionario/editar-funcionario.component';
 export { FuncionarioFormComponent } from './admin/funcionario-form/funcionario-form.component';
+export { NewOrderComponent } from "./client/new-order/new-order.component"
 export { ListarSolicitacoesComponent } from './admin/listar-solicitacoes/listar-solicitacoes.component';
 export { EfetuarOrcamentoComponent } from './admin/efetuar-orcamento/efetuar-orcamento.component';

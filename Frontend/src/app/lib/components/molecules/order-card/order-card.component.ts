@@ -24,28 +24,28 @@ export class OrderCardComponent {
       case SituationEnum.ARRUMADA:
         return {
           title: 'Pagar serviço',
-          link: `/orders/${this.order.id}`,
+          link: `/client/payment/${this.order.id}`,
           icon: 'visibility',
           variant: 'secondary' as ButtonVariant
         };
       case SituationEnum.REJEITADA:
         return {
-          title: 'Resgatar serviço',
+          title: 'Resgatar',
           link: `/orders/${this.order.id}/tracking`,
           icon: 'track_changes',
-          variant: 'destructive' as ButtonVariant
+          variant: 'secondary' as ButtonVariant
         };
       case SituationEnum.ORCADA:
         return {
-          title: 'Analisar serviço',
-          link: `/orders/${this.order.id}/retry`,
+          title: 'Aprovar/Rejeitar',
+          link: `/client/quote/${this.order.id}`,
           icon: 'currency_exchange',
           variant: 'primary' as ButtonVariant
         };
       default:
         return {
-          title: 'Visualizar serviço',
-          link: `/orders/${this.order.id}`,
+          title: 'Visualizar',
+          link: `/client/view/${this.order.id}`,
           icon: 'info',
           variant: 'secondary' as ButtonVariant
         };

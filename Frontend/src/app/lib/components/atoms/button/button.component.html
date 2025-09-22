@@ -6,7 +6,7 @@
     [type]="submit ? 'submit' : 'button'"
     [disabled]="disabled"
     [routerLink]="link"
-    class="app-button primary-button transition-colors"
+    class="app-button disabled primary-button transition-colors"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -21,7 +21,7 @@
     [type]="submit ? 'submit' : 'button'"
     [disabled]="disabled"
     [routerLink]="link"
-    class="app-button secondary-button transition-colors"
+    class="app-button disabled secondary-button transition-colors"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -36,7 +36,7 @@
     [type]="submit ? 'submit' : 'button'"
     [disabled]="disabled"
     [routerLink]="link"
-    class="app-button success-button transition-colors"
+    class="app-button disabled success-button transition-colors"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -51,11 +51,23 @@
     [type]="submit ? 'submit' : 'button'"
     [disabled]="disabled"
     [routerLink]="link"
-    class="app-button destructive-button transition-colors"
+    class="app-button disabled destructive-button transition-colors"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
     }
     {{ title }}
+  </button>
+
+  <button
+    *ngSwitchCase="'fab-secondary'"
+    mat-fab
+    extended
+    [type]="submit ? 'submit' : 'button'"
+    [disabled]="disabled"
+    [routerLink]="link"
+    class="app-fab-button fab-secondary-button transition-colors"
+  >
+    <mat-icon>{{ icon }}</mat-icon>
   </button>
 </ng-container>

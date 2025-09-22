@@ -1,0 +1,51 @@
+<mat-card class="app-new-order-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Dados da Solicitação</mat-card-title>
+      <mat-card-subtitle
+        >Preencha todos os campos para criar sua solicitação de
+        manutenção</mat-card-subtitle
+      >
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="newOrderForm" (ngSubmit)="onSubmit()" class="form-wrap">
+      <div class="form-wrap">
+        <app-input
+          [control]="productControl"
+          label="Descrição do equipamento"
+          placeholder="Ex: Notebook Dell Inspiron 15, TV Samsung 50 polegadas..."
+          [hint]="productControl.value?.length + '/100 caracteres'"
+          [errorMessages]="{ required: 'Campo obrigatório' }"
+        />
+        <app-select-input
+          [control]="categoryControl"
+          label="Categoria"
+          placeholder="Selecione a categoria do equipamento"
+          [options]="categories"
+        />
+        <app-text-area-input
+          [control]="issue_descriptionControl"
+          label="Descrição do defeito"
+          placeholder="Descreva detalhadamente o problema encontrado no equipamento..."
+        />
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <app-button
+      style="width: 100%"
+      title="Cancelar"
+      link="/client"
+      variant="secondary"
+    />
+    <app-button
+      style="width: 100%"
+      title="Enviar solicitação"
+      icon="send"
+      variant="primary"
+      (click)="onSubmit()"
+      [disabled]="newOrderForm.invalid"
+    />
+  </mat-card-footer>
+</mat-card>

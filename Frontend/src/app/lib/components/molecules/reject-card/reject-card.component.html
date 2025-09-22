@@ -1,0 +1,62 @@
+<mat-card class="app-reject-card" appearance="outlined">
+  <ng-container *ngIf="order; else noOrder">
+    <mat-card-header>
+      <div class="rounded-reject">
+        <mat-icon>close</mat-icon>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="title-text-wrap">
+        <p>Rejeitar Orçamento</p>
+        <span
+          >Você está prestes a rejeitar o orçamento de R$
+          {{ order.price }}</span
+        >
+      </div>
+      <div class="details-box">
+        <p>Equipamento: {{ order.product }}</p>
+        <span>Técnico: {{ order.atributed_employee }}</span>
+        <span>Valor: R$ {{ order.price }}</span>
+      </div>
+      <form [formGroup]="rejectForm" (ngSubmit)="onSubmit()" class="form-wrap">
+        <app-text-area-input
+          [control]="reject_reasonControl"
+          label="Motivo da rejeição"
+          placeholder="Informe o motivo da rejeição do orçamento..."
+          [errorMessages]="{ required: 'Campo obrigatório' }"
+          [hint]="reject_reasonControl.value?.length + '/300 caracteres'"
+        />
+      </form>
+      <div class="warning-box">
+        <mat-icon>warning</mat-icon>
+      <div class="warning-wrap">
+          <p>Atenção</p>
+          <span
+            >Após rejeitar, você poderá resgatar esta solicitação futuramente se
+            desejar. O equipamento ficará disponível para novo orçamento.
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div style="width: 100%; display: flex; flex-direction: row; gap: 0.5rem">
+        <app-button
+          style="width: 100%"
+          title="Cancelar"
+          link="/client"
+          variant="secondary"
+        />
+        <app-button
+          style="width: 100%"
+          title="Enviar solicitação"
+          icon="send"
+          variant="primary"
+        />
+      </div>
+    </mat-card-footer>
+  </ng-container>
+  <ng-template #noOrder>
+    <p>a</p>
+  </ng-template>
+</mat-card>

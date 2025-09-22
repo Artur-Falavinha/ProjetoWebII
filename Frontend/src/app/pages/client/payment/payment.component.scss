@@ -1,0 +1,59 @@
+
+.cliente-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cliente-content {
+  flex: 1;
+  padding-bottom: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background: #fafafa;
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.header-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 2rem;
+}
+
+.page-subtitle {
+  font-size: var(--16px);
+  color: hsl(215, 15%, 55%);
+  font-weight: 300;
+  letter-spacing: 0.25px;
+}
+
+.text-wrap {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: #fafafa;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.order-card-wrap {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+  gap: 1rem;
+}
