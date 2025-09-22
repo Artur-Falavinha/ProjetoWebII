@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Solicitacao } from '@/app/shared/models/solicitacao.model';
+import { SolicitacaoRequest } from '@/app/@types';
 
 const LS_CHAVE = "solicitacoes";
 
@@ -10,12 +10,12 @@ export class SolicitacaoService {
 
   constructor() { }
 
-  listarTodas() : Solicitacao[] {
+  listarTodas() : SolicitacaoRequest[] {
     const solicitacoes = localStorage[LS_CHAVE];
     return solicitacoes ? JSON.parse(solicitacoes) : [];     
   } 
 
-  inserir(solicitacao: Solicitacao): void {
+  inserir(solicitacao: SolicitacaoRequest): void {
     const solicitacoes = this.listarTodas();
     if (solicitacoes.length === 0) {
       solicitacao.id = 1; 
@@ -27,12 +27,12 @@ export class SolicitacaoService {
     localStorage.setItem(LS_CHAVE, JSON.stringify(solicitacoes));
   }
 
-  buscaPorId(id: number): Solicitacao | undefined {
+  buscaPorId(id: number): SolicitacaoRequest | undefined {
     const solicitacoes = this.listarTodas();
      return solicitacoes.find(solicitacao => solicitacao.id === id);
   }
   
-  atualizar(solicitacao: Solicitacao): void {       
+  atualizar(solicitacao: SolicitacaoRequest): void {       
     const solicitacoes = this.listarTodas();
     solicitacoes.forEach((obj, index, objs) => {
       if (solicitacao.id === obj.id) {

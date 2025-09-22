@@ -1,19 +1,19 @@
 <div class="funcionario-layout">
   <app-sidebar></app-sidebar>
 
-  <main class="funcionario-content">
-    <!-- Header -->
-    <div class="page-header">
-      <div class="header-content">
-        <h1>Painel do Funcionário</h1>
+  <div class="auth-card">
+    <div class="card-header">
+      <div>
+        <h2>Painel do Funcionário</h2>
         <p>Solicitações aguardando orçamento</p>
       </div>
-      <div class="header-actions">
-        <button mat-raised-button color="primary" (click)="verTodasSolicitacoes()">
-          <mat-icon>list</mat-icon>
-          Ver todas as solicitações
-        </button>
-      </div>
+
+      <app-button
+        title="Ver todas as solicitações"
+        variant="primary"
+        icon="list"
+        (click)="verTodasSolicitacoes()">
+      </app-button>
     </div>
 
     <!-- Cards de Estatísticas -->
@@ -30,14 +30,14 @@
           icon="monetization_on"
           [number]="estatisticas.orcadas"
           label="Orçadas"
-          variant="warning">
+          variant="info">
         </app-stat-card>
 
         <app-stat-card
           icon="check_circle"
           [number]="estatisticas.aprovadas"
           label="Aprovadas"
-          variant="warning">
+          variant="primary">
         </app-stat-card>
 
         <app-stat-card
@@ -49,17 +49,32 @@
       </div>
     </div>
 
-    <!-- Seção de Solicitações Abertas -->
+    <!-- Seção de Solicitações Abertas - RF011 -->
     <div class="solicitacoes-section">
       <h2>Solicitações Abertas</h2>
+      <p>Necessitam de atenção imediata do funcionário</p>
       
       <div class="solicitacoes-list" *ngIf="solicitacoesAbertas.length > 0">
-        <app-solicitacao-card
-          *ngFor="let solicitacao of solicitacoesAbertas"
-          [solicitacao]="solicitacao"
-          (verDetalhes)="verDetalhes($event)"
-          (efetuarOrcamento)="efetuarOrcamento($event)">
-        </app-solicitacao-card>
+        <div class="solicitacao-item" *ngFor="let solicitacao of solicitacoesAbertas">
+          <div class="solicitacao-info">
+            <div class="solicitacao-header">
+              <h3>{{ solicitacao.product }}</h3>
+              <span class="solicitacao-date">{{ solicitacao.order_date }}</span>
+            </div>
+            <div class="solicitacao-details">
+              <p class="solicitacao-category">{{ solicitacao.category }}</p>
+              <p class="solicitacao-description">{{ solicitacao.product | slice:0:30 }}{{ solicitacao.product.length > 30 ? '...' : '' }}</p>
+            </div>
+          </div>
+          <div class="solicitacao-actions">
+            <app-button 
+              title="Efetuar Orçamento" 
+              variant="primary" 
+              icon="monetization_on"
+              (click)="efetuarOrcamento(solicitacao)">
+            </app-button>
+          </div>
+        </div>
       </div>
 
       <div class="empty-state" *ngIf="solicitacoesAbertas.length === 0">
@@ -68,79 +83,70 @@
         <p>Bom trabalho! Todas as solicitações estão em dia.</p>
       </div>
     </div>
-
-  </main>
+  </div>
 </div>
 
 <!-- Modal de Detalhes da Solicitação -->
-<app-modal
-  *ngIf="modalAberto"
-  title="Detalhes da Solicitação"
-  submitButtonText="Efetuar Orçamento"
-  [isFormValid]="true"
-  (close)="fecharModal()"
-  (submit)="efetuarOrcamento(solicitacaoSelecionada!)">
-  
-  <!-- Conteúdo do modal -->
-  <ng-template #modalContent>
-    <div *ngIf="solicitacaoSelecionada">
-      <!-- Informações do Equipamento -->
-      <div class="info-section">
-        <h3>Equipamento</h3>
-        <div class="info-item">
-          <mat-icon>build</mat-icon>
-          <span>{{ solicitacaoSelecionada.equipamento }}</span>
-        </div>
-        <div class="info-item">
-          <mat-icon>local_offer</mat-icon>
-          <span>{{ solicitacaoSelecionada.categoria }}</span>
-        </div>
-      </div>
+<div class="modal" *ngIf="modalAberto">
+  <div class="modal-content">
+    
+    <h2>Detalhes da Solicitação</h2>
+    <p>Visualize as informações completas da solicitação</p>
 
-      <!-- Informações do Cliente -->
-      <div class="info-section">
-        <h3>Cliente</h3>
-        <div class="info-item">
-          <mat-icon>person</mat-icon>
-          <span>{{ solicitacaoSelecionada.cliente }}</span>
-        </div>
-        <div class="info-item">
-          <mat-icon>email</mat-icon>
-          <span>{{ solicitacaoSelecionada.clienteEmail }}</span>
-        </div>
-      </div>
+          <div *ngIf="solicitacaoSelecionada" class="solicitacao-details">
+            
+            <!-- Produto -->
+            <div class="detail-item">
+              <label>Produto:</label>
+              <span>{{ solicitacaoSelecionada.product }}</span>
+            </div>
 
-      <!-- Descrição do Problema -->
-      <div class="info-section">
-        <h3>Problema Relatado</h3>
-        <div class="problema-descricao">
-          <p>{{ solicitacaoSelecionada.descricaoProblema }}</p>
-        </div>
-      </div>
+            <!-- Categoria -->
+            <div class="detail-item">
+              <label>Categoria:</label>
+              <span>{{ solicitacaoSelecionada.category }}</span>
+            </div>
 
-      <!-- Informações de Data e Status -->
-      <div class="info-section">
-        <h3>Informações da Solicitação</h3>
-        <div class="info-item">
-          <mat-icon>schedule</mat-icon>
-          <span>Solicitado em: {{ formatarData(solicitacaoSelecionada.dataHora) }}</span>
-        </div>
-        <div class="info-item">
-          <mat-icon>info</mat-icon>
-          <span>Status: </span>
-          <mat-chip [class]="getStatusClass(solicitacaoSelecionada.status)">
-            {{ getStatusText(solicitacaoSelecionada.status) }}
-          </mat-chip>
-        </div>
-      </div>
+            <!-- Data do Pedido -->
+            <div class="detail-item">
+              <label>Data do Pedido:</label>
+              <span>{{ solicitacaoSelecionada.order_date }}</span>
+            </div>
 
-      <!-- Observações (se houver) -->
-      <div class="info-section" *ngIf="solicitacaoSelecionada.observacoes">
-        <h3>Observações</h3>
-        <div class="problema-descricao">
-          <p>{{ solicitacaoSelecionada.observacoes }}</p>
-        </div>
-      </div>
+            <!-- Status -->
+            <div class="detail-item">
+              <label>Status:</label>
+              <span class="status-badge" [class]="getStatusClass(solicitacaoSelecionada.situation)">
+                {{ getStatusText(solicitacaoSelecionada.situation) }}
+              </span>
+            </div>
+
+            <!-- Preço -->
+            <div class="detail-item">
+              <label>Preço:</label>
+              <span>R$ {{ solicitacaoSelecionada.price | number:'1.2-2' }}</span>
+            </div>
+
+            <!-- ID -->
+            <div class="detail-item">
+              <label>ID:</label>
+              <span>{{ solicitacaoSelecionada.id }}</span>
+            </div>
+
+          </div>
+
+    <div class="actions">
+      <app-button 
+        title="Fechar" 
+        variant="secondary" 
+        (click)="fecharModal()">
+      </app-button>
+      <app-button 
+        [title]="getActionButtonText(solicitacaoSelecionada?.situation || SituationEnum.ABERTA)" 
+        [variant]="getActionButtonVariant(solicitacaoSelecionada?.situation || SituationEnum.ABERTA)"
+        [icon]="getActionButtonIcon(solicitacaoSelecionada?.situation || SituationEnum.ABERTA)"
+        (click)="efetuarOrcamento(solicitacaoSelecionada!)">
+      </app-button>
     </div>
-  </ng-template>
-</app-modal>
+  </div>
+</div>

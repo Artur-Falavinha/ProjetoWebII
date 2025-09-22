@@ -2,9 +2,6 @@
   <app-sidebar></app-sidebar>
 
   <div class="auth-card">
-    <div class="card-header-top">
-      <h3>GestorManutenção - Funcionário</h3>
-    </div>
 
       <!-- Header -->
       <div class="card-header">
@@ -42,7 +39,7 @@
             <mat-icon>calendar_today</mat-icon>
             <div>
               <strong>Data da solicitação</strong>
-              <p>{{ formatarData(solicitacaoSelecionada.dataHora) }}</p>
+              <p>{{ solicitacaoSelecionada.dataHora }}</p>
             </div>
           </div>
 

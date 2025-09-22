@@ -1,11 +1,8 @@
 import { Routes } from '@angular/router';
-import { authGuard } from '../lib/guards/auth/auth.guard';
-import { employeeGuard } from '../lib/guards/auth/employee.guard';
 import {
   LoginComponent,
   RegisterComponent,
   ClientHomeComponent,
-  //SolicitacaoManutencaoComponent,
   FuncionarioComponent,
   ListarCategoriaComponent,
   InserirCategoriaComponent,
@@ -14,14 +11,18 @@ import {
   ListarSolicitacoesComponent,
   EfetuarOrcamentoComponent
 } from '@/app/pages';
+import { authGuard } from '@/app/lib/guards/auth/auth.guard';
 
-// Configurar AuthGuard
 export const routes: Routes = [
-  // Rotas Públicas
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full',  
+    pathMatch: 'full',  
+  },
+  {
+    path: 'client',
+    component: ClientHomeComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'login',
@@ -31,47 +32,40 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
-
-  {
-    path: 'client',
-    component: ClientHomeComponent,
-    canActivate: [authGuard] 
-  },
-  
   {
     path: 'admin',
     component: FuncionarioComponent,
-    canActivate: [authGuard, employeeGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'admin/solicitacoes',
     component: ListarSolicitacoesComponent,
-    canActivate: [authGuard, employeeGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'admin/orcamento/:id',
     component: EfetuarOrcamentoComponent,
-    canActivate: [authGuard, employeeGuard] 
+    canActivate: [authGuard]
   },
   {
     path: 'admin/categorias',
     component: ListarCategoriaComponent,
-    canActivate: [authGuard, employeeGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'admin/funcionarios',
     component: ListarFuncionarioComponent,
-    canActivate: [authGuard, employeeGuard] 
+    canActivate: [authGuard]
   },
   {
     path: 'admin/funcionarios/new',
     component: InserirFuncionarioComponent,
-    canActivate: [authGuard, employeeGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'admin/relatorios',
     component: FuncionarioComponent,
-    canActivate: [authGuard, employeeGuard] 
+    canActivate: [authGuard]
   },
   
   {

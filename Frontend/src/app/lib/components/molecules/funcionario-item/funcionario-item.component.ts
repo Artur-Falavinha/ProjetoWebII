@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Funcionario } from '@/app/shared/models/funcionario.model';
+import { FuncionarioRequest } from '@/app/@types';
 
 /**
  * Componente de item de funcionário reutilizável
@@ -16,11 +16,11 @@ import { Funcionario } from '@/app/shared/models/funcionario.model';
 })
 export class FuncionarioItemComponent {
   
-  @Input() funcionario!: Funcionario;
+  @Input() funcionario!: FuncionarioRequest;
   @Input() showActions: boolean = true;
   
-  @Output() editClick = new EventEmitter<Funcionario>();
-  @Output() deleteClick = new EventEmitter<Funcionario>();
+  @Output() editClick = new EventEmitter<FuncionarioRequest>();
+  @Output() deleteClick = new EventEmitter<FuncionarioRequest>();
 
   /**Emite evento de clique em editar**/
   onEditClick(): void {
@@ -32,19 +32,6 @@ export class FuncionarioItemComponent {
     this.deleteClick.emit(this.funcionario);
   }
 
-  /**Formata data para exibição**/
-  formatarData(data: Date): string {
-    return new Intl.DateTimeFormat('pt-BR').format(new Date(data));
-  }
-
-  /**Formata data simples para exibição**/
-  formatarDataSimples(data: Date): string {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    }).format(new Date(data));
-  }
 
   /**Retorna classe CSS do status**/
   getStatusClass(ativo: boolean): string {

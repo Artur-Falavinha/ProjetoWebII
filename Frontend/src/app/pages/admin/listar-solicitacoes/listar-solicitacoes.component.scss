@@ -1,27 +1,13 @@
-.solicitacoes-layout{
+.solicitacoes-layout {
   display: flex;
   min-height: 100vh;
 }
 
-//header 
 .auth-card {
   width: 100%;
   background: #f9fafb;
   overflow: hidden;
   padding-left: 20px;
-}
-
-.card-header-top {
-  padding: 12px 24px;
-  border-bottom: 1px solid #e5e7eb;
-  background: white;
-
-  h3 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 500;
-    color: #374151;
-  }
 }
 
 .card-header {
@@ -47,14 +33,8 @@
   }
 }
 
-// Seção de solicitações
-.solicitacoes-section {
-  h2 {
-    margin: 0 0 24px 0;
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--neutrals_dark_100);
-  }
+.card-body {
+  padding: 24px;
 }
 
 .solicitacoes-list {
@@ -72,106 +52,170 @@
   text-align: center;
   padding: 60px 20px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
   
   .empty-icon {
     font-size: 48px;
     width: 48px;
     height: 48px;
-    color: var(--neutrals_gray_400);
+    color: #6b7280;
     margin-bottom: 16px;
   }
   
   h3 {
     margin: 0 0 8px 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--neutrals_dark_100);
+    font-size: 16px;
+    font-weight: 500;
+    color: #111827;
   }
   
   p {
     margin: 0;
-    font-size: 14px;
-    color: var(--neutrals_gray_500);
+    font-size: 13px;
+    color: #6b7280;
+  }
+}
+
+// Modal simplificado seguindo padrão dos CRUDs
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  h2 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  p {
+    margin: 0 0 24px 0;
+    font-size: 16px;
+    color: #6b7280;
+  }
+}
+
+.solicitacao-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 500;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    span {
+      font-size: 14px;
+      color: #111827;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+
+      &.status-aberta {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      &.status-orcada {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      &.status-aprovada {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      &.status-finalizada {
+        background: #e5e7eb;
+        color: #374151;
+      }
+    }
+
+    .description-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #111827;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+
+  button {
+    min-width: 100px;
   }
 }
 
 // Responsividade
 @media (max-width: 768px) {
-  .funcionario-content {
+  .card-body {
     padding: 16px;
   }
-  
-  .page-header {
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
-    
-    .header-actions {
-      button {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-  }
-  
-  .stats-grid {
+
+  .solicitacao-details {
     grid-template-columns: 1fr;
-    gap: 16px;
-  }
-}
-
-// Estilos específicos para o modal de detalhes
-.info-section {
-  margin-bottom: 32px;
-
-  h3 {
-    margin: 0 0 16px 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--neutrals_dark_100);
-    border-bottom: 2px solid var(--neutrals_gray_200);
-    padding-bottom: 8px;
-  }
-
-  .info-item {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    margin-bottom: 12px;
-    font-size: 14px;
-    color: var(--neutrals_gray_500);
+  }
 
-    mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
-      color: var(--neutrals_gray_400);
-      flex-shrink: 0;
-    }
-
-    span {
-      flex: 1;
-    }
-
-    mat-chip {
-      margin-left: 8px;
+  .actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
     }
   }
 
-  .problema-descricao {
-    background: var(--neutrals_light_300);
-    border: 1px solid var(--neutrals_gray_200);
-    border-radius: 8px;
+  .modal-content {
+    width: 95%;
     padding: 16px;
-    margin-top: 8px;
-
-    p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--neutrals_dark_100);
-    }
   }
 }

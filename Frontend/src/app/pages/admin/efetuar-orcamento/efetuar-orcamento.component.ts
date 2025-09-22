@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Solicitacao } from "@/app/shared/models/solicitacao.model";
+import { SolicitacaoRequest } from "@/app/@types";
 import { SolicitacaoService } from "@/app/lib/services/solicitacao/solicitacao.service";
 import { SidebarComponent } from "@/app/lib/components";
 import { MatIcon } from "@angular/material/icon";
@@ -24,7 +24,7 @@ import { MatFormField, MatLabel } from "@angular/material/form-field";
 })
 export class EfetuarOrcamentoComponent implements OnInit {
 
-  solicitacaoSelecionada: Solicitacao | undefined;
+  solicitacaoSelecionada: SolicitacaoRequest | undefined;
 
   constructor(
     private route: ActivatedRoute,

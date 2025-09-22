@@ -4,7 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { Solicitacao } from '@/app/shared/models/solicitacao.model';
+import { SolicitacaoRequest, SituationEnum } from '@/app/@types';
+import { ButtonComponent } from '@/app/lib/components/atoms/button/button.component';
 
 /**
  * Card de solicitação reutilizável
@@ -13,17 +14,17 @@ import { Solicitacao } from '@/app/shared/models/solicitacao.model';
 @Component({
   selector: 'app-solicitacao-card',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatCardModule, MatChipsModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatCardModule, MatChipsModule, ButtonComponent],
   templateUrl: './solicitacao-card.component.html',
   styleUrl: './solicitacao-card.component.scss'
 })
 export class SolicitacaoCardComponent {
   
-  @Input() solicitacao!: Solicitacao;
+  @Input() solicitacao!: SolicitacaoRequest;
   @Input() showActions: boolean = true;
   
-  @Output() verDetalhes = new EventEmitter<Solicitacao>();
-  @Output() efetuarOrcamento = new EventEmitter<Solicitacao>();
+  @Output() verDetalhes = new EventEmitter<SolicitacaoRequest>();
+  @Output() efetuarOrcamento = new EventEmitter<SolicitacaoRequest>();
 
   /**Emite evento de ver detalhes**/
   onVerDetalhes(): void {
@@ -35,45 +36,74 @@ export class SolicitacaoCardComponent {
     this.efetuarOrcamento.emit(this.solicitacao);
   }
 
-  /**Formata data para exibição**/
-  formatarData(data: Date): string {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(data);
-  }
-
-  /**Formata data simples**/
-  formatarDataSimples(data: Date): string {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    }).format(data);
-  }
 
   /**Retorna classe CSS do status**/
-  getStatusClass(status: string): string {
+  getStatusClass(status: SituationEnum): string {
     switch(status) {
-      case 'ABERTA': return 'status-aberta';
-      case 'ORCADA': return 'status-orcada';
-      case 'APROVADA': return 'status-aprovada';
-      case 'FINALIZADA': return 'status-finalizada';
+      case SituationEnum.ABERTA: return 'status-aberta';
+      case SituationEnum.ORCADA: return 'status-orcada';
+      case SituationEnum.APROVADA: return 'status-aprovada';
+      case SituationEnum.FINALIZADA: return 'status-finalizada';
       default: return 'status-aberta';
     }
   }
 
   /**Retorna texto do status**/
-  getStatusText(status: string): string {
+  getStatusText(status: SituationEnum): string {
     switch(status) {
-      case 'ABERTA': return 'Aberta';
-      case 'ORCADA': return 'Orçada';
-      case 'APROVADA': return 'Aprovada';
-      case 'FINALIZADA': return 'Finalizada';
+      case SituationEnum.ABERTA: return 'Aberta';
+      case SituationEnum.ORCADA: return 'Orçada';
+      case SituationEnum.APROVADA: return 'Aprovada';
+      case SituationEnum.FINALIZADA: return 'Finalizada';
       default: return 'Aberta';
+    }
+  }
+
+  /**Obtém o texto do botão de ação baseado no status da solicitação**/
+  getActionButtonText(status: SituationEnum): string {
+    switch (status) {
+      case SituationEnum.ABERTA:
+        return 'Efetuar Orçamento';
+      case SituationEnum.ORCADA:
+        return 'Aprovar Orçamento';
+      case SituationEnum.APROVADA:
+        return 'Finalizar Serviço';
+      case SituationEnum.FINALIZADA:
+        return 'Ver Detalhes';
+      default:
+        return 'Ação';
+    }
+  }
+
+  /**Obtém a variante do botão baseado no status da solicitação**/
+  getActionButtonVariant(status: SituationEnum): 'primary' | 'secondary' | 'success' | 'destructive' {
+    switch (status) {
+      case SituationEnum.ABERTA:
+        return 'primary';
+      case SituationEnum.ORCADA:
+        return 'success';
+      case SituationEnum.APROVADA:
+        return 'primary';
+      case SituationEnum.FINALIZADA:
+        return 'secondary';
+      default:
+        return 'primary';
+    }
+  }
+
+  /**Obtém o ícone do botão baseado no status da solicitação**/
+  getActionButtonIcon(status: SituationEnum): string {
+    switch (status) {
+      case SituationEnum.ABERTA:
+        return 'monetization_on';
+      case SituationEnum.ORCADA:
+        return 'check_circle';
+      case SituationEnum.APROVADA:
+        return 'build';
+      case SituationEnum.FINALIZADA:
+        return 'visibility';
+      default:
+        return 'info';
     }
   }
 }
