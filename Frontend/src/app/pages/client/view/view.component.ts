@@ -133,7 +133,7 @@ export class ViewComponent {
 
         if (
           order &&
-          [
+          ![
             SituationEnum.ABERTA,
             SituationEnum.PAGA,
             SituationEnum.REDIRECIONADA,

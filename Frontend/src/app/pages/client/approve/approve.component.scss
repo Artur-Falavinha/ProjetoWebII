@@ -18,6 +18,21 @@
   letter-spacing: 0.25px;
 }
 
+.cliente-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cliente-content {
+  flex: 1;
+  padding-bottom: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background: #fafafa;
+  overflow-y: auto;
+  min-height: 100vh;
+}
 .text-wrap {
   position: sticky;
   top: 0;
@@ -30,20 +45,8 @@
   flex-direction: row;
   align-items: center;
   gap: 1rem;
-}
-
-.cliente-layout {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.cliente-content {
-  flex: 1;
-  padding: 1.5rem;
-  background: #fafafa;
-  overflow-y: auto;
-  min-height: 100vh;
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .order-card-wrap {
