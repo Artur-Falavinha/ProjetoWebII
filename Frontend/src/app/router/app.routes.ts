@@ -8,8 +8,12 @@ import {
   ListarCategoriaComponent,
   InserirCategoriaComponent,
   ListarFuncionarioComponent,
-  InserirFuncionarioComponent
+  InserirFuncionarioComponent,
+  NewOrderComponent,
 } from '@/app/pages';
+import { QuoteComponent } from '../pages/client/quote/quote.component';
+import { RejectComponent } from '../pages/client/reject/reject.component';
+import { ApproveComponent } from '../pages/client/approve/approve.component';
 
 // Configurar AuthGuard
 export const routes: Routes = [
@@ -19,10 +23,6 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'client',
-    component: ClientHomeComponent,
-  },
-  {
     path: 'login',
     component: LoginComponent,
   },
@@ -30,10 +30,26 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
-  // {
-  //   path: 'solicitacao',
-  //   component: SolicitacaoManutencaoComponent,
-  // },
+  {
+    path: 'client',
+    component: ClientHomeComponent,
+  },
+  {
+    path: 'client/new-order',
+    component: NewOrderComponent,
+  },
+  {
+    path: 'client/quote/:id',
+    component: QuoteComponent,
+  },
+  {
+    path: 'client/reject/:id',
+    component: RejectComponent,
+  },
+  {
+    path: 'client/approve/:id',
+    component: ApproveComponent,
+  },
   {
     path: 'admin',
     component: FuncionarioComponent,
@@ -58,7 +74,7 @@ export const routes: Routes = [
     path: 'admin/relatorios',
     component: FuncionarioComponent,
   },
-  
+
   {
     // TODO: Pág. 404
     path: '**',

@@ -2,15 +2,22 @@
   <app-sidebar></app-sidebar>
   <main class="cliente-content">
     <div class="text-wrap">
-      <h1 class="page-title">Minhas Solicitações</h1>
-      <p class="page-subtitle"> Gerencie suas solicitações de manutenção</p>
+      <div>
+        <h1 class="page-title">Minhas Solicitações</h1>
+        <p class="page-subtitle">Gerencie suas solicitações de manutenção</p>
+      </div>
+      <app-button
+        class="header-button"
+        variant="primary"
+        icon="add"
+        title="Nova Solicitação"
+        link="/client/new-order"
+      />
     </div>
-    
+
     <div class="order-card-wrap">
       @for (item of items; track $index) {
-        <app-order-card
-          [order]="item"
-        />
+      <app-order-card [order]="item" />
       }
     </div>
   </main>

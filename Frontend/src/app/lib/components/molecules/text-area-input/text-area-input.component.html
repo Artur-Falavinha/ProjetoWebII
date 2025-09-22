@@ -1,0 +1,16 @@
+<mat-form-field [appearance]="appearance" class="app-field">
+  <mat-label>{{ label }}</mat-label>
+
+  <textarea
+    matInput
+    [formControl]="control"
+    [placeholder]="placeholder"
+    [rows]="rows"
+  ></textarea>
+
+  <mat-error *ngIf="control.invalid && control.touched">
+    {{ errorMessage }}
+  </mat-error>
+
+  <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+</mat-form-field>
