@@ -1,37 +1,28 @@
-<mat-card class="solicitacao-card">
-  <mat-card-header>
-    <div class="card-header-content">
-      <div class="equipamento-info">
-        <h3>{{ solicitacao.equipamento }}</h3>
+<div class="solicitacao-item">
+  <div class="solicitacao-info">
+    <div class="icon-box">
+      <mat-icon>build</mat-icon>
+    </div>
+    <div class="solicitacao-details">
+      <h3>{{ solicitacao.equipamento }}</h3>
+      <div class="details-grid">
+        <div class="detail-column">
+          <p>Cliente: {{ solicitacao.cliente }}</p>
+          <p>Categoria: {{ solicitacao.categoria }}</p>
+          <p>Data: {{ solicitacao.dataHora }}</p>
+        </div>
+        <div class="detail-column">
+          <p>Status: {{ getStatusText(solicitacao.status) }}</p>
+          <p>Email: {{ solicitacao.clienteEmail }}</p>
+        </div>
+        <div class="detail-column">
+          <p>ID: {{ solicitacao.id }}</p>
+        </div>
       </div>
-      <mat-chip [class]="getStatusClass(solicitacao.status)">
-        {{ getStatusText(solicitacao.status) }}
-      </mat-chip>
     </div>
-  </mat-card-header>
+  </div>
 
-  <mat-card-content>
-    <div class="cliente-info">
-      <mat-icon>person</mat-icon>
-      <span>Cliente: {{ solicitacao.cliente }} • {{ solicitacao.dataHora }}</span>
-    </div>
-
-    <div class="categoria-info">
-      <mat-icon>local_offer</mat-icon>
-      <span>{{ solicitacao.categoria }}</span>
-    </div>
-
-    <div class="problema-info">
-      <p>{{ solicitacao.descricaoProblema }}</p>
-    </div>
-
-    <div class="data-info">
-      <mat-icon>calendar_today</mat-icon>
-      <span>Solicitado em {{ solicitacao.dataHora }}</span>
-    </div>
-  </mat-card-content>
-
-  <mat-card-actions *ngIf="showActions">
+  <div class="solicitacao-actions" *ngIf="showActions">
     <app-button 
       title="Ver detalhes" 
       variant="secondary" 
@@ -44,5 +35,5 @@
       [icon]="getActionButtonIcon(solicitacao.status)"
       (click)="onEfetuarOrcamento()">
     </app-button>
-  </mat-card-actions>
-</mat-card>
+  </div>
+</div>
