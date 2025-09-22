@@ -1,0 +1,101 @@
+.app-quote-card {
+  border-color: hsl(210 20% 90%);
+  gap: 1.5rem;
+  background-color: #fff;
+
+  mat-card-title {
+    font-size: 1.5rem;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+  }
+
+  mat-card-subtitle {
+    color: var(--text-light-gray) !important;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 400;
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .details-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 1rem;
+
+    .detail-item {
+      width: 100%;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      gap: 0.5rem;
+
+      mat-icon {
+        color: var(--text-light-gray);
+      }
+
+      .text-wrap {
+        display: flex;
+        flex-direction: column;
+
+        p {
+          font-size: 0.875rem;
+          line-height: 1.25rem;
+          color: #000;
+          font-weight: 500;
+        }
+
+        span {
+          font-size: 0.875rem;
+          line-height: 1.25rem;
+          color: var(--text-light-gray);
+        }
+      }
+    }
+  }
+
+  .issue-related-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    p {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: #000;
+      font-weight: 500;
+    }
+
+    span {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: var(--text-light-gray);
+    }
+  }
+
+  .box-padding {
+    background-color: hsl(210 20% 94%);
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    p {
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    span {
+      color: hsl(215 85% 55%);
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+}

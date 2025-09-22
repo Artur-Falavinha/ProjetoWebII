@@ -1,0 +1,22 @@
+<div class="cliente-layout">
+  <app-sidebar></app-sidebar>
+  <main class="cliente-content">
+    <div style="max-width: 42rem; margin-left: auto; margin-right: auto">
+      <div class="text-wrap">
+        <app-button
+          class="header-button"
+          variant="fab-secondary"
+          icon="arrow_back"
+          link="/client"
+        />
+        <div>
+          <h1 class="page-title">Nova solicitação</h1>
+          <p class="page-subtitle">
+            Descreva seu equipamento e o problema encontrado
+          </p>
+        </div>
+      </div>
+      <app-new-order-card />
+    </div>
+  </main>
+</div>

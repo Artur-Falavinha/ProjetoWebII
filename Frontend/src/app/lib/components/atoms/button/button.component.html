@@ -70,4 +70,17 @@
     }
     {{ title }}
   </button>
+
+  <button
+    *ngSwitchCase="'fab-secondary'"
+    mat-fab
+    extended
+    [type]="submit ? 'submit' : 'button'"
+    [disabled]="disabled"
+    [routerLink]="link"
+    (click)="onClick()"
+    class="app-fab-button fab-secondary-button transition-colors"
+  >
+    <mat-icon>{{ icon }}</mat-icon>
+  </button>
 </ng-container>

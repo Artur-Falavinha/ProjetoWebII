@@ -1,0 +1,19 @@
+<mat-form-field [appearance]="appearance" class="app-field">
+  <mat-label>{{ label }}</mat-label>
+
+  <mat-select [formControl]="control" required>
+    <mat-option [value]="null">{{ placeholder }}</mat-option>
+    <mat-option *ngFor="let option of options" [value]="option[optionValue]">
+      {{ option[optionLabel] }}
+    </mat-option>
+  </mat-select>
+
+  <mat-error *ngIf="control.invalid && control.touched">
+    {{ errorMessage }}
+  </mat-error>
+
+  <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+  <mat-hint *ngIf="!hint && control?.value?.sound">
+    {{ control.value.sound }}
+  </mat-hint>
+</mat-form-field>

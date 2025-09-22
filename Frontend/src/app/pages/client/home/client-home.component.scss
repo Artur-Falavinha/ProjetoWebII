@@ -1,3 +1,9 @@
+.header-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .page-title {
   font-size: 1.5rem;
   font-weight: 600;
@@ -12,6 +18,15 @@
   letter-spacing: 0.25px;
 }
 
+// .header-button {
+//   position: sticky;
+//   width: 100%;
+//   z-index: 10;
+//   background-color: #fafafa;
+//   padding-top: var(--24px);
+//   padding-bottom: var(--8px);
+// }
+
 .text-wrap {
   position: sticky;
   top: 0;
@@ -21,6 +36,10 @@
   background-color: #fafafa;
   padding-top: var(--24px);
   padding-bottom: var(--8px);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .cliente-layout {
@@ -45,4 +64,3 @@
   margin-top: 1.5rem;
   gap: 1rem;
 }
-

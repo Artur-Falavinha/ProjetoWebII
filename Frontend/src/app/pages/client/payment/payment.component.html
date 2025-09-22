@@ -1,0 +1,28 @@
+<div class="cliente-layout">
+  <app-sidebar></app-sidebar>
+  <main class="cliente-content">
+    <div style="max-width: 42rem; margin-left: auto; margin-right: auto">
+      <div class="text-wrap">
+        <app-button
+          class="header-button"
+          variant="fab-secondary"
+          icon="arrow_back"
+          link="/client"
+        />
+        <div>
+          <h1 class="page-title">Pagamento do Serviço</h1>
+          <p class="page-subtitle">
+            Sua manutenção foi concluída. Efetue o pagamento para finalizar
+          </p>
+        </div>
+      </div>
+      <ng-container *ngIf="order$ | async as order; else loading">
+        <app-payment-card [order]="order"></app-payment-card>
+      </ng-container>
+
+      <ng-template #loading>
+        <p>Carregando solicitação...</p>
+      </ng-template>
+    </div>
+  </main>
+</div>

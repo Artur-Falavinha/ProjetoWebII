@@ -33,6 +33,7 @@ export class InputComponent {
   @Input() appearance: 'fill' | 'outline' = 'outline';
   @Input() errorMessages: { [key: string]: string } = {};
   @Input() mask: string | null = null;
+  @Input() hint: string | null = null;
 
   showPassword = false;
 

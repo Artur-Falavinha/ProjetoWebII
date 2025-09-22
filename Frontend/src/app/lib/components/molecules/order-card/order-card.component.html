@@ -7,17 +7,19 @@
     <app-tag [variant]="order.situation" />
   </mat-card-header>
   <mat-card-footer>
-    <p>Categoria: {{ order.category }}</p>
-    <span>Valor: {{ order.price }} </span>
-  </mat-card-footer>
-  <mat-card-actions>
-    @if (action) {
+    <div class="text-wrap">
+      <p>Categoria: {{ order.category }}</p>
+      <span>Valor: {{ order.price }} </span>
+    </div>
+    <mat-card-actions>
+      @if (action) {
       <app-button
         title="{{ action.title }}"
         link="{{ action.link }}"
         icon="{{ action.icon }}"
         [variant]="action.variant"
       />
-    }
-  </mat-card-actions>
+      }
+    </mat-card-actions>
+  </mat-card-footer>
 </mat-card>
