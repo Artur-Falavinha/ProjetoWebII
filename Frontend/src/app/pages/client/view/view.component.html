@@ -17,7 +17,10 @@
         </div>
       </div>
       <ng-container *ngIf="order$ | async as order; else loading">
-        <app-view-card [order]="order"></app-view-card>
+        <div class="card-wrap">
+          <app-view-card style="width: 100%;" [order]="order"></app-view-card>
+          <app-history-card style="width: 40%;" [history]="order.history!"></app-history-card>
+        </div>
       </ng-container>
 
       <ng-template #loading>

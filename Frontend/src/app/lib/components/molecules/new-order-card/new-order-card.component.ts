@@ -15,7 +15,6 @@ import {
   MatFormFieldControl,
   MatFormFieldModule,
 } from '@angular/material/form-field';
-import { Categoria } from '@/app/shared/models/categoria.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
@@ -58,6 +57,8 @@ export class NewOrderCardComponent implements OnInit {
   ngOnInit(): void {
     this.newOrderForm = this.fb.group({
       product: ['', [Validators.required, Validators.maxLength(100)]],
+      category: ['', [Validators.required]],
+      issue_description: ['', [Validators.required]],
     });
   }
 

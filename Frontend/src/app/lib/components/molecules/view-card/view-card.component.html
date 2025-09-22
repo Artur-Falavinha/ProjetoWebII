@@ -28,6 +28,7 @@
           </div>
         </div>
 
+        @if (order.atributed_employee) {
         <div class="detail-item">
           <mat-icon>build</mat-icon>
           <div class="detail-item" class="text-wrap">
@@ -35,6 +36,7 @@
             <span>{{ order.atributed_employee }}</span>
           </div>
         </div>
+        }
 
         <div class="detail-item">
           <mat-icon>person</mat-icon>
@@ -52,29 +54,28 @@
         <span>{{ order.issue_description }}</span>
       </div>
 
+      @if (order.fix_description) {
       <div class="separator"></div>
 
       <div class="issue-related-wrapper">
         <p>Descrição da manutenção</p>
         <span>{{ order.fix_description }}</span>
       </div>
-
+      } @if (order.orientation) {
       <div class="separator"></div>
 
       <div class="issue-related-wrapper">
-        <p>Descrição da manutenção</p>
-        <span>{{ order.fix_description }}</span>
+        <p>Orientações</p>
+        <span>{{ order.orientation }}</span>
       </div>
-
+      } @if (order.price) {
       <div class="separator"></div>
 
       <div class="box-padding">
-          <p>Valor aprovado</p>
-          <span>R$ {{ order.price }}</span>
-
+        <p>Valor aprovado</p>
+        <span>R$ {{ order.price }}</span>
       </div>
-
-      <div class="separator"></div>
+      }
     </mat-card-content>
   </ng-container>
   <ng-template #noOrder>

@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SidebarComponent, ButtonComponent } from '@/app/lib/components';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { QuoteCardComponent } from '@/app/lib/components/molecules/quote-card/quote-card.component';
 import { S } from '@angular/cdk/keycodes';
-import { delay, map, Observable, of, switchMap } from 'rxjs';
+import { delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { ViewCardComponent } from '@/app/lib/components/molecules/view-card/view-card.component';
+import { HistoryCardComponent } from '@/app/lib/components/molecules/history-card/history-card.component';
 
 @Component({
   selector: 'app-view',
@@ -15,35 +17,38 @@ import { AsyncPipe, NgIf } from '@angular/common';
     SidebarComponent,
     ButtonComponent,
     ViewCardComponent,
+    HistoryCardComponent,
   ],
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewComponent {
-  private items: OrderRequest[] = [
+  public items: OrderRequest[] = [
     {
       id: 1,
+      client: 'zé',
       product: 'Solicitação Aberta',
       order_date: '2025-09-18',
       situation: SituationEnum.ABERTA,
       category: 'Categoria 1',
-      price: 100.0,
       issue_description: 'Descrição da solicitação aberta.',
-      atributed_employee: 'zé',
+      history: [],
     },
     {
       id: 2,
+      client: 'zé',
       product: 'Solicitação Orcada',
       order_date: '2025-09-18',
       situation: SituationEnum.ORCADA,
       category: 'Categoria 2',
-      price: 200.0,
       issue_description: 'Descrição da solicitação orçada.',
       atributed_employee: 'zé',
+      price: 200.0,
     },
     {
       id: 3,
+      client: 'zé',
       product: 'Solicitação Rejeitada',
       order_date: '2025-09-18',
       situation: SituationEnum.REJEITADA,
@@ -53,6 +58,7 @@ export class ViewComponent {
     },
     {
       id: 4,
+      client: 'zé',
       product: 'Solicitação Aprovada',
       order_date: '2025-09-18',
       situation: SituationEnum.APROVADA,
@@ -62,6 +68,7 @@ export class ViewComponent {
     },
     {
       id: 5,
+      client: 'zé',
       product: 'Solicitação Redirecionada',
       order_date: '2025-09-18',
       situation: SituationEnum.REDIRECIONADA,
@@ -71,6 +78,7 @@ export class ViewComponent {
     },
     {
       id: 6,
+      client: 'zé',
       product: 'Solicitação Arrumada',
       order_date: '2025-09-18',
       situation: SituationEnum.ARRUMADA,
@@ -80,15 +88,25 @@ export class ViewComponent {
     },
     {
       id: 7,
+      client: 'zé',
       product: 'Solicitação Paga',
       order_date: '2025-09-18',
       situation: SituationEnum.PAGA,
       category: 'Categoria 7',
       price: 700.0,
       issue_description: 'Descrição da solicitação paga.',
+      history: [
+        {
+          action: SituationEnum.ABERTA,
+          date: '13/04/2024',
+          description: 'Solicitação enviada para análise',
+          time: '14h00',
+        },
+      ],
     },
     {
       id: 8,
+      client: 'zé',
       product: 'Solicitação Finalizada',
       order_date: '2025-09-18',
       situation: SituationEnum.FINALIZADA,
@@ -102,12 +120,29 @@ export class ViewComponent {
 
   order$!: Observable<OrderRequest | undefined>;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.order$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
       switchMap((id) =>
         of(this.items.find((v) => v.id === id)).pipe(delay(500))
-      )
+      ),
+      tap((order) => {
+        if (!order) {
+          this.router.navigate(['/client']);
+        }
+
+        if (
+          order &&
+          [
+            SituationEnum.ABERTA,
+            SituationEnum.PAGA,
+            SituationEnum.REDIRECIONADA,
+            SituationEnum.FINALIZADA,
+          ].includes(order.situation)
+        ) {
+          this.router.navigate(['/client']);
+        }
+      })
     );
   }
 }

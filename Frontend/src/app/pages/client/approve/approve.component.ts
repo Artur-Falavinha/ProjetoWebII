@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SidebarComponent, ButtonComponent } from '@/app/lib/components';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { RejectCardComponent } from '@/app/lib/components/molecules/reject-card/reject-card.component';
 import { S } from '@angular/cdk/keycodes';
-import { delay, map, Observable, of, switchMap } from 'rxjs';
+import { delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ApproveCardComponent } from '@/app/lib/components/molecules/approve-card/approve-card.component';
-import { OrderCardComponent } from "@/app/lib/components/molecules/history-card/history-card.component";
 
 @Component({
   selector: 'app-approve',
@@ -17,8 +16,7 @@ import { OrderCardComponent } from "@/app/lib/components/molecules/history-card/
     SidebarComponent,
     ButtonComponent,
     ApproveCardComponent,
-    OrderCardComponent
-],
+  ],
   templateUrl: './approve.component.html',
   styleUrl: './approve.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,6 +25,7 @@ export class ApproveComponent {
   private items: OrderRequest[] = [
     {
       id: 1,
+      client: 'zé',
       product: 'Solicitação Aberta',
       order_date: '2025-09-18',
       situation: SituationEnum.ABERTA,
@@ -37,6 +36,7 @@ export class ApproveComponent {
     },
     {
       id: 2,
+      client: 'zé',
       product: 'Solicitação Orcada',
       order_date: '2025-09-18',
       situation: SituationEnum.ORCADA,
@@ -47,6 +47,7 @@ export class ApproveComponent {
     },
     {
       id: 3,
+      client: 'zé',
       product: 'Solicitação Rejeitada',
       order_date: '2025-09-18',
       situation: SituationEnum.REJEITADA,
@@ -56,6 +57,7 @@ export class ApproveComponent {
     },
     {
       id: 4,
+      client: 'zé',
       product: 'Solicitação Aprovada',
       order_date: '2025-09-18',
       situation: SituationEnum.APROVADA,
@@ -65,6 +67,7 @@ export class ApproveComponent {
     },
     {
       id: 5,
+      client: 'zé',
       product: 'Solicitação Redirecionada',
       order_date: '2025-09-18',
       situation: SituationEnum.REDIRECIONADA,
@@ -74,6 +77,7 @@ export class ApproveComponent {
     },
     {
       id: 6,
+      client: 'zé',
       product: 'Solicitação Arrumada',
       order_date: '2025-09-18',
       situation: SituationEnum.ARRUMADA,
@@ -83,6 +87,7 @@ export class ApproveComponent {
     },
     {
       id: 7,
+      client: 'zé',
       product: 'Solicitação Paga',
       order_date: '2025-09-18',
       situation: SituationEnum.PAGA,
@@ -92,6 +97,7 @@ export class ApproveComponent {
     },
     {
       id: 8,
+      client: 'zé',
       product: 'Solicitação Finalizada',
       order_date: '2025-09-18',
       situation: SituationEnum.FINALIZADA,
@@ -105,12 +111,21 @@ export class ApproveComponent {
 
   order$!: Observable<OrderRequest | undefined>;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.order$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
       switchMap((id) =>
         of(this.items.find((v) => v.id === id)).pipe(delay(500))
-      )
+      ),
+      tap((order) => {
+        if (!order) {
+          this.router.navigate(['/client']);
+        }
+
+        if (order && order.situation !== SituationEnum.ORCADA) {
+          this.router.navigate(['/client']);
+        }
+      })
     );
   }
 }

@@ -1,0 +1,90 @@
+<mat-card class="app-approve-card" appearance="outlined">
+  <ng-container *ngIf="order; else noOrder">
+    <mat-card-header>
+      <div class="rounded-approve">
+        <mat-icon>check</mat-icon>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="title-text-wrap">
+        <p>Confirmar Aprovação</p>
+        <span>Seu equipamento foi reparado com sucesso</span>
+      </div>
+      <div class="details-box">
+        <div class="details-wrap">
+          <p>Equipamento</p>
+          <span>{{ order.product }}</span>
+        </div>
+        <div class="details-wrap">
+          <p>Técnico responsável</p>
+          <span>{{ order.atributed_employee }}</span>
+        </div>
+        <div class="details-wrap">
+          <p>Data da solicitação</p>
+          <span>{{ order.order_date }}</span>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <div>
+        <p>Serviço realizado</p>
+        <div class="details-box">
+          <p>{{ order.fix_description }}</p>
+        </div>
+      </div>
+
+      <div>
+        <p>Orientações</p>
+        <div class="information-box">
+          <p>{{ order.orientation }}</p>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="box-padding">
+        <div class="quote-box">
+          <mat-icon>attach_money</mat-icon>
+          <div class="quote-text-wrap">
+            <p>Valor do orçamento</p>
+            <span>R$ {{ order.price }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-box">
+        <div class="align-payment-method">
+          <mat-icon>payment_card</mat-icon>
+          <p>Método de pagamento</p>
+        </div>
+        <p
+          style="
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: var(--text-light-gray);
+          "
+        >
+          Este é um protótipo. Em um sistema real, aqui seria integrado com um
+          gateway de pagamento (cartão, PIX, boleto, etc.)
+        </p>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <app-button
+        style="width: 100%"
+        title="Enviar solicitação"
+        icon="send"
+        variant="primary"
+      />
+      <p>
+        Após o pagamento, você receberá uma confirmação e a solicitação será
+        finalizada.
+      </p>
+    </mat-card-footer>
+  </ng-container>
+  <ng-template #noOrder>
+    <p>a</p>
+  </ng-template>
+</mat-card>

@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SidebarComponent, ButtonComponent } from '@/app/lib/components';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { QuoteCardComponent } from '@/app/lib/components/molecules/quote-card/quote-card.component';
 import { S } from '@angular/cdk/keycodes';
-import { delay, map, Observable, of, switchMap } from 'rxjs';
+import { delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
@@ -21,9 +21,10 @@ import { AsyncPipe, NgIf } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteComponent {
-  private items: OrderRequest[] = [
+  public items: OrderRequest[] = [
     {
       id: 1,
+      client: 'zé',
       product: 'Solicitação Aberta',
       order_date: '2025-09-18',
       situation: SituationEnum.ABERTA,
@@ -34,6 +35,7 @@ export class QuoteComponent {
     },
     {
       id: 2,
+      client: 'zé',
       product: 'Solicitação Orcada',
       order_date: '2025-09-18',
       situation: SituationEnum.ORCADA,
@@ -44,6 +46,7 @@ export class QuoteComponent {
     },
     {
       id: 3,
+      client: 'zé',
       product: 'Solicitação Rejeitada',
       order_date: '2025-09-18',
       situation: SituationEnum.REJEITADA,
@@ -53,6 +56,7 @@ export class QuoteComponent {
     },
     {
       id: 4,
+      client: 'zé',
       product: 'Solicitação Aprovada',
       order_date: '2025-09-18',
       situation: SituationEnum.APROVADA,
@@ -62,6 +66,7 @@ export class QuoteComponent {
     },
     {
       id: 5,
+      client: 'zé',
       product: 'Solicitação Redirecionada',
       order_date: '2025-09-18',
       situation: SituationEnum.REDIRECIONADA,
@@ -71,6 +76,7 @@ export class QuoteComponent {
     },
     {
       id: 6,
+      client: 'zé',
       product: 'Solicitação Arrumada',
       order_date: '2025-09-18',
       situation: SituationEnum.ARRUMADA,
@@ -80,6 +86,7 @@ export class QuoteComponent {
     },
     {
       id: 7,
+      client: 'zé',
       product: 'Solicitação Paga',
       order_date: '2025-09-18',
       situation: SituationEnum.PAGA,
@@ -89,6 +96,7 @@ export class QuoteComponent {
     },
     {
       id: 8,
+      client: 'zé',
       product: 'Solicitação Finalizada',
       order_date: '2025-09-18',
       situation: SituationEnum.FINALIZADA,
@@ -102,12 +110,21 @@ export class QuoteComponent {
 
   order$!: Observable<OrderRequest | undefined>;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.order$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
       switchMap((id) =>
         of(this.items.find((v) => v.id === id)).pipe(delay(500))
-      )
+      ),
+      tap((order) => {
+        if (!order) {
+          this.router.navigate(['/client']);
+        }
+
+        if (order && order.situation !== SituationEnum.ORCADA) {
+          this.router.navigate(['/client']);
+        }
+      })
     );
   }
 }

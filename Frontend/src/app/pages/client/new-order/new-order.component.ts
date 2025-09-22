@@ -17,24 +17,29 @@ export class NewOrderComponent {
   public items: OrderRequest[] = [
     {
       id: 1,
+      client: 'zé',
       product: 'Solicitação Aberta',
       order_date: '2025-09-18',
       situation: SituationEnum.ABERTA,
       category: 'Categoria 1',
       price: 100.0,
       issue_description: 'Descrição da solicitação aberta.',
+      atributed_employee: 'zé',
     },
     {
       id: 2,
+      client: 'zé',
       product: 'Solicitação Orcada',
       order_date: '2025-09-18',
       situation: SituationEnum.ORCADA,
       category: 'Categoria 2',
       price: 200.0,
       issue_description: 'Descrição da solicitação orçada.',
+      atributed_employee: 'zé',
     },
     {
       id: 3,
+      client: 'zé',
       product: 'Solicitação Rejeitada',
       order_date: '2025-09-18',
       situation: SituationEnum.REJEITADA,
@@ -44,6 +49,7 @@ export class NewOrderComponent {
     },
     {
       id: 4,
+      client: 'zé',
       product: 'Solicitação Aprovada',
       order_date: '2025-09-18',
       situation: SituationEnum.APROVADA,
@@ -53,6 +59,7 @@ export class NewOrderComponent {
     },
     {
       id: 5,
+      client: 'zé',
       product: 'Solicitação Redirecionada',
       order_date: '2025-09-18',
       situation: SituationEnum.REDIRECIONADA,
@@ -62,6 +69,7 @@ export class NewOrderComponent {
     },
     {
       id: 6,
+      client: 'zé',
       product: 'Solicitação Arrumada',
       order_date: '2025-09-18',
       situation: SituationEnum.ARRUMADA,
@@ -71,6 +79,7 @@ export class NewOrderComponent {
     },
     {
       id: 7,
+      client: 'zé',
       product: 'Solicitação Paga',
       order_date: '2025-09-18',
       situation: SituationEnum.PAGA,
@@ -80,6 +89,7 @@ export class NewOrderComponent {
     },
     {
       id: 8,
+      client: 'zé',
       product: 'Solicitação Finalizada',
       order_date: '2025-09-18',
       situation: SituationEnum.FINALIZADA,

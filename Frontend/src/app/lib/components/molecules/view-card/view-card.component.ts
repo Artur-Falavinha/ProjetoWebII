@@ -15,12 +15,9 @@ import {
   MatFormFieldControl,
   MatFormFieldModule,
 } from '@angular/material/form-field';
-import { Categoria } from '@/app/shared/models/categoria.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import { SelectInputComponent } from '../select-input/select-input.component';
-import { TextAreaInputComponent } from '../text-area-input/text-area-input.component';
 import { OrderRequest } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
 
@@ -31,7 +28,6 @@ import { MatIcon } from '@angular/material/icon';
     CommonModule,
     RouterModule,
     MatCardModule,
-    ButtonComponent,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,

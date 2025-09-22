@@ -2,26 +2,25 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SidebarComponent, ButtonComponent } from '@/app/lib/components';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderRequest, SituationEnum } from '@/app/@types';
-import { RejectCardComponent } from '@/app/lib/components/molecules/reject-card/reject-card.component';
-import { S } from '@angular/cdk/keycodes';
 import { delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { PaymentCardComponent } from '@/app/lib/components/molecules/payment-card/payment-card.component';
 
 @Component({
-  selector: 'app-reject',
+  selector: 'app-payment',
   imports: [
     AsyncPipe,
     NgIf,
     SidebarComponent,
     ButtonComponent,
-    RejectCardComponent,
+    PaymentCardComponent,
   ],
-  templateUrl: './reject.component.html',
-  styleUrl: './reject.component.scss',
+  templateUrl: './payment.component.html',
+  styleUrl: './payment.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RejectComponent {
-  public items: OrderRequest[] = [
+export class PaymentComponent {
+  private items: OrderRequest[] = [
     {
       id: 1,
       client: 'zé',
@@ -121,7 +120,7 @@ export class RejectComponent {
           this.router.navigate(['/client']);
         }
 
-        if (order && order.situation !== SituationEnum.ORCADA) {
+        if (order && order.situation !== SituationEnum.ARRUMADA) {
           this.router.navigate(['/client']);
         }
       })

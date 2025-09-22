@@ -10,12 +10,14 @@
           link="/client"
         />
         <div>
-          <h1 class="page-title">Visualizar Solicitação</h1>
-          <p class="page-subtitle">Detalhes e histórico completo da solicitação</p>
+          <h1 class="page-title">Pagamento do Serviço</h1>
+          <p class="page-subtitle">
+            Sua manutenção foi concluída. Efetue o pagamento para finalizar
+          </p>
         </div>
       </div>
       <ng-container *ngIf="order$ | async as order; else loading">
-        <app-approve-card [order]="order"></app-approve-card>
+        <app-payment-card [order]="order"></app-payment-card>
       </ng-container>
 
       <ng-template #loading>

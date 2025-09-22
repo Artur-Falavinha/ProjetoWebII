@@ -24,7 +24,7 @@ export class OrderCardComponent {
       case SituationEnum.ARRUMADA:
         return {
           title: 'Pagar serviço',
-          link: `/orders/${this.order.id}`,
+          link: `/client/payment/${this.order.id}`,
           icon: 'visibility',
           variant: 'secondary' as ButtonVariant
         };
@@ -45,7 +45,7 @@ export class OrderCardComponent {
       default:
         return {
           title: 'Visualizar',
-          link: `/orders/${this.order.id}`,
+          link: `/client/view/${this.order.id}`,
           icon: 'info',
           variant: 'secondary' as ButtonVariant
         };

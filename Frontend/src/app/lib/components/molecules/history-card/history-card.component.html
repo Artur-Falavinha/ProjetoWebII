@@ -1,22 +1,26 @@
-<mat-card class="app-request-card" appearance="outlined">
+<mat-card class="app-history-card" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group>
-      <mat-card-title>{{ order.product }}</mat-card-title>
-      <mat-card-subtitle>{{ order.order_date }}</mat-card-subtitle>
+      <mat-card-title>Histórico</mat-card-title>
+      <mat-card-subtitle
+        >Acompanhe o progresso da sua solicitação</mat-card-subtitle
+      >
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content>
-    @for (item of history; track $index) {
-    <div>
-      <div>
-        <mat-icon>{{ get_situation_icon(item.action) }}</mat-icon>
+    @if (history) { @for (item of history; track $index) {
+    <div class="historic-item">
+      <div class="icon-box">
+        <mat-icon>{{ get_situation_icon(item.action)!.icon }}</mat-icon>
       </div>
-      <div>
-        <p></p>
-        <span></span>
-        <span></span>
+      <div class="text-wrap">
+        <p>
+          {{ get_situation_icon(item.action)!.action }}
+        </p>
+        <span style="margin-bottom: 4px;">{{ item.date }}</span>
+        <span>{{ item.description }}</span>
       </div>
     </div>
-    }
+    } }
   </mat-card-content>
 </mat-card>
