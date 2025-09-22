@@ -28,6 +28,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   isLoading = false;
+  tipoCadastro: 'CLIENT' | 'EMPLOYEE' = 'CLIENT';
   submitted = false;
 
   constructor(
@@ -64,6 +65,13 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  setTipoCadastro(tipo: 'CLIENT' | 'EMPLOYEE'): void {
+    this.tipoCadastro = tipo;
+    // Reset form when changing type to clear previous validations
+    this.registerForm.reset();
+    this.ngOnInit(); // Reinitialize form with correct validators
+  }
+
   consultarCep(): void {
     const cep = this.cepControl.value;
     if (cep && cep.replace(/\D/g, '').length === 8) {
@@ -89,7 +97,8 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
 
-    if (this.registerForm.invalid) {
+    if ((this.tipoCadastro === 'CLIENT' && this.registerForm.invalid) ||
+        (this.tipoCadastro === 'EMPLOYEE' && this.registerForm.get('dadosPessoais')?.invalid)) {
       this.registerForm.markAllAsTouched();
       return;
     }
@@ -99,15 +108,15 @@ export class RegisterComponent implements OnInit {
 
     const dadosNovoUsuario = {
       ...formValue.dadosPessoais,
-      endereco: formValue.endereco,
-      role: 'CLIENT', 
+      ...(this.tipoCadastro === 'CLIENT' ? { endereco: formValue.endereco } : {}),
+      perfil: this.tipoCadastro,
     };
 
     this.authService.register(dadosNovoUsuario).subscribe({
       next: (response) => {
         this.isLoading = false;
         alert(
-          `Cadastro de cliente realizado com sucesso!\n\n` +
+          `Cadastro de ${response.user.perfil.toLowerCase()} realizado com sucesso!\n\n` +
           `SENHA DE ACESSO: ${response.password}`
         );
         this.router.navigate(['/login']);
@@ -115,6 +124,7 @@ export class RegisterComponent implements OnInit {
       error: (err) => {
         this.isLoading = false;
         alert(`Erro no cadastro: ${err.message}`);
+        console.error(err);
       }
     });
   }
