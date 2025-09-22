@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SidebarComponent, ButtonComponent, OrderCardComponent } from '@/app/lib/components';
+import { SidebarComponent, OrderCardComponent } from '@/app/lib/components';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 
 @Component({
   selector: 'app-client',
-  imports: [SidebarComponent, ButtonComponent, OrderCardComponent],
+  imports: [SidebarComponent, OrderCardComponent],
   templateUrl: './client-home.component.html',
   styleUrl: './client-home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

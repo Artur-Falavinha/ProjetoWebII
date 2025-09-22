@@ -10,13 +10,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 
 import { AuthService } from '../../../lib/services/auth/auth.service';
+import { ButtonComponent } from '../../../lib/components/atoms/button/button.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, RouterModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule, MatIconModule, MatCardModule
+    MatInputModule, MatButtonModule, MatIconModule, MatCardModule,
+    ButtonComponent
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']

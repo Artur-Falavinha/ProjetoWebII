@@ -10,8 +10,16 @@
     </div>
 
     <div class="profile-selector">
-      <button mat-flat-button [color]="tipoCadastro === 'CLIENT' ? 'primary' : ''" (click)="setTipoCadastro('CLIENT')">Sou Cliente</button>
-      <button mat-flat-button [color]="tipoCadastro === 'EMPLOYEE' ? 'primary' : ''" (click)="setTipoCadastro('EMPLOYEE')">Sou Funcionário</button>
+      <app-button 
+        [title]="'Sou Cliente'"
+        [variant]="tipoCadastro === 'CLIENT' ? 'primary' : 'secondary'"
+        (click)="setTipoCadastro('CLIENT')">
+      </app-button>
+      <app-button 
+        [title]="'Sou Funcionário'"
+        [variant]="tipoCadastro === 'EMPLOYEE' ? 'primary' : 'secondary'"
+        (click)="setTipoCadastro('EMPLOYEE')">
+      </app-button>
     </div>
 
     <div class="card-body">
@@ -50,8 +58,19 @@
             </div>
             
             <div class="step-actions">
-              <button *ngIf="tipoCadastro === 'CLIENT'" mat-raised-button color="primary" matStepperNext>Continuar</button>
-              <button *ngIf="tipoCadastro === 'EMPLOYEE'" mat-raised-button color="primary" type="submit" [disabled]="registerForm.get('dadosPessoais')?.invalid">Finalizar Cadastro</button>
+              <app-button 
+                *ngIf="tipoCadastro === 'CLIENT'"
+                [title]="'Continuar'"
+                [variant]="'primary'"
+                [matStepperNext]="true">
+              </app-button>
+              <app-button 
+                *ngIf="tipoCadastro === 'EMPLOYEE'"
+                [title]="'Finalizar Cadastro'"
+                [variant]="'primary'"
+                [submit]="true"
+                [disabled]="!!registerForm.get('dadosPessoais')?.invalid">
+              </app-button>
             </div>
           </mat-step>
 
@@ -97,8 +116,17 @@
               </div>
               
               <div class="step-actions">
-                <button mat-button matStepperPrevious>Voltar</button>
-                <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Finalizar Cadastro</button>
+                <app-button 
+                  [title]="'Voltar'"
+                  [variant]="'secondary'"
+                  [matStepperPrevious]="true">
+                </app-button>
+                <app-button 
+                  [title]="'Finalizar Cadastro'"
+                  [variant]="'primary'"
+                  [submit]="true"
+                  [disabled]="!!registerForm.invalid">
+                </app-button>
               </div>
             </mat-step>
           </ng-container>

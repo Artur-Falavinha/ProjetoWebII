@@ -44,13 +44,35 @@ export class FuncionarioService {
       return { sucesso: false, erro: 'Este email já está cadastrado no sistema' };
     }
 
-    // Valida campos obrigatórios
-    if (!funcionario.nome || !funcionario.email || !funcionario.dataNascimento || !funcionario.senha) {
-      return { sucesso: false, erro: 'Todos os campos obrigatórios devem ser preenchidos' };
+    const funcionarios = this.listarTodas();
+    const isPrimeiroFuncionario = funcionarios.length === 0;
+
+    // Validações diferentes para o primeiro funcionário
+    if (isPrimeiroFuncionario) {
+      // Para o primeiro funcionário, apenas nome, email e senha são obrigatórios
+      if (!funcionario.nome || !funcionario.email || !funcionario.senha) {
+        return { sucesso: false, erro: 'Nome, email e senha são obrigatórios para o primeiro funcionário' };
+      }
+      
+      // Define data de admissão como data atual para o primeiro funcionário
+      const hoje = new Date();
+      const dia = hoje.getDate().toString().padStart(2, '0');
+      const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');
+      const ano = hoje.getFullYear();
+      funcionario.dataAdmissao = `${dia}/${mes}/${ano}`;
+      
+      // Define cargo padrão para o primeiro funcionário (Administrador)
+      funcionario.cargo = 'Administrador';
+      
+    } else {
+      // Para funcionários subsequentes, todos os campos são obrigatórios
+      if (!funcionario.nome || !funcionario.email || !funcionario.dataNascimento || !funcionario.senha || !funcionario.cargo || !funcionario.dataAdmissao) {
+        return { sucesso: false, erro: 'Todos os campos obrigatórios devem ser preenchidos' };
+      }
     }
 
-    const funcionarios = this.listarTodas();
-    if (funcionarios.length === 0) {
+    // Gera ID para o funcionário
+    if (isPrimeiroFuncionario) {
       funcionario.id = 1; 
     } else {
       const maxId = Math.max(...funcionarios.map(f => f.id));

@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { ButtonComponent } from '../../../lib/components/atoms/button/button.component';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,8 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
   imports: [
     CommonModule, ReactiveFormsModule, RouterModule, HttpClientModule,
     MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,
-    MatStepperModule, MatProgressSpinnerModule, NgxMaskDirective
+    MatStepperModule, MatProgressSpinnerModule, NgxMaskDirective,
+    ButtonComponent
   ],
   providers: [provideNgxMask()],
   templateUrl: './register.component.html',

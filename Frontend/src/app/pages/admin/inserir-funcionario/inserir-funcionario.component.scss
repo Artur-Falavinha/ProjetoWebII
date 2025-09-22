@@ -33,6 +33,22 @@
     color: #666;
     font-size: 14px;
   }
+
+  .primeiro-funcionario-info {
+    background: #e3f2fd;
+    border: 1px solid #2196f3;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 0 0 24px 0;
+    color: #1565c0;
+    font-size: 14px;
+    line-height: 1.5;
+
+    strong {
+      color: #0d47a1;
+      font-weight: 600;
+    }
+  }
 }
 
 .error-message {

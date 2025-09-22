@@ -6,7 +6,10 @@
     [type]="submit ? 'submit' : 'button'"
     [disabled]="disabled"
     [routerLink]="link"
-    class="app-button primary-button transition-colors"
+    (click)="onClick()"
+    [class]="'app-button primary-button transition-colors' + (!fullWidth ? ' fit-content' : '')"
+    [attr.matStepperNext]="matStepperNext ? '' : null"
+    [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -21,7 +24,10 @@
     [type]="submit ? 'submit' : 'button'"
     [disabled]="disabled"
     [routerLink]="link"
-    class="app-button secondary-button transition-colors"
+    (click)="onClick()"
+    [class]="'app-button secondary-button transition-colors' + (!fullWidth ? ' fit-content' : '')"
+    [attr.matStepperNext]="matStepperNext ? '' : null"
+    [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -36,7 +42,10 @@
     [type]="submit ? 'submit' : 'button'"
     [disabled]="disabled"
     [routerLink]="link"
-    class="app-button success-button transition-colors"
+    (click)="onClick()"
+    [class]="'app-button success-button transition-colors' + (!fullWidth ? ' fit-content' : '')"
+    [attr.matStepperNext]="matStepperNext ? '' : null"
+    [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -51,7 +60,10 @@
     [type]="submit ? 'submit' : 'button'"
     [disabled]="disabled"
     [routerLink]="link"
-    class="app-button destructive-button transition-colors"
+    (click)="onClick()"
+    [class]="'app-button destructive-button transition-colors' + (!fullWidth ? ' fit-content' : '')"
+    [attr.matStepperNext]="matStepperNext ? '' : null"
+    [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>

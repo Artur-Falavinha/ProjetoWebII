@@ -20,7 +20,7 @@
 .card-header {
   text-align: center;
   padding: 40px 32px 24px;
-  background: #3f51b5; 
+  background: hsl(var(--primary_color)); 
   color: white;
 
   h2 {
@@ -32,6 +32,18 @@
     margin: 0;
     opacity: 0.9;
     font-size: 14px;
+  }
+}
+
+.profile-selector {
+  display: flex;
+  gap: 8px;
+  padding: 20px 32px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+
+  app-button {
+    flex: 1;
   }
 }
 
@@ -69,13 +81,13 @@
   border-top: 1px solid #e0e0e0;
   p { margin: 0; color: #666; font-size: 14px; display: inline; }
   .back-link {
-    color: #3f51b5;
+    color: hsl(var(--primary_color));
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
     margin-left: 4px;
     transition: color 0.3s ease;
-    &:hover { color: #5c6bc0; text-decoration: underline; }
+    &:hover { color: hsl(var(--primary_color) / 0.8); text-decoration: underline; }
   }
 }
 
@@ -87,4 +99,36 @@
   align-items: center;
   justify-content: center;
   z-index: 10;
+}
+
+// Responsividade
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 10px;
+  }
+
+  .auth-card {
+    max-width: 100%;
+  }
+
+  .card-header {
+    padding: 32px 24px 20px;
+
+    h2 {
+      font-size: 24px;
+    }
+  }
+
+  .profile-selector {
+    padding: 16px 24px;
+    gap: 6px;
+  }
+
+  .step-content {
+    padding: 16px 8px 18px;
+  }
+
+  .card-footer {
+    padding: 20px 24px 28px;
+  }
 }

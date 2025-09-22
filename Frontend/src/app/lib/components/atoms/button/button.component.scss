@@ -1,16 +1,23 @@
 @use "@angular/material" as mat;
 
 .app-button {
-  width: fit-content;
+  width: 100%;
   border-radius: var(--4px);
+  
+  // Permite que o botão seja redimensionado quando necessário
+  &.fit-content {
+    width: fit-content;
+  }
 }
 
 .primary-button {
   background-color: hsl(var(--primary_color)) !important;
+  color: white !important;
 }
 
 .primary-button:hover {
   background-color: hsl(var(--primary_color) / 0.9) !important;
+  color: white !important;
 }
 
 .secondary-button {
@@ -22,7 +29,7 @@
 
 .secondary-button:hover {
   background-color: hsl(var(--primary_color)) !important;
-  color: var(--neutrals_light_100) !important;
+  color: white !important;
   border-color: hsl(var(--primary_color)) !important;
 }
 

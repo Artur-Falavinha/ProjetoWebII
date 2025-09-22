@@ -12,6 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { ButtonComponent } from '@/app/lib/components/atoms/button/button.component';
 
 @Component({
   selector: 'app-inserir-funcionario',
@@ -27,6 +28,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
             MatNativeDateModule,
             MatCheckboxModule,
             NgxMaskDirective,
+            ButtonComponent,
           ],
   providers: [provideNgxMask()],
   templateUrl: './inserir-funcionario.component.html',
@@ -59,6 +61,9 @@ export class InserirFuncionarioComponent {
   dataNascimentoDisplay: string = '';
   dataAdmissaoDisplay: string = '';
   
+  // Propriedade para detectar se é o primeiro funcionário
+  isPrimeiroFuncionario: boolean = false;
+  
   /**Opções para o select de cargo**/
   cargos = [
     'Técnico de Manutenção',
@@ -71,7 +76,15 @@ export class InserirFuncionarioComponent {
   constructor(
     private funcionarioService: FuncionarioService,
     private router: Router
-  ) { }
+  ) { 
+    // Verifica se é o primeiro funcionário do sistema
+    this.isPrimeiroFuncionario = this.funcionarioService.listarTodas().length === 0;
+    
+    // Se for o primeiro funcionário, define cargo padrão e desabilita campos opcionais
+    if (this.isPrimeiroFuncionario) {
+      this.funcionario.cargo = 'Administrador';
+    }
+  }
 
   /**Converte data DD/MM/YYYY para formato DD/MM/YYYY (mantém formato)**/
   convertDisplayToISO(displayDate: string): string {
@@ -95,6 +108,7 @@ export class InserirFuncionarioComponent {
 
   inserir(): void {
     console.log('=== DEBUG INSERIR FUNCIONÁRIO ===');
+    console.log('É primeiro funcionário:', this.isPrimeiroFuncionario);
     console.log('Form válido:', this.formFuncionario.form.valid);
     console.log('Data nascimento display:', this.dataNascimentoDisplay);
     console.log('Data admissão display:', this.dataAdmissaoDisplay);
@@ -107,58 +121,59 @@ export class InserirFuncionarioComponent {
     this.showErrorDataNascimento = false;
     this.showErrorDataAdmissao = false;
     
-    // Converte as datas do formato de exibição para ISO
-    this.funcionario.dataNascimento = this.convertDisplayToISO(this.dataNascimentoDisplay);
-    this.funcionario.dataAdmissao = this.convertDisplayToISO(this.dataAdmissaoDisplay);
+    // Converte as datas do formato de exibição para ISO (apenas se preenchidas)
+    if (this.dataNascimentoDisplay) {
+      this.funcionario.dataNascimento = this.convertDisplayToISO(this.dataNascimentoDisplay);
+    }
+    if (this.dataAdmissaoDisplay) {
+      this.funcionario.dataAdmissao = this.convertDisplayToISO(this.dataAdmissaoDisplay);
+    }
     
     console.log('Data nascimento convertida:', this.funcionario.dataNascimento);
     console.log('Data admissão convertida:', this.funcionario.dataAdmissao);
     
-    // Validações manuais para os campos de data
-    if (!this.dataNascimentoDisplay || (this.dataNascimentoDisplay.length !== 8 && this.dataNascimentoDisplay.length !== 10)) {
-      this.erroDataNascimento = 'A data de nascimento é obrigatória e deve estar no formato DD/MM/AAAA.';
-      this.showErrorDataNascimento = true;
-      console.log('Erro data nascimento:', this.erroDataNascimento);
-    }
-    
-    if (!this.dataAdmissaoDisplay || (this.dataAdmissaoDisplay.length !== 8 && this.dataAdmissaoDisplay.length !== 10)) {
-      this.erroDataAdmissao = 'A data de admissão é obrigatória e deve estar no formato DD/MM/AAAA.';
-      this.showErrorDataAdmissao = true;
-      console.log('Erro data admissão:', this.erroDataAdmissao);
-    }
-    
-    // Verifica se há erros de validação
-    if (this.showErrorDataNascimento || this.showErrorDataAdmissao) {
-      console.log('Retornando por erro de validação');
-      return;
+    // Validações diferentes para primeiro funcionário vs funcionários subsequentes
+    if (this.isPrimeiroFuncionario) {
+      // Para o primeiro funcionário, apenas nome, email e senha são obrigatórios
+      if (!this.funcionario.nome || !this.funcionario.email || !this.funcionario.senha) {
+        this.erroGeral = 'Nome, email e senha são obrigatórios para o primeiro funcionário.';
+        console.log('Erro primeiro funcionário:', this.erroGeral);
+        return;
+      }
+    } else {
+      // Para funcionários subsequentes, validações normais
+      if (!this.dataNascimentoDisplay || (this.dataNascimentoDisplay.length !== 8 && this.dataNascimentoDisplay.length !== 10)) {
+        this.erroDataNascimento = 'A data de nascimento é obrigatória e deve estar no formato DD/MM/AAAA.';
+        this.showErrorDataNascimento = true;
+        console.log('Erro data nascimento:', this.erroDataNascimento);
+      }
+      
+      if (!this.dataAdmissaoDisplay || (this.dataAdmissaoDisplay.length !== 8 && this.dataAdmissaoDisplay.length !== 10)) {
+        this.erroDataAdmissao = 'A data de admissão é obrigatória e deve estar no formato DD/MM/AAAA.';
+        this.showErrorDataAdmissao = true;
+        console.log('Erro data admissão:', this.erroDataAdmissao);
+      }
+      
+      // Verifica se há erros de validação
+      if (this.showErrorDataNascimento || this.showErrorDataAdmissao) {
+        console.log('Retornando por erro de validação');
+        return;
+      }
     }
     
     console.log('Funcionário final:', this.funcionario);
     
-    // Validação simplificada para teste
-    if (this.funcionario.nome && this.funcionario.email && this.funcionario.dataNascimento && this.funcionario.dataAdmissao && this.funcionario.senha && this.funcionario.cargo) {
-      console.log('Chamando serviço para inserir...');
-      const resultado = this.funcionarioService.inserir(this.funcionario);
-      console.log('Resultado do serviço:', resultado);
-      
-      if (resultado.sucesso) {
-        console.log('Sucesso! Fechando modal...');
-        this.close.emit();
-      } else {
-        this.erroGeral = resultado.erro || 'Erro ao inserir funcionário';
-        console.log('Erro:', this.erroGeral);
-      }
+    // Chama o serviço para inserir (o serviço já tem as validações específicas)
+    console.log('Chamando serviço para inserir...');
+    const resultado = this.funcionarioService.inserir(this.funcionario);
+    console.log('Resultado do serviço:', resultado);
+    
+    if (resultado.sucesso) {
+      console.log('Sucesso! Fechando modal...');
+      this.close.emit();
     } else {
-      this.erroGeral = 'Por favor, preencha todos os campos obrigatórios corretamente.';
-      console.log('Formulário inválido:', this.erroGeral);
-      console.log('Campos obrigatórios:', {
-        nome: this.funcionario.nome,
-        email: this.funcionario.email,
-        dataNascimento: this.funcionario.dataNascimento,
-        dataAdmissao: this.funcionario.dataAdmissao,
-        senha: this.funcionario.senha,
-        cargo: this.funcionario.cargo
-      });
+      this.erroGeral = resultado.erro || 'Erro ao inserir funcionário';
+      console.log('Erro:', this.erroGeral);
     }
   }
 

@@ -76,6 +76,27 @@ export class AuthService {
     usuarios.push(novoUsuario);
     localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
+    // Se for funcionário, também salva na chave de funcionários para aparecer na aba de funcionários
+    if (userData.perfil === 'EMPLOYEE') {
+      const funcionarios = JSON.parse(localStorage.getItem('funcionarios') || '[]');
+      
+      // Converte os dados do usuário para o formato esperado pelo FuncionarioService
+      const funcionarioData = {
+        id: novoUsuario.id || new Date().getTime(),
+        nome: novoUsuario.nome,
+        email: novoUsuario.email,
+        cpf: novoUsuario.cpf,
+        telefone: novoUsuario.telefone,
+        dataNascimento: novoUsuario.dataNascimento || '',
+        cargo: 'Administrador', // Primeiro funcionário sempre é administrador
+        dataAdmissao: new Date().toLocaleDateString('pt-BR'),
+        ativo: true
+      };
+
+      funcionarios.push(funcionarioData);
+      localStorage.setItem('funcionarios', JSON.stringify(funcionarios));
+    }
+
     return of({ user: novoUsuario, password: senhaAleatoria });
   }
 

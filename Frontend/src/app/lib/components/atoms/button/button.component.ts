@@ -19,5 +19,12 @@ export class ButtonComponent {
   @Input() disabled?: boolean;
   @Input() submit?: boolean;
   @Input() variant: ButtonVariant = 'primary';
+  @Input() matStepperNext?: boolean;
+  @Input() matStepperPrevious?: boolean;
+  @Input() fullWidth: boolean = true;
+  @Output() click = new EventEmitter<void>();
 
+  onClick(): void {
+    this.click.emit();
+  }
 }
