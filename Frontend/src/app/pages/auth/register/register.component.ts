@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../lib/services/auth/auth.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,8 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-import { AuthService } from '../../../lib/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +26,6 @@ import { AuthService } from '../../../lib/services/auth/auth.service';
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   isLoading = false;
-  tipoCadastro: 'CLIENT' | 'EMPLOYEE' = 'CLIENT';
   submitted = false;
 
   constructor(
@@ -64,16 +62,6 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  setTipoCadastro(tipo: 'CLIENT' | 'EMPLOYEE'): void {
-    this.tipoCadastro = tipo;
-    const enderecoGroup = this.registerForm.get('endereco');
-    if (tipo === 'EMPLOYEE') {
-      enderecoGroup?.disable();
-    } else {
-      enderecoGroup?.enable();
-    }
-  }
-
   consultarCep(): void {
     const cep = this.cepControl.value;
     if (cep && cep.replace(/\D/g, '').length === 8) {
@@ -87,7 +75,8 @@ export class RegisterComponent implements OnInit {
               logradouro: dados.logradouro,
               bairro: dados.bairro,
               cidade: dados.localidade,
-              estado: dados.uf
+              estado: dados.uf,
+              complemento: dados.complemento
             });
           }
           this.isLoading = false;
@@ -98,8 +87,7 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
 
-    if ((this.tipoCadastro === 'CLIENT' && this.registerForm.invalid) ||
-        (this.tipoCadastro === 'EMPLOYEE' && this.registerForm.get('dadosPessoais')?.invalid)) {
+    if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
     }
@@ -109,15 +97,15 @@ export class RegisterComponent implements OnInit {
 
     const dadosNovoUsuario = {
       ...formValue.dadosPessoais,
-      ...(this.tipoCadastro === 'CLIENT' ? { endereco: formValue.endereco } : {}),
-      perfil: this.tipoCadastro,
+      endereco: formValue.endereco,
+      role: 'CLIENT', 
     };
 
     this.authService.register(dadosNovoUsuario).subscribe({
       next: (response) => {
         this.isLoading = false;
         alert(
-          `Cadastro de ${response.user.perfil.toLowerCase()} realizado com sucesso!\n\n` +
+          `Cadastro de cliente realizado com sucesso!\n\n` +
           `SENHA DE ACESSO: ${response.password}`
         );
         this.router.navigate(['/login']);

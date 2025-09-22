@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '../lib/guards/auth/auth.guard';
+import { employeeGuard } from '../lib/guards/auth/employee.guard';
 import {
   LoginComponent,
   RegisterComponent,
@@ -15,14 +17,11 @@ import {
 
 // Configurar AuthGuard
 export const routes: Routes = [
+  // Rotas Públicas
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full',  
-  },
-  {
-    path: 'client',
-    component: ClientHomeComponent,
+    pathMatch: 'full',  
   },
   {
     path: 'login',
@@ -32,41 +31,50 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
-  // {
-  //   path: 'solicitacao',
-  //   component: SolicitacaoManutencaoComponent,
-  // },
+
+  {
+    path: 'client',
+    component: ClientHomeComponent,
+    canActivate: [authGuard] 
+  },
+  
   {
     path: 'admin',
     component: FuncionarioComponent,
+    canActivate: [authGuard, employeeGuard]
   },
   {
     path: 'admin/solicitacoes',
     component: ListarSolicitacoesComponent,
+    canActivate: [authGuard, employeeGuard]
   },
   {
     path: 'admin/orcamento/:id',
     component: EfetuarOrcamentoComponent,
+    canActivate: [authGuard, employeeGuard] 
   },
   {
     path: 'admin/categorias',
     component: ListarCategoriaComponent,
+    canActivate: [authGuard, employeeGuard]
   },
   {
     path: 'admin/funcionarios',
     component: ListarFuncionarioComponent,
+    canActivate: [authGuard, employeeGuard] 
   },
   {
     path: 'admin/funcionarios/new',
     component: InserirFuncionarioComponent,
+    canActivate: [authGuard, employeeGuard]
   },
   {
     path: 'admin/relatorios',
     component: FuncionarioComponent,
+    canActivate: [authGuard, employeeGuard] 
   },
   
   {
-    // TODO: Pág. 404
     path: '**',
     redirectTo: 'login',
   },
