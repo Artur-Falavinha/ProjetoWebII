@@ -1,0 +1,103 @@
+<div class="solicitacoes-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="auth-card">
+    <div class="card-header">
+      <div>
+        <h2>Todas as solicitações</h2>
+        <p>Gerencie todas as solicitações de manutenção</p>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="solicitacoes-list" *ngIf="solicitacoes.length > 0">
+        <app-solicitacao-card
+          *ngFor="let solicitacao of solicitacoes"
+          [solicitacao]="solicitacao"
+          (verDetalhes)="verDetalhes($event)"
+          (efetuarOrcamento)="efetuarOrcamento($event)">
+        </app-solicitacao-card>
+      </div>
+
+      <div class="empty-state" *ngIf="solicitacoes.length === 0">
+        <mat-icon class="empty-icon">inbox</mat-icon>
+        <h3>Não há solicitações</h3>
+        <p>Nenhuma solicitação foi encontrada no sistema.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Detalhes da Solicitação -->
+<div class="modal" *ngIf="modalAberto">
+  <div class="modal-content">
+    
+    <h2>Detalhes da Solicitação</h2>
+    <p>Visualize as informações completas da solicitação</p>
+
+    <div *ngIf="solicitacaoSelecionada" class="solicitacao-details">
+      
+      <!-- Equipamento -->
+      <div class="detail-item">
+        <label>Equipamento:</label>
+        <span>{{ solicitacaoSelecionada.equipamento }}</span>
+      </div>
+
+      <!-- Categoria -->
+      <div class="detail-item">
+        <label>Categoria:</label>
+        <span>{{ solicitacaoSelecionada.categoria }}</span>
+      </div>
+
+      <!-- Cliente -->
+      <div class="detail-item">
+        <label>Cliente:</label>
+        <span>{{ solicitacaoSelecionada.cliente }}</span>
+      </div>
+
+      <!-- Email do Cliente -->
+      <div class="detail-item">
+        <label>Email:</label>
+        <span>{{ solicitacaoSelecionada.clienteEmail }}</span>
+      </div>
+
+      <!-- Data/Hora -->
+      <div class="detail-item">
+        <label>Data/Hora:</label>
+        <span>{{ solicitacaoSelecionada.dataHora }}</span>
+      </div>
+
+      <!-- Status -->
+      <div class="detail-item">
+        <label>Status:</label>
+        <span class="status-badge" [class]="getStatusClass(solicitacaoSelecionada.status)">
+          {{ getStatusText(solicitacaoSelecionada.status) }}
+        </span>
+      </div>
+
+      <!-- Descrição do Problema -->
+      <div class="detail-item full-width">
+        <label>Problema Relatado:</label>
+        <div class="description-box">
+          {{ solicitacaoSelecionada.descricaoProblema }}
+        </div>
+      </div>
+
+      <!-- Observações (se houver) -->
+      <div class="detail-item full-width" *ngIf="solicitacaoSelecionada.observacoes">
+        <label>Observações:</label>
+        <div class="description-box">
+          {{ solicitacaoSelecionada.observacoes }}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button mat-button type="button" (click)="fecharModal()">Fechar</button>
+      <button mat-raised-button color="primary" type="button" (click)="efetuarOrcamento(solicitacaoSelecionada!)">
+        Efetuar Orçamento
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { Component, ViewChild, EventEmitter, Output, Input, Inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Categoria } from '@/app/shared/models/categoria.model';
+import { CategoriaRequest } from '@/app/@types';
 import { CategoriaService } from '@/app/lib/services/categoria/categoria.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -28,12 +28,12 @@ export class EditarCategoriaComponent {
 
   @Output() close = new EventEmitter<void>();
   @ViewChild('formCategoria') formCategoria!: NgForm;
-  categoria: Categoria;
+  categoria: CategoriaRequest;
 
   constructor(
     private categoriaService: CategoriaService,
     private router: Router,
-    @Inject(MAT_DIALOG_DATA) public data: Categoria 
+    @Inject(MAT_DIALOG_DATA) public data: CategoriaRequest 
   ) {
     this.categoria = { ...data };
   }

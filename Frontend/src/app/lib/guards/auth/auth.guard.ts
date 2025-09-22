@@ -1,21 +1,28 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
-import { AuthService } from '@/app/lib/services';
-import { Router } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  // Permitir acesso à rota /cliente para visualizar a sidebar
-  if (state.url === '/client') {
-    return true;
-  }
-
-  if (authService.checkAuthStatus()) {
-    return true;
-  } else {
-    // Redireciona para login se não autenticado
+  // Verificar se está autenticado
+  if (!authService.checkAuthStatus()) {
     return router.createUrlTree(['/login']);
   }
+
+  const currentUser = authService.getCurrentUser();
+  
+  // Se é funcionário (EMPLOYEE) tentando acessar /client, redireciona para /admin
+  if (currentUser?.role === 'EMPLOYEE' && state.url === '/client') {
+    return router.createUrlTree(['/admin']);
+  }
+
+  // Se é cliente (CLIENT) tentando acessar rotas admin, redireciona para /client
+  if (currentUser?.role === 'CLIENT' && state.url.startsWith('/admin')) {
+    return router.createUrlTree(['/client']);
+  }
+
+  // Permitir acesso para outros casos
+  return true;
 };

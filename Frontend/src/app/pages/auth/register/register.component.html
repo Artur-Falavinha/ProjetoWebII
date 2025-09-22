@@ -35,14 +35,14 @@
 
               <mat-form-field appearance="outline">
                 <mat-label>CPF</mat-label>
-                <input matInput formControlName="cpf" placeholder="Digite 11 números">
+                <input matInput formControlName="cpf" placeholder="000.000.000-00" mask="000.000.000-00">
                 <mat-error *ngIf="submitted && cpfControl?.hasError('required')">CPF é obrigatório.</mat-error>
                 <mat-error *ngIf="submitted && cpfControl?.hasError('pattern')">CPF deve conter 11 dígitos.</mat-error>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>Telefone</mat-label>
-                <input matInput formControlName="telefone" placeholder="DDD + 8 ou 9 números">
+                <input matInput formControlName="telefone" placeholder="(00) 0000-0000 ou (00) 00000-0000" mask="(00) 0000-0000||(00) 00000-0000">
                 <mat-error *ngIf="submitted && telefoneControl?.hasError('required')">Telefone é obrigatório.</mat-error>
                 <mat-error *ngIf="submitted && telefoneControl?.hasError('pattern')">Telefone deve conter 10 ou 11 dígitos.</mat-error>
               </mat-form-field>
@@ -61,7 +61,7 @@
                 
                 <mat-form-field appearance="outline">
                   <mat-label>CEP</mat-label>
-                  <input matInput formControlName="cep" placeholder="Digite 8 números" (blur)="consultarCep()">
+                  <input matInput formControlName="cep" placeholder="00000-000" mask="00000-000" (blur)="consultarCep()">
                   <mat-error *ngIf="submitted && cepControl?.hasError('required')">CEP é obrigatório.</mat-error>
                   <mat-error *ngIf="submitted && cepControl?.hasError('pattern')">CEP deve conter 8 dígitos.</mat-error>
                 </mat-form-field>

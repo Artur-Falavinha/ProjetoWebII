@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Categoria } from '@/app/shared/models/categoria.model';
+import { CategoriaRequest } from '@/app/@types';
 
 const LS_CHAVE = 'categorias';
 
@@ -7,14 +7,14 @@ const LS_CHAVE = 'categorias';
   providedIn: 'root',
 })
 export class CategoriaService {
-  constructor() {}
+  constructor() { }
 
-  listarTodas(): Categoria[] {
+  listarTodas() : CategoriaRequest[] {
     const categorias = localStorage[LS_CHAVE];
     return categorias ? JSON.parse(categorias) : [];
   }
 
-  inserir(categoria: Categoria): void {
+  inserir(categoria: CategoriaRequest): void {
     const categorias = this.listarTodas();
     if (categorias.length === 0) {
       categoria.id = 1;
@@ -26,12 +26,12 @@ export class CategoriaService {
     localStorage.setItem(LS_CHAVE, JSON.stringify(categorias));
   }
 
-  buscaPorId(id: number): Categoria | undefined {
+  buscaPorId(id: number): CategoriaRequest | undefined {
     const categorias = this.listarTodas();
     return categorias.find((categoria) => categoria.id === id);
   }
-
-  atualizar(categoria: Categoria): void {
+  
+  atualizar(categoria: CategoriaRequest): void {       
     const categorias = this.listarTodas();
     categorias.forEach((obj, index, objs) => {
       if (categoria.id === obj.id) {

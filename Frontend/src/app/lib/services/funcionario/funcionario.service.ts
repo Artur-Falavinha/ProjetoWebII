@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Funcionario } from '@/app/shared/models/funcionario.model';
+import { FuncionarioRequest } from '@/app/@types';
 
 const LS_CHAVE = "funcionarios";
 
@@ -10,7 +10,7 @@ export class FuncionarioService {
 
   constructor() { }
 
-  listarTodas() : Funcionario[] {
+  listarTodas() : FuncionarioRequest[] {
     const funcionarios = localStorage[LS_CHAVE];
     return funcionarios ? JSON.parse(funcionarios) : [];     
   } 
@@ -38,7 +38,7 @@ export class FuncionarioService {
     return { pode: true };
   }
 
-  inserir(funcionario: Funcionario): { sucesso: boolean; erro?: string } {
+  inserir(funcionario: FuncionarioRequest): { sucesso: boolean; erro?: string } {
     // Valida email único
     if (this.emailExiste(funcionario.email)) {
       return { sucesso: false, erro: 'Este email já está cadastrado no sistema' };
@@ -62,12 +62,12 @@ export class FuncionarioService {
     return { sucesso: true };
   }
 
-  buscaPorId(id: number): Funcionario | undefined {
+  buscaPorId(id: number): FuncionarioRequest | undefined {
     const funcionarios = this.listarTodas();
      return funcionarios.find(funcionario => funcionario.id === id);
   }
   
-  atualizar(funcionario: Funcionario): { sucesso: boolean; erro?: string } {
+  atualizar(funcionario: FuncionarioRequest): { sucesso: boolean; erro?: string } {
     // Valida email único (excluindo o próprio funcionário)
     if (this.emailExiste(funcionario.email, funcionario.id)) {
       return { sucesso: false, erro: 'Este email já está cadastrado no sistema' };
@@ -103,7 +103,7 @@ export class FuncionarioService {
   }
 
   /**Busca funcionário por email para login**/
-  buscaPorEmail(email: string): Funcionario | undefined {
+  buscaPorEmail(email: string): FuncionarioRequest | undefined {
     const funcionarios = this.listarTodas();
     return funcionarios.find(funcionario => funcionario.email === email);
   }

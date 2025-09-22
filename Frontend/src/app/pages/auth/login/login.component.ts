@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
           
           const userRole = authState.user?.role;
 
-          if (userRole === 'EMPLOYEE' || userRole === 'ADMIN') {
+          if (userRole === 'EMPLOYEE') {
             this.router.navigate(['/admin']);
           } else {
             this.router.navigate(['/client']);

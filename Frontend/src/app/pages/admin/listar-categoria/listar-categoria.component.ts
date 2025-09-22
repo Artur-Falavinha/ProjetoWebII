@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SidebarComponent } from '@/app/lib/components/organisms/sidebar/sidebar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { CategoriaService } from '@/app/lib/services/categoria/categoria.service';
-import { Categoria } from '@/app/shared/models/categoria.model';
+import { CategoriaRequest } from '@/app/@types';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { EditarCategoriaComponent } from '../editar-categoria/editar-categoria.c
   styleUrl: './listar-categoria.component.scss'
 })
 export class ListarCategoriaComponent implements OnInit {
-  categorias: Categoria[] = [];
+  categorias: CategoriaRequest[] = [];
 
   constructor(
     private categoriaService: CategoriaService,
@@ -28,7 +28,7 @@ export class ListarCategoriaComponent implements OnInit {
     this.categorias = this.listarTodas();
   }
 
-  listarTodas(): Categoria[] {
+  listarTodas(): CategoriaRequest[] {
     return this.categoriaService.listarTodas();
   }
 
@@ -44,7 +44,7 @@ export class ListarCategoriaComponent implements OnInit {
     });
   }
 
-  abrirModalEditar(categoria: Categoria): void {
+  abrirModalEditar(categoria: CategoriaRequest): void {
     const dialogRef = this.dialog.open(EditarCategoriaComponent, {
       width: '400px',
       data: categoria
@@ -57,7 +57,7 @@ export class ListarCategoriaComponent implements OnInit {
     });
   }
 
-  remover($event: any, categoria: Categoria): void {
+  remover($event: any, categoria: CategoriaRequest): void {
     $event.preventDefault();
     if(confirm(`Deseja remover a categoria ${categoria.nome}?`)){
       this.categoriaService.remover(categoria.id!);

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../lib/services/auth/auth.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,8 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-import { AuthService } from '../../../lib/services/auth/auth.service';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-register',
@@ -19,8 +19,9 @@ import { AuthService } from '../../../lib/services/auth/auth.service';
   imports: [
     CommonModule, ReactiveFormsModule, RouterModule, HttpClientModule,
     MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,
-    MatStepperModule, MatProgressSpinnerModule
+    MatStepperModule, MatProgressSpinnerModule, NgxMaskDirective
   ],
+  providers: [provideNgxMask()],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
@@ -66,12 +67,9 @@ export class RegisterComponent implements OnInit {
 
   setTipoCadastro(tipo: 'CLIENT' | 'EMPLOYEE'): void {
     this.tipoCadastro = tipo;
-    const enderecoGroup = this.registerForm.get('endereco');
-    if (tipo === 'EMPLOYEE') {
-      enderecoGroup?.disable();
-    } else {
-      enderecoGroup?.enable();
-    }
+    // Reset form when changing type to clear previous validations
+    this.registerForm.reset();
+    this.ngOnInit(); // Reinitialize form with correct validators
   }
 
   consultarCep(): void {
@@ -87,7 +85,8 @@ export class RegisterComponent implements OnInit {
               logradouro: dados.logradouro,
               bairro: dados.bairro,
               cidade: dados.localidade,
-              estado: dados.uf
+              estado: dados.uf,
+              complemento: dados.complemento
             });
           }
           this.isLoading = false;
@@ -125,6 +124,7 @@ export class RegisterComponent implements OnInit {
       error: (err) => {
         this.isLoading = false;
         alert(`Erro no cadastro: ${err.message}`);
+        console.error(err);
       }
     });
   }

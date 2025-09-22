@@ -1,4 +1,4 @@
-.funcionario-layout {
+.solicitacoes-layout {
   display: flex;
   min-height: 100vh;
 }
@@ -16,11 +16,10 @@
   justify-content: space-between;
   align-items: center;
   background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
 
   h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: 25px;
     font-weight: 600;
     color: #111827;
     letter-spacing: 0.5px;
@@ -28,43 +27,14 @@
 
   p {
     margin: 4px 0 0;
-    font-size: 14px;
+    font-size: 16px;
     color: #6b7280;
     letter-spacing: 0.5px;
   }
 }
 
-
-// Seção de estatísticas
-.stats-section {
-  padding: 24px 24px 0 24px;
-  margin-bottom: 24px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-// Seção de solicitações
-.solicitacoes-section {
-  padding: 0 24px 24px 24px;
-
-  h2 {
-    margin: 0 0 16px 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #111827;
-    letter-spacing: 0.5px;
-  }
-
-  p {
-    margin: 0 0 20px 0;
-    font-size: 14px;
-    color: #6b7280;
-  }
+.card-body {
+  padding: 24px;
 }
 
 .solicitacoes-list {
@@ -73,86 +43,29 @@
   gap: 16px;
 }
 
-.solicitacoes-list .solicitacao-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32px 20px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  background: white;
-
-  .solicitacao-info {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    line-height: 1.5;
-
-    .icon-box {
-      background: #eff6ff;
-      color: #2563eb;
-      padding: 8px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 4px;
-    }
-
-    .solicitacao-details {
-      flex: 1;
-
-      h3 {
-        margin: 0 0 12px 0;
-        font-size: 16px;
-        font-weight: 500;
-        color: #111827;
-      }
-
-      .details-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 20px;
-      }
-
-      .detail-column {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-
-        p {
-          margin: 0;
-          font-size: 13px;
-          color: #6b7280;
-        }
-      }
-    }
-  }
-
-  .solicitacao-actions {
-    margin-left: 16px;
-  }
+.mat-card {
+  background-color: white;
 }
 
 // Estado vazio
 .empty-state {
   text-align: center;
-  padding: 40px 20px;
+  padding: 60px 20px;
   background: white;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #e5e7eb;
   
   .empty-icon {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
     color: #6b7280;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
   
   h3 {
-    margin: 0 0 6px 0;
-    font-size: 15px;
+    margin: 0 0 8px 0;
+    font-size: 16px;
     font-weight: 500;
     color: #111827;
   }
@@ -161,49 +74,6 @@
     margin: 0;
     font-size: 13px;
     color: #6b7280;
-  }
-}
-
-// Responsividade
-@media (max-width: 768px) {
-  .stats-section {
-    padding: 16px 16px 0 16px;
-  }
-  
-  .solicitacoes-section {
-    padding: 0 16px 16px 16px;
-  }
-  
-  .card-header {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-    padding: 16px;
-  }
-  
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .solicitacao-item {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-
-    .solicitacao-info {
-      .solicitacao-details {
-        .details-grid {
-          grid-template-columns: 1fr;
-          gap: 12px;
-        }
-      }
-    }
-
-    .solicitacao-actions {
-      margin-left: 0;
-      align-self: flex-end;
-    }
   }
 }
 
@@ -327,8 +197,7 @@
 
 // Responsividade
 @media (max-width: 768px) {
-  .modal-content {
-    width: 95%;
+  .card-body {
     padding: 16px;
   }
 
@@ -343,5 +212,10 @@
     button {
       width: 100%;
     }
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 16px;
   }
 }

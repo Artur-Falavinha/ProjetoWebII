@@ -1,0 +1,193 @@
+.orcamento-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+//header 
+.auth-card {
+  width: 100%;
+  background: #f9fafb;
+  overflow: hidden;
+  padding-left: 20px;
+}
+
+.card-header-top {
+  padding: 12px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: white;
+
+  h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: #374151;
+  }
+}
+
+// Título da página
+.card-header {
+  margin: 1.5rem 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  button {
+    border-radius: 50%;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 600;
+    color: #111827;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 15px;
+    color: #6b7280;
+  }
+
+  .btn-primary {
+    color: black;
+    border: 2px ;
+    padding: 6px 15px;
+    font-size: 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: inline-flex;      
+    align-items: center;      
+    gap: 8px;   
+
+    &:hover {
+      background: #1e40af;
+      color: white;
+    }
+  }
+}
+
+// Cards de seção
+.section-card {
+  background: #fff;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
+  h3 {
+    margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1f2937;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      mat-icon {
+        color: #3f51b5;
+      }
+
+      strong {
+        display: block;
+        font-size: 0.9rem;
+        color: #111827;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .problema-box {
+    background: #f3f4f6;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 0.9rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  small {
+    display: block;
+    margin-top: 0.5rem;
+    color: #6b7280;
+    font-size: 0.8rem;
+  }
+
+  &.info-box {
+    background: #e8f0fe;
+
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: #374151;
+      font-size: 0.85rem;
+
+      li {
+        margin-bottom: 0.4rem;
+      }
+    }
+  }
+}
+
+// Área de ações
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  button {
+    min-width: 140px;
+    font-weight: 500; 
+    
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .orcamento-layout {
+    flex-direction: column;
+  }
+
+  app-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .auth-card {
+    padding: 1rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    button {
+      margin-bottom: 1rem;
+    }
+  }
+}

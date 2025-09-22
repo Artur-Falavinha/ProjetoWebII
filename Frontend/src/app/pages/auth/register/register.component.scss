@@ -1,4 +1,3 @@
-// Estilos gerais do container
 .auth-container {
   min-height: 100vh;
   display: flex;
@@ -8,7 +7,6 @@
   padding: 20px;
 }
 
-// Card principal
 .auth-card {
   background: white;
   border-radius: 16px;
@@ -19,11 +17,10 @@
   position: relative;
 }
 
-// Cabeçalho
 .card-header {
   text-align: center;
   padding: 40px 32px 24px;
-  background: #3f51b5; // Mantendo o cabeçalho com o azul original
+  background: #3f51b5; 
   color: white;
 
   h2 {
@@ -38,28 +35,6 @@
   }
 }
 
-// Seletor de perfil
-.profile-selector {
-  display: flex;
-  gap: 8px;
-  padding: 24px 32px 0;
-  
-  // Estilo padrão (INATIVO)
-  button {
-    flex-grow: 1;
-    background-color: #5c6bc0; // Cor clara para o botão não selecionado
-    color: white;
-    transition: background-color 0.3s ease;
-  }
-
-  // ✅ COR UNIFICADA PARA O BOTÃO ATIVO
-  button.mat-primary {
-    background-color: #00458f; 
-  }
-}
-
-// Conteúdo das etapas do formulário
-// Em register.scss
 
 .step-content {
   padding: 18px 10px 20px; 
@@ -72,25 +47,22 @@
   }
 }
 
-// Ações dentro de cada etapa (botões Continuar, etc.)
 .step-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
 
   button[mat-raised-button] {
-    // ✅ COR UNIFICADA PARA O BOTÃO DE AÇÃO
     background-color: #00458f;
     color: white;
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: #0059b8; // Um tom mais claro para o hover
+      background-color: #0059b8; 
     }
   }
 }
 
-// Rodapé
 .card-footer {
   padding: 24px 32px 32px;
   text-align: center;
@@ -107,7 +79,6 @@
   }
 }
 
-// Overlay de carregamento
 .loading-overlay {
   position: absolute;
   inset: 0;

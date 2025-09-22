@@ -2,138 +2,88 @@
  * Card de solicitação reutilizável
  * Segue o design system do projeto
  */
-.solicitacao-card {
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
+.solicitacao-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: white;
 
-  &:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  mat-card-header {
-    padding: 20px 20px 0 20px;
-    
-    .card-header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      width: 100%;
-      
-      .equipamento-info {
-        display: flex;
-        align-items: center;
-        flex: 1;
-        
-        h3 {
-          margin: 0;
-          font-size: 18px;
-          font-weight: 600;
-          color: var(--neutrals_dark_100);
-        }
-      }
-    }
-  }
-
-  mat-card-content {
-    padding: 16px 20px;
-    
-    .cliente-info,
-    .categoria-info,
-    .data-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      font-size: 14px;
-      color: var(--neutrals_gray_500);
-      
-      mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
-      }
-    }
-
-    .problema-info {
-      margin-bottom: 16px;
-      
-      p {
-        margin: 0;
-        font-size: 14px;
-        color: var(--neutrals_dark_100);
-        line-height: 1.5;
-      }
-    }
-  }
-
-  mat-card-actions {
-    padding: 0 20px 20px 20px;
+  .solicitacao-info {
     display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
     gap: 12px;
-    
-    button {
+    line-height: 1.5;
+
+    .icon-box {
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 8px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 14px;
-      
-      &[mat-button] {
-        color: var(--neutrals_gray_500);
-        
-        &:hover {
-          color: var(--neutrals_dark_100);
-        }
-      }
-      
-      &[mat-raised-button] {
-        background: var(--tints_blue_100);
-        color: white;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .solicitacao-details {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
         font-weight: 500;
+        color: #111827;
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+      }
+
+      .detail-column {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        p {
+          margin: 0;
+          font-size: 13px;
+          color: #6b7280;
+        }
       }
     }
   }
-}
 
-// Status chips
-mat-chip {
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 12px;
-  border-radius: 16px;
-  
-  &.status-aberta {
-    background: #fef3c7;
-    color: #f59e0b;
-  }
-  
-  &.status-orcada {
-    background: #fef3c7;
-    color: #f59e0b;
-  }
-  
-  &.status-aprovada {
-    background: #fef3c7;
-    color: #f59e0b;
-  }
-  
-  &.status-finalizada {
-    background: var(--status_success_100);
-    color: var(--status_success_200);
+  .solicitacao-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 16px;
   }
 }
 
 // Responsividade
 @media (max-width: 768px) {
-  .solicitacao-card {
-    mat-card-actions {
-      flex-direction: column;
-      
-      button {
-        width: 100%;
-        justify-content: center;
+  .solicitacao-item {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+
+    .solicitacao-info {
+      .solicitacao-details {
+        .details-grid {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
       }
+    }
+
+    .solicitacao-actions {
+      justify-content: center;
+      margin-left: 0;
     }
   }
 }
