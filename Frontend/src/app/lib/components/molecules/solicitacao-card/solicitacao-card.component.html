@@ -32,13 +32,17 @@
   </mat-card-content>
 
   <mat-card-actions *ngIf="showActions">
-    <button mat-button (click)="onVerDetalhes()">
-      <mat-icon>visibility</mat-icon>
-      Ver detalhes
-    </button>
-    <button mat-raised-button color="primary" (click)="onEfetuarOrcamento()">
-      <mat-icon>monetization_on</mat-icon>
-      Efetuar Orçamento
-    </button>
+    <app-button 
+      title="Ver detalhes" 
+      variant="secondary" 
+      icon="visibility"
+      (click)="onVerDetalhes()">
+    </app-button>
+    <app-button 
+      [title]="getActionButtonText(solicitacao.status)" 
+      [variant]="getActionButtonVariant(solicitacao.status)"
+      [icon]="getActionButtonIcon(solicitacao.status)"
+      (click)="onEfetuarOrcamento()">
+    </app-button>
   </mat-card-actions>
 </mat-card>

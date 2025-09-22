@@ -4,31 +4,31 @@
  */
 .stat-card {
   background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
   gap: 16px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: #d1d5db;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     
     mat-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
     }
   }
 
@@ -36,57 +36,57 @@
     flex: 1;
     
     .stat-number {
-      font-size: 32px;
-      font-weight: 700;
+      font-size: 28px;
+      font-weight: 600;
       line-height: 1;
       margin-bottom: 4px;
     }
     
     .stat-label {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
-      opacity: 0.8;
+      color: #6b7280;
     }
   }
 
-  // Variantes de cor
+  // Variantes de cor padronizadas
   &.stat-card-primary {
     .stat-icon {
-      background: var(--tints_purple_100);
-      color: var(--tints_blue_100);
+      background: #eff6ff;
+      color: #2563eb;
     }
     .stat-number {
-      color: var(--tints_blue_100);
+      color: #2563eb;
     }
   }
 
   &.stat-card-success {
     .stat-icon {
-      background: var(--status_success_100);
-      color: var(--status_success_200);
+      background: #d1fae5;
+      color: #065f46;
     }
     .stat-number {
-      color: var(--status_success_200);
+      color: #065f46;
     }
   }
 
   &.stat-card-warning {
     .stat-icon {
       background: #fef3c7;
-      color: #f59e0b;
+      color: #92400e;
     }
     .stat-number {
-      color: #f59e0b;
+      color: #92400e;
     }
   }
 
   &.stat-card-info {
     .stat-icon {
       background: #dbeafe;
-      color: var(--tints_blue_100);
+      color: #1e40af;
     }
     .stat-number {
-      color: var(--tints_blue_100);
+      color: #1e40af;
     }
   }
 }

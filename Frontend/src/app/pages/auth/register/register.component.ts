@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 import { AuthService } from '../../../lib/services/auth/auth.service';
 
@@ -19,8 +20,9 @@ import { AuthService } from '../../../lib/services/auth/auth.service';
   imports: [
     CommonModule, ReactiveFormsModule, RouterModule, HttpClientModule,
     MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,
-    MatStepperModule, MatProgressSpinnerModule
+    MatStepperModule, MatProgressSpinnerModule, NgxMaskDirective
   ],
+  providers: [provideNgxMask()],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })

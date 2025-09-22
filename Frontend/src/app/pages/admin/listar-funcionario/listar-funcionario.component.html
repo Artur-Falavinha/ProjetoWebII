@@ -2,9 +2,6 @@
   <app-sidebar></app-sidebar>
 
   <div class="auth-card">
-    <div class="card-header-top">
-      <h3>GestorManutenção - Funcionário</h3>
-    </div>
 
     <div class="card-header">
       <div>
@@ -35,7 +32,7 @@
               <h3>{{ funcionario.nome }}</h3>
               <p>Email: {{ funcionario.email }}</p>
               <p>Cargo: {{ funcionario.cargo }}</p>
-              <p>Telefone: {{ funcionario.telefone }}</p>
+              <p>Telefone: {{ formatarTelefone(funcionario.telefone) }}</p>
               <p>Nascimento: {{ funcionario.dataNascimento }}</p>
               <p>Admissão: {{ funcionario.dataAdmissao }}</p>
               <p>Status: {{ funcionario.ativo ? 'Ativo' : 'Inativo' }}</p>

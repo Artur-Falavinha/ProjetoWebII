@@ -5,7 +5,7 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  role: 'CLIENT' | 'ADMIN' | 'EMPLOYEE';
+  role: 'CLIENT' | 'EMPLOYEE';
 }
 
 export interface AuthState {
@@ -38,7 +38,7 @@ export class AuthService {
         id: usuarioEncontrado.id || '1',
         name: usuarioEncontrado.nome,
         email: usuarioEncontrado.email,
-        role: usuarioEncontrado.role
+        role: usuarioEncontrado.perfil || usuarioEncontrado.role || 'CLIENT'
       };
 
       const newState: AuthState = {

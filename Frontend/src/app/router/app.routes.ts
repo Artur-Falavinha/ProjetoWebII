@@ -12,6 +12,7 @@ import {
   ListarSolicitacoesComponent,
   EfetuarOrcamentoComponent
 } from '@/app/pages';
+import { authGuard } from '@/app/lib/guards/auth/auth.guard';
 
 // Configurar AuthGuard
 export const routes: Routes = [
@@ -23,6 +24,7 @@ export const routes: Routes = [
   {
     path: 'client',
     component: ClientHomeComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'login',
@@ -39,30 +41,37 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: FuncionarioComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/solicitacoes',
     component: ListarSolicitacoesComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/orcamento/:id',
     component: EfetuarOrcamentoComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/categorias',
     component: ListarCategoriaComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/funcionarios',
     component: ListarFuncionarioComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/funcionarios/new',
     component: InserirFuncionarioComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/relatorios',
     component: FuncionarioComponent,
+    canActivate: [authGuard]
   },
   
   {

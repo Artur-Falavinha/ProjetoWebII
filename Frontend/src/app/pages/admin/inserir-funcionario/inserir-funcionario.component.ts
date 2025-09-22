@@ -98,6 +98,7 @@ export class InserirFuncionarioComponent {
     console.log('Form válido:', this.formFuncionario.form.valid);
     console.log('Data nascimento display:', this.dataNascimentoDisplay);
     console.log('Data admissão display:', this.dataAdmissaoDisplay);
+    console.log('Telefone:', this.funcionario.telefone);
     console.log('Funcionário antes da conversão:', this.funcionario);
     
     this.erroGeral = '';
