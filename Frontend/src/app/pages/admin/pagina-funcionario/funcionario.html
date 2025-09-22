@@ -54,28 +54,31 @@
       <h2>Solicitações Abertas</h2>
       <p>Necessitam de atenção imediata do funcionário</p>
       
-      <div class="solicitacoes-list" *ngIf="solicitacoesAbertas.length > 0">
-        <div class="solicitacao-item" *ngFor="let solicitacao of solicitacoesAbertas">
-          <div class="solicitacao-info">
-            <div class="solicitacao-header">
-              <h3>{{ solicitacao.product }}</h3>
-              <span class="solicitacao-date">{{ solicitacao.order_date }}</span>
+            <div class="solicitacoes-list" *ngIf="solicitacoesAbertas.length > 0">
+              <div class="solicitacao-item" *ngFor="let solicitacao of solicitacoesAbertas">
+                <div class="solicitacao-info">
+                  <div class="icon-box">
+                    <mat-icon>assignment</mat-icon>
+                  </div>
+                  <div class="solicitacao-details">
+                    <p><strong>Produto:</strong> {{ solicitacao.product }}</p>
+                    <p><strong>Categoria:</strong> {{ solicitacao.category }}</p>
+                    <p><strong>Data:</strong> {{ solicitacao.order_date }}</p>
+                    <p><strong>Preço:</strong> R$ {{ solicitacao.price | number:'1.2-2' }}</p>
+                    <p><strong>Status:</strong> {{ getStatusText(solicitacao.situation) }}</p>
+                    <p><strong>ID:</strong> {{ solicitacao.id }}</p>
+                  </div>
+                </div>
+                <div class="solicitacao-actions">
+                  <app-button 
+                    title="Efetuar Orçamento" 
+                    variant="primary" 
+                    icon="monetization_on"
+                    (click)="efetuarOrcamento(solicitacao)">
+                  </app-button>
+                </div>
+              </div>
             </div>
-            <div class="solicitacao-details">
-              <p class="solicitacao-category">{{ solicitacao.category }}</p>
-              <p class="solicitacao-description">{{ solicitacao.product | slice:0:30 }}{{ solicitacao.product.length > 30 ? '...' : '' }}</p>
-            </div>
-          </div>
-          <div class="solicitacao-actions">
-            <app-button 
-              title="Efetuar Orçamento" 
-              variant="primary" 
-              icon="monetization_on"
-              (click)="efetuarOrcamento(solicitacao)">
-            </app-button>
-          </div>
-        </div>
-      </div>
 
       <div class="empty-state" *ngIf="solicitacoesAbertas.length === 0">
         <mat-icon class="empty-icon">inbox</mat-icon>
