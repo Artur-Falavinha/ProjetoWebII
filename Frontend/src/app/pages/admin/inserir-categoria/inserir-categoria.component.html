@@ -10,11 +10,11 @@
         <input
           matInput
           name="nome"
-          [(ngModel)]="categoria.nome"
+          [(ngModel)]="categoria.label"
           required
           placeholder="Ex: Eletrônicos, Eletrodomésticos..."
         />
-        <mat-error *ngIf="formCategoria.submitted && !categoria.nome">
+        <mat-error *ngIf="formCategoria.submitted && !categoria.label">
           O nome da categoria é obrigatório.
         </mat-error>
       </mat-form-field>

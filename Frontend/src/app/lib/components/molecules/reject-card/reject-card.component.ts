@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -61,5 +61,7 @@ export class RejectCardComponent implements OnInit {
       this.rejectForm.markAllAsTouched();
       return;
     }
+
+    // inject()
   }
 }

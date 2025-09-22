@@ -2,16 +2,20 @@ import { SituationEnum } from "@/app/@types";
 import { HistoryType } from "../misc/HistoryType";
 
 export type OrderRequest = {
-    id: number;
-    client: string;
-    product: string;
-    order_date: string;
-    situation: SituationEnum;
-    category: string;
-    issue_description: string;
-    price?: number;
-    atributed_employee?: string;
-    fix_description?: string;
-    orientation?: string;
-    history?: HistoryType[];
-  }
+  id: number;
+  client: string;
+  clientEmail: string;
+  product: string;
+  category: string;
+  issue_description: string;
+  situation: SituationEnum;
+  price?: number;
+  atributed_employee?: string;
+  fix_description?: string;
+  orientation?: string;
+  history?: HistoryType[];
+  order_date?: string;
+  approval_date?: string;
+  completion_date?: string;
+  observacoes?: string;
+}

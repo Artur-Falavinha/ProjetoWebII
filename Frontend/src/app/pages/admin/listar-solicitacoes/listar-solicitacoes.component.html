@@ -40,38 +40,38 @@
       <!-- Equipamento -->
       <div class="detail-item">
         <label>Equipamento:</label>
-        <span>{{ solicitacaoSelecionada.equipamento }}</span>
+        <span>{{ solicitacaoSelecionada.product }}</span>
       </div>
 
       <!-- Categoria -->
       <div class="detail-item">
         <label>Categoria:</label>
-        <span>{{ solicitacaoSelecionada.categoria }}</span>
+        <span>{{ solicitacaoSelecionada.category }}</span>
       </div>
 
       <!-- Cliente -->
       <div class="detail-item">
         <label>Cliente:</label>
-        <span>{{ solicitacaoSelecionada.cliente }}</span>
+        <span>{{ solicitacaoSelecionada.client }}</span>
       </div>
 
       <!-- Email do Cliente -->
       <div class="detail-item">
         <label>Email:</label>
-        <span>{{ solicitacaoSelecionada.clienteEmail }}</span>
+        <span>{{ solicitacaoSelecionada.clientEmail }}</span>
       </div>
 
       <!-- Data/Hora -->
       <div class="detail-item">
         <label>Data/Hora:</label>
-        <span>{{ solicitacaoSelecionada.dataHora }}</span>
+        <span>{{ solicitacaoSelecionada.order_date }}</span>
       </div>
 
       <!-- Status -->
       <div class="detail-item">
         <label>Status:</label>
-        <span class="status-badge" [class]="getStatusClass(solicitacaoSelecionada.status)">
-          {{ getStatusText(solicitacaoSelecionada.status) }}
+        <span class="status-badge" [class]="getStatusClass(solicitacaoSelecionada.situation)">
+          {{ getStatusText(solicitacaoSelecionada.situation) }}
         </span>
       </div>
 
@@ -79,7 +79,7 @@
       <div class="detail-item full-width">
         <label>Problema Relatado:</label>
         <div class="description-box">
-          {{ solicitacaoSelecionada.descricaoProblema }}
+          {{ solicitacaoSelecionada.issue_description }}
         </div>
       </div>
 

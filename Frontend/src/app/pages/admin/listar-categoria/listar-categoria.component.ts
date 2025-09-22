@@ -59,8 +59,8 @@ export class ListarCategoriaComponent implements OnInit {
 
   remover($event: any, categoria: CategoriaRequest): void {
     $event.preventDefault();
-    if(confirm(`Deseja remover a categoria ${categoria.nome}?`)){
-      this.categoriaService.remover(categoria.id!);
+    if(confirm(`Deseja remover a categoria ${categoria.label}?`)){
+      this.categoriaService.remover(categoria.value!);
       this.categorias = this.listarTodas();
     }
   }

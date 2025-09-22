@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { SolicitacaoRequest } from "@/app/@types";
+import { OrderRequest } from "@/app/@types";
 import { SolicitacaoService } from "@/app/lib/services/solicitacao/solicitacao.service";
 import { SidebarComponent } from "@/app/lib/components";
 import { MatIcon } from "@angular/material/icon";
@@ -24,7 +24,7 @@ import { MatFormField, MatLabel } from "@angular/material/form-field";
 })
 export class EfetuarOrcamentoComponent implements OnInit {
 
-  solicitacaoSelecionada: SolicitacaoRequest | undefined;
+  solicitacaoSelecionada: OrderRequest | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,7 +64,7 @@ export class EfetuarOrcamentoComponent implements OnInit {
   salvarOrcamento(): void {
     if (!this.solicitacaoSelecionada) return;
 
-    const valor = this.solicitacaoSelecionada.valorOrcamento;
+    const valor = this.solicitacaoSelecionada.price;
     if (!valor || valor <= 0) {
       alert('Informe um valor válido para o orçamento');
       return;

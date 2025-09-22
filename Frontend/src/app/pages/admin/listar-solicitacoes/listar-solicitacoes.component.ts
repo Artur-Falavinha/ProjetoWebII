@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '@/app/lib/components/organisms/sidebar/sidebar.component';
 import { SolicitacaoCardComponent as SolicitacaoCardNewComponent } from '@/app/lib/components/molecules/solicitacao-card/solicitacao-card.component';
 import { AuthService } from '@/app/lib/services/auth/auth.service';
-import { SolicitacaoRequest, SituationEnum } from '@/app/@types';
+import {  SituationEnum, OrderRequest } from '@/app/@types';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -29,7 +29,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   styleUrls: ['./listar-solicitacoes.component.scss']
 })
 export class ListarSolicitacoesComponent implements OnInit {
-  solicitacoes: SolicitacaoRequest[] = [];
+  solicitacoes: OrderRequest[] = [];
   router: any;
 
   constructor(
@@ -41,13 +41,13 @@ export class ListarSolicitacoesComponent implements OnInit {
     this.solicitacoes = this.listarTodas();
   }
 
-  listarTodas(): SolicitacaoRequest[] {
+  listarTodas(): OrderRequest[] {
     return this.solicitacaoService.listarTodas();
   }
 
   /**Modal de detalhes**/
   modalAberto = false;
-  solicitacaoSelecionada: SolicitacaoRequest | null = null;
+  solicitacaoSelecionada: OrderRequest | null = null;
 
 
 
@@ -71,7 +71,7 @@ export class ListarSolicitacoesComponent implements OnInit {
     }
   }
 
-  verDetalhes(solicitacao: SolicitacaoRequest): void {
+  verDetalhes(solicitacao: OrderRequest): void {
     this.solicitacaoSelecionada = solicitacao;
     this.modalAberto = true;
   }
@@ -81,7 +81,7 @@ export class ListarSolicitacoesComponent implements OnInit {
     this.solicitacaoSelecionada = null;
   }
 
-  efetuarOrcamento(solicitacao: SolicitacaoRequest): void {
+  efetuarOrcamento(solicitacao: OrderRequest): void {
     this.router.navigate(['/admin/orcamento', solicitacao.id]);
   }
 

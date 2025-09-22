@@ -9,7 +9,8 @@
   <mat-card-footer>
     <div class="text-wrap">
       <p>Categoria: {{ order.category }}</p>
-      <span>Valor: {{ order.price }} </span>
+      @if (order.price) {
+      <span>Valor: {{ order.price }} </span>}
     </div>
     <mat-card-actions>
       @if (action) {

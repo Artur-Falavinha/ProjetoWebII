@@ -17,24 +17,24 @@ export class CategoriaService {
   inserir(categoria: CategoriaRequest): void {
     const categorias = this.listarTodas();
     if (categorias.length === 0) {
-      categoria.id = 1;
+      categoria.value = 1;
     } else {
-      const maxId = Math.max(...categorias.map((c) => c.id));
-      categoria.id = maxId + 1;
+      const maxId = Math.max(...categorias.map((c) => c.value));
+      categoria.value = maxId + 1;
     }
     categorias.push(categoria);
     localStorage.setItem(LS_CHAVE, JSON.stringify(categorias));
   }
 
-  buscaPorId(id: number): CategoriaRequest | undefined {
+  buscaPorId(value: number): CategoriaRequest | undefined {
     const categorias = this.listarTodas();
-    return categorias.find((categoria) => categoria.id === id);
+    return categorias.find((categoria) => categoria.value === value);
   }
   
   atualizar(categoria: CategoriaRequest): void {       
     const categorias = this.listarTodas();
     categorias.forEach((obj, index, objs) => {
-      if (categoria.id === obj.id) {
+      if (categoria.value === obj.value) {
         objs[index] = categoria;
       }
     });
@@ -42,9 +42,9 @@ export class CategoriaService {
     localStorage[LS_CHAVE] = JSON.stringify(categorias);
   }
 
-  remover(id: number): void {
+  remover(value: number): void {
     let categorias = this.listarTodas();
-    categorias = categorias.filter((categoria) => categoria.id !== id);
+    categorias = categorias.filter((categoria) => categoria.value !== value);
     localStorage[LS_CHAVE] = JSON.stringify(categorias);
   }
 }

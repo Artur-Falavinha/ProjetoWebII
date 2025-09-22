@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -20,6 +27,9 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { SelectInputComponent } from '../select-input/select-input.component';
 import { TextAreaInputComponent } from '../text-area-input/text-area-input.component';
+import { AuthService, CategoriaService } from '@/app/lib/services';
+import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
+import { SituationEnum } from '@/app/@types';
 
 @Component({
   selector: 'app-new-order-card',
@@ -41,18 +51,21 @@ import { TextAreaInputComponent } from '../text-area-input/text-area-input.compo
   templateUrl: './new-order-card.component.html',
   styleUrls: ['./new-order-card.component.scss'],
 })
+
 export class NewOrderCardComponent implements OnInit {
   newOrderForm!: FormGroup;
 
-  public categories = [
-    {
-      value: 1,
-      label: 'a',
-    },
-    { value: 2, label: 'b' },
-  ];
+  public categories: any[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private solicitacaoService: SolicitacaoService,
+    private categoriaService: CategoriaService
+  ) {
+    this.categories = this.categoriaService.listarTodas();
+  }
 
   ngOnInit(): void {
     this.newOrderForm = this.fb.group({
@@ -79,5 +92,18 @@ export class NewOrderCardComponent implements OnInit {
       this.newOrderForm.markAllAsTouched();
       return;
     }
+
+    const user = this.authService.getCurrentUser();
+
+    this.solicitacaoService.inserir({
+      client: user!.name,
+      clientEmail: user!.email,
+      category: this.categoryControl.value,
+      product: this.productControl.value,
+      issue_description: this.issue_descriptionControl.value,
+      situation: SituationEnum.ABERTA,
+    });
+
+    this.router.navigate(['/client']);
   }
 }

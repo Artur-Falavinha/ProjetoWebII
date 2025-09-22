@@ -1,4 +1,4 @@
 export type CategoriaRequest = {
-    id: number;
-    nome: string;
+    value: number;
+    label: string;
 }

@@ -23,7 +23,7 @@
             <mat-icon>build</mat-icon>
             <div>
               <strong>Equipamento</strong>
-              <p>{{ solicitacaoSelecionada.equipamento }}</p>
+              <p>{{ solicitacaoSelecionada.product }}</p>
             </div>
           </div>
 
@@ -31,7 +31,7 @@
             <mat-icon>person</mat-icon>
             <div>
               <strong>Cliente</strong>
-              <p>{{ solicitacaoSelecionada.cliente }}</p>
+              <p>{{ solicitacaoSelecionada.client }}</p>
             </div>
           </div>
 
@@ -39,7 +39,7 @@
             <mat-icon>calendar_today</mat-icon>
             <div>
               <strong>Data da solicitação</strong>
-              <p>{{ solicitacaoSelecionada.dataHora }}</p>
+              <p>{{ solicitacaoSelecionada.order_date }}</p>
             </div>
           </div>
 
@@ -47,7 +47,7 @@
             <mat-icon>category</mat-icon>
             <div>
               <strong>Categoria</strong>
-              <p>{{ solicitacaoSelecionada.categoria }}</p>
+              <p>{{ solicitacaoSelecionada.category }}</p>
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@
       <div class="section-card" *ngIf="solicitacaoSelecionada">
         <h3>Problema relatado pelo cliente</h3>
         <div class="problema-box">
-          <p>{{ solicitacaoSelecionada.descricaoProblema }}</p>
+          <p>{{ solicitacaoSelecionada.issue_description }}</p>
         </div>
       </div>
 
@@ -69,7 +69,7 @@
           <input
             matInput
             type="number"
-            [(ngModel)]="solicitacaoSelecionada.valorOrcamento"
+            [(ngModel)]="solicitacaoSelecionada.price"
             placeholder="0,00"
           />
         </mat-form-field>

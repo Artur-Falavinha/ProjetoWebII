@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { SolicitacaoRequest, SituationEnum } from '@/app/@types';
+import { OrderRequest, SituationEnum } from '@/app/@types';
 import { ButtonComponent } from '@/app/lib/components/atoms/button/button.component';
 
 /**
@@ -20,11 +20,11 @@ import { ButtonComponent } from '@/app/lib/components/atoms/button/button.compon
 })
 export class SolicitacaoCardComponent {
   
-  @Input() solicitacao!: SolicitacaoRequest;
+  @Input() solicitacao!: OrderRequest;
   @Input() showActions: boolean = true;
   
-  @Output() verDetalhes = new EventEmitter<SolicitacaoRequest>();
-  @Output() efetuarOrcamento = new EventEmitter<SolicitacaoRequest>();
+  @Output() verDetalhes = new EventEmitter<OrderRequest>();
+  @Output() efetuarOrcamento = new EventEmitter<OrderRequest>();
 
   /**Emite evento de ver detalhes**/
   onVerDetalhes(): void {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SolicitacaoRequest } from '@/app/@types';
+import { OrderRequest } from '@/app/@types';
 
 const LS_CHAVE = "solicitacoes";
 
@@ -10,29 +10,27 @@ export class SolicitacaoService {
 
   constructor() { }
 
-  listarTodas() : SolicitacaoRequest[] {
+  listarTodas() : OrderRequest[] {
     const solicitacoes = localStorage[LS_CHAVE];
     return solicitacoes ? JSON.parse(solicitacoes) : [];     
   } 
 
-  inserir(solicitacao: SolicitacaoRequest): void {
+  inserir(solicitacao: Omit<OrderRequest, 'id'>): void {
     const solicitacoes = this.listarTodas();
-    if (solicitacoes.length === 0) {
-      solicitacao.id = 1; 
-    } else {
-      const maxId = Math.max(...solicitacoes.map(c => c.id));
-      solicitacao.id = maxId + 1;
-    }
-    solicitacoes.push(solicitacao);
+    const novoId = solicitacoes.length === 0
+      ? 1
+      : Math.max(...solicitacoes.map(c => c.id)) + 1;
+    const novaSolicitacao: OrderRequest = { ...solicitacao, id: novoId };
+    solicitacoes.push(novaSolicitacao);
     localStorage.setItem(LS_CHAVE, JSON.stringify(solicitacoes));
   }
 
-  buscaPorId(id: number): SolicitacaoRequest | undefined {
+  buscaPorId(id: number): OrderRequest | undefined {
     const solicitacoes = this.listarTodas();
      return solicitacoes.find(solicitacao => solicitacao.id === id);
   }
   
-  atualizar(solicitacao: SolicitacaoRequest): void {       
+  atualizar(solicitacao: OrderRequest): void {       
     const solicitacoes = this.listarTodas();
     solicitacoes.forEach((obj, index, objs) => {
       if (solicitacao.id === obj.id) {

@@ -4,12 +4,13 @@ import { SidebarComponent } from '@/app/lib/components/organisms/sidebar/sidebar
 import { StatCardComponent } from '@/app/lib/components/molecules/stat-card/stat-card.component';
 import { ButtonComponent } from '@/app/lib/components/atoms/button/button.component';
 import { AuthService } from '@/app/lib/services/auth/auth.service';
-import { SolicitacaoRequest, SituationEnum, OrderRequest } from '@/app/@types';
+import { OrderRequest, SituationEnum } from '@/app/@types';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
+import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 
 @Component({
   selector: 'app-funcionario', 
@@ -34,91 +35,8 @@ export class FuncionarioComponent implements OnInit {
   SituationEnum = SituationEnum;
   private readonly router = inject(Router);
   
-  /**Array de dados mock para o dashboard**/
-  private items: OrderRequest[] = [
-    {
-      id: 1,
-      client: 'zé',
-      product: 'Solicitação Aberta',
-      order_date: '2025-09-18',
-      situation: SituationEnum.ABERTA,
-      category: 'Categoria 1',
-      price: 100.0,
-      issue_description: 'Descrição da solicitação aberta.',
-      atributed_employee: 'zé',
-    },
-    {
-      id: 2,
-      client: 'zé',
-      product: 'Solicitação Orcada',
-      order_date: '2025-09-18',
-      situation: SituationEnum.ORCADA,
-      category: 'Categoria 2',
-      price: 200.0,
-      issue_description: 'Descrição da solicitação orçada.',
-      atributed_employee: 'zé',
-    },
-    {
-      id: 3,
-      client: 'zé',
-      product: 'Solicitação Rejeitada',
-      order_date: '2025-09-18',
-      situation: SituationEnum.REJEITADA,
-      category: 'Categoria 3',
-      price: 300.0,
-      issue_description: 'Descrição da solicitação rejeitada.',
-    },
-    {
-      id: 4,
-      client: 'zé',
-      product: 'Solicitação Aprovada',
-      order_date: '2025-09-18',
-      situation: SituationEnum.APROVADA,
-      category: 'Categoria 4',
-      price: 400.0,
-      issue_description: 'Descrição da solicitação aprovada.',
-    },
-    {
-      id: 5,
-      client: 'zé',
-      product: 'Solicitação Redirecionada',
-      order_date: '2025-09-18',
-      situation: SituationEnum.REDIRECIONADA,
-      category: 'Categoria 5',
-      price: 500.0,
-      issue_description: 'Descrição da solicitação redirecionada.',
-    },
-    {
-      id: 6,
-      client: 'zé',
-      product: 'Solicitação Arrumada',
-      order_date: '2025-09-18',
-      situation: SituationEnum.ARRUMADA,
-      category: 'Categoria 6',
-      price: 600.0,
-      issue_description: 'Descrição da solicitação arrumada.',
-    },
-    {
-      id: 7,
-      client: 'zé',
-      product: 'Solicitação Paga',
-      order_date: '2025-09-18',
-      situation: SituationEnum.PAGA,
-      category: 'Categoria 7',
-      price: 700.0,
-      issue_description: 'Descrição da solicitação paga.',
-    },
-    {
-      id: 8,
-      client: 'zé',
-      product: 'Solicitação Finalizada',
-      order_date: '2025-09-18',
-      situation: SituationEnum.FINALIZADA,
-      category: 'Categoria 8',
-      price: 800.0,
-      issue_description: 'Descrição da solicitação finalizada.',
-    },
-  ];
+  /**Array de dados para o dashboard vindo do service**/
+  public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
 
   /**Solicitações abertas filtradas do array mock**/
   solicitacoesAbertas: OrderRequest[] = [];
@@ -134,8 +52,8 @@ export class FuncionarioComponent implements OnInit {
   solicitacaoSelecionada: OrderRequest | null = null;
 
   constructor() {
-    /**Simular login de funcionário para visualização**/
-    this.authService.login({ email: 'funcionario@email.com', password: 'senha' }).subscribe();
+  this.authService.login({ email: 'funcionario@email.com', password: 'senha' }).subscribe();
+  this.items = inject(SolicitacaoService).listarTodas();
   }
 
   ngOnInit(): void {

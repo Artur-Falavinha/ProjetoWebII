@@ -4,16 +4,16 @@
       <mat-icon>build</mat-icon>
     </div>
     <div class="solicitacao-details">
-      <h3>{{ solicitacao.equipamento }}</h3>
+      <h3>{{ solicitacao.product }}</h3>
       <div class="details-grid">
         <div class="detail-column">
-          <p>Cliente: {{ solicitacao.cliente }}</p>
-          <p>Categoria: {{ solicitacao.categoria }}</p>
-          <p>Data: {{ solicitacao.dataHora }}</p>
+          <p>Cliente: {{ solicitacao.client }}</p>
+          <p>Categoria: {{ solicitacao.category }}</p>
+          <p>Data: {{ solicitacao.order_date }}</p>
         </div>
         <div class="detail-column">
-          <p>Status: {{ getStatusText(solicitacao.status) }}</p>
-          <p>Email: {{ solicitacao.clienteEmail }}</p>
+          <p>Status: {{ getStatusText(solicitacao.situation) }}</p>
+          <p>Email: {{ solicitacao.clientEmail }}</p>
         </div>
         <div class="detail-column">
           <p>ID: {{ solicitacao.id }}</p>
@@ -30,9 +30,9 @@
       (click)="onVerDetalhes()">
     </app-button>
     <app-button 
-      [title]="getActionButtonText(solicitacao.status)" 
-      [variant]="getActionButtonVariant(solicitacao.status)"
-      [icon]="getActionButtonIcon(solicitacao.status)"
+      [title]="getActionButtonText(solicitacao.situation)" 
+      [variant]="getActionButtonVariant(solicitacao.situation)"
+      [icon]="getActionButtonIcon(solicitacao.situation)"
       (click)="onEfetuarOrcamento()">
     </app-button>
   </div>

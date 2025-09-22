@@ -11,36 +11,35 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-inserir-categoria',
   standalone: true,
-  imports: [CommonModule, 
-            FormsModule,
-            RouterModule,
-            MatButtonModule,
-            MatInputModule,
-            MatFormFieldModule
-          ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+  ],
   templateUrl: './inserir-categoria.component.html',
-  styleUrl: './inserir-categoria.component.scss'
+  styleUrl: './inserir-categoria.component.scss',
 })
-
 export class InserirCategoriaComponent {
-  
-@Output() close = new EventEmitter<void>();
-@ViewChild('formCategoria') formCategoria!: NgForm;
+  @Output() close = new EventEmitter<void>();
+  @ViewChild('formCategoria') formCategoria!: NgForm;
 
-  categoria : CategoriaRequest = { id: 0, nome: '' };
+  categoria: CategoriaRequest = { value: 0, label: '' };
 
   constructor(
     private categoriaService: CategoriaService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   inserir(): void {
-  if (this.formCategoria.form.valid) {
-    this.categoriaService.inserir(this.categoria);
-    this.close.emit(); // fecha o modal
+    if (this.formCategoria.form.valid) {
+      this.categoriaService.inserir(this.categoria);
+      this.close.emit(); // fecha o modal
+    }
   }
-}
   closeModal(): void {
-    this.close.emit(); 
+    this.close.emit();
   }
-
 }
