@@ -12,7 +12,8 @@
         title="Ver todas as solicitações"
         variant="primary"
         icon="list"
-        (click)="verTodasSolicitacoes()">
+        (click)="verTodasSolicitacoes()"
+      >
       </app-button>
     </div>
 
@@ -23,28 +24,32 @@
           icon="schedule"
           [number]="estatisticas.abertas"
           label="Abertas"
-          variant="warning">
+          variant="warning"
+        >
         </app-stat-card>
 
         <app-stat-card
           icon="monetization_on"
           [number]="estatisticas.orcadas"
           label="Orçadas"
-          variant="info">
+          variant="info"
+        >
         </app-stat-card>
 
         <app-stat-card
           icon="check_circle"
           [number]="estatisticas.aprovadas"
           label="Aprovadas"
-          variant="primary">
+          variant="primary"
+        >
         </app-stat-card>
 
         <app-stat-card
           icon="done_all"
           [number]="estatisticas.finalizadas"
           label="Finalizadas"
-          variant="success">
+          variant="success"
+        >
         </app-stat-card>
       </div>
     </div>
@@ -53,9 +58,12 @@
     <div class="solicitacoes-section">
       <h2>Solicitações Abertas</h2>
       <p>Necessitam de atenção imediata do funcionário</p>
-      
+
       <div class="solicitacoes-list" *ngIf="solicitacoesAbertas.length > 0">
-        <div class="solicitacao-item" *ngFor="let solicitacao of solicitacoesAbertas">
+        <div
+          class="solicitacao-item"
+          *ngFor="let solicitacao of solicitacoesAbertas"
+        >
           <div class="solicitacao-info">
             <div class="icon-box">
               <mat-icon>build</mat-icon>
@@ -66,7 +74,9 @@
                 <div class="detail-column">
                   <p>Data: {{ solicitacao.order_date }}</p>
                   <p>Categoria: {{ solicitacao.category }}</p>
+                  @if(solicitacao.price) {
                   <p>Preço: R$ {{ solicitacao.price | number:'1.2-2' }}</p>
+                  }
                 </div>
                 <div class="detail-column">
                   <p>Status: {{ getStatusText(solicitacao.situation) }}</p>
@@ -78,11 +88,12 @@
             </div>
           </div>
           <div class="solicitacao-actions">
-            <app-button 
-              title="Efetuar Orçamento" 
-              variant="primary" 
+            <app-button
+              title="Efetuar Orçamento"
+              variant="primary"
               icon="monetization_on"
-              (click)="efetuarOrcamento(solicitacao)">
+              (click)="efetuarOrcamento(solicitacao)"
+            >
             </app-button>
           </div>
         </div>
@@ -100,63 +111,62 @@
 <!-- Modal de Detalhes da Solicitação -->
 <div class="modal" *ngIf="modalAberto">
   <div class="modal-content">
-    
     <h2>Detalhes da Solicitação</h2>
     <p>Visualize as informações completas da solicitação</p>
 
-          <div *ngIf="solicitacaoSelecionada" class="solicitacao-details">
-            
-            <!-- Produto -->
-            <div class="detail-item">
-              <label>Produto:</label>
-              <span>{{ solicitacaoSelecionada.product }}</span>
-            </div>
+    <div *ngIf="solicitacaoSelecionada" class="solicitacao-details">
+      <!-- Produto -->
+      <div class="detail-item">
+        <label>Produto:</label>
+        <span>{{ solicitacaoSelecionada.product }}</span>
+      </div>
 
-            <!-- Categoria -->
-            <div class="detail-item">
-              <label>Categoria:</label>
-              <span>{{ solicitacaoSelecionada.category }}</span>
-            </div>
+      <!-- Categoria -->
+      <div class="detail-item">
+        <label>Categoria:</label>
+        <span>{{ solicitacaoSelecionada.category }}</span>
+      </div>
 
-            <!-- Data do Pedido -->
-            <div class="detail-item">
-              <label>Data do Pedido:</label>
-              <span>{{ solicitacaoSelecionada.order_date }}</span>
-            </div>
+      <!-- Data do Pedido -->
+      <div class="detail-item">
+        <label>Data do Pedido:</label>
+        <span>{{ solicitacaoSelecionada.order_date }}</span>
+      </div>
 
-            <!-- Status -->
-            <div class="detail-item">
-              <label>Status:</label>
-              <span class="status-badge" [class]="getStatusClass(solicitacaoSelecionada.situation)">
-                {{ getStatusText(solicitacaoSelecionada.situation) }}
-              </span>
-            </div>
+      <!-- Status -->
+      <div class="detail-item">
+        <label>Status:</label>
+        <span
+          class="status-badge"
+          [class]="getStatusClass(solicitacaoSelecionada.situation)"
+        >
+          {{ getStatusText(solicitacaoSelecionada.situation) }}
+        </span>
+      </div>
 
-            <!-- Preço -->
-            <div class="detail-item">
-              <label>Preço:</label>
-              <span>R$ {{ solicitacaoSelecionada.price | number:'1.2-2' }}</span>
-            </div>
+      <!-- Preço -->
+      <div class="detail-item">
+        <label>Preço:</label>
+        <span>R$ {{ solicitacaoSelecionada.price | number:'1.2-2' }}</span>
+      </div>
 
-            <!-- ID -->
-            <div class="detail-item">
-              <label>ID:</label>
-              <span>{{ solicitacaoSelecionada.id }}</span>
-            </div>
-
-          </div>
+      <!-- ID -->
+      <div class="detail-item">
+        <label>ID:</label>
+        <span>{{ solicitacaoSelecionada.id }}</span>
+      </div>
+    </div>
 
     <div class="actions">
-      <app-button 
-        title="Fechar" 
-        variant="secondary" 
-        (click)="fecharModal()">
+      <app-button title="Fechar" variant="secondary" (click)="fecharModal()">
       </app-button>
-      <app-button 
-        [title]="getActionButtonText(solicitacaoSelecionada?.situation || SituationEnum.ABERTA)" 
+      @if (!(solicitacaoSelecionada?.situation === SituationEnum.ORCADA)) {}
+      <app-button
+        [title]="getActionButtonText(solicitacaoSelecionada?.situation || SituationEnum.ABERTA)"
         [variant]="getActionButtonVariant(solicitacaoSelecionada?.situation || SituationEnum.ABERTA)"
         [icon]="getActionButtonIcon(solicitacaoSelecionada?.situation || SituationEnum.ABERTA)"
-        (click)="efetuarOrcamento(solicitacaoSelecionada!)">
+        (click)="efetuarOrcamento(solicitacaoSelecionada!)"
+      >
       </app-button>
     </div>
   </div>

@@ -74,9 +74,10 @@
     <mat-card-footer>
       <app-button
         style="width: 100%"
-        title="Enviar solicitação"
+        title="Pagar"
         icon="send"
-        variant="primary"
+        variant="success"
+        (click)="onSubmit()"
       />
       <p>
         Após o pagamento, você receberá uma confirmação e a solicitação será

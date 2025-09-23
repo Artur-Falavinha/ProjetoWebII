@@ -9,6 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { AuthService } from '@/app/lib/services';
 
 @Component({
   selector: 'app-efetuar-orcamento',
@@ -37,11 +38,13 @@ export class EfetuarOrcamentoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private solicitacaoService: SolicitacaoService,
+    private authService: AuthService,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
     if (id) {
       this.solicitacaoSelecionada = this.solicitacaoService.buscaPorId(id);
 
@@ -53,6 +56,10 @@ export class EfetuarOrcamentoComponent implements OnInit {
           valor: [this.solicitacaoSelecionada.price ?? '', [Validators.required, Validators.min(0.01)]]
         });
       }
+    }
+
+    if (!(this.solicitacaoSelecionada?.situation == SituationEnum.ORCADA)) {
+      this.router.navigate(['/admin'])
     }
   }
 
@@ -90,8 +97,11 @@ export class EfetuarOrcamentoComponent implements OnInit {
       return;
     }
 
+    const employee = this.authService.getCurrentUser();
+
     this.solicitacaoSelecionada.price = valor;
     this.solicitacaoSelecionada.situation = SituationEnum.ORCADA;
+    this.solicitacaoSelecionada.atributed_employee = employee?.name;
 
     this.solicitacaoService.atualizar(this.solicitacaoSelecionada);
     alert('Orçamento salvo com sucesso!');

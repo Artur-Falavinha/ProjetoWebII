@@ -14,48 +14,69 @@ import { ButtonComponent } from '@/app/lib/components/atoms/button/button.compon
 @Component({
   selector: 'app-solicitacao-card',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatCardModule, MatChipsModule, ButtonComponent],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatChipsModule,
+    ButtonComponent,
+  ],
   templateUrl: './solicitacao-card.component.html',
-  styleUrl: './solicitacao-card.component.scss'
+  styleUrl: './solicitacao-card.component.scss',
 })
 export class SolicitacaoCardComponent {
-  
   @Input() solicitacao!: OrderRequest;
   @Input() showActions: boolean = true;
-  
+
   @Output() verDetalhes = new EventEmitter<OrderRequest>();
-  @Output() efetuarOrcamento = new EventEmitter<OrderRequest>();
 
   /**Emite evento de ver detalhes**/
   onVerDetalhes(): void {
     this.verDetalhes.emit(this.solicitacao);
   }
 
-  /**Emite evento de efetuar orçamento**/
-  onEfetuarOrcamento(): void {
-    this.efetuarOrcamento.emit(this.solicitacao);
-  }
+  SituationEnum = SituationEnum;
 
+  // @ REFATORAR ESSA LOUCURA
 
   /**Retorna classe CSS do status**/
   getStatusClass(status: SituationEnum): string {
-    switch(status) {
-      case SituationEnum.ABERTA: return 'status-aberta';
-      case SituationEnum.ORCADA: return 'status-orcada';
-      case SituationEnum.APROVADA: return 'status-aprovada';
-      case SituationEnum.FINALIZADA: return 'status-finalizada';
-      default: return 'status-aberta';
+    switch (status) {
+      case SituationEnum.ABERTA:
+        return 'status-aberta';
+      case SituationEnum.ORCADA:
+        return 'status-orcada';
+      case SituationEnum.APROVADA:
+        return 'status-aprovada';
+      case SituationEnum.FINALIZADA:
+        return 'status-finalizada';
+      default:
+        return 'status-aberta';
     }
   }
 
   /**Retorna texto do status**/
   getStatusText(status: SituationEnum): string {
-    switch(status) {
-      case SituationEnum.ABERTA: return 'Aberta';
-      case SituationEnum.ORCADA: return 'Orçada';
-      case SituationEnum.APROVADA: return 'Aprovada';
-      case SituationEnum.FINALIZADA: return 'Finalizada';
-      default: return 'Aberta';
+    switch (status) {
+      case SituationEnum.ABERTA:
+      return 'Aberta';
+      case SituationEnum.ORCADA:
+      return 'Orçada';
+      case SituationEnum.REJEITADA:
+      return 'Rejeitada';
+      case SituationEnum.APROVADA:
+      return 'Aprovada';
+      case SituationEnum.REDIRECIONADA:
+      return 'Redirecionada';
+      case SituationEnum.ARRUMADA:
+      return 'Arrumada';
+      case SituationEnum.PAGA:
+      return 'Paga';  
+      case SituationEnum.FINALIZADA:
+      return 'Finalizada';
+      default:
+      return 'Desconhecida';
     }
   }
 
@@ -76,7 +97,9 @@ export class SolicitacaoCardComponent {
   }
 
   /**Obtém a variante do botão baseado no status da solicitação**/
-  getActionButtonVariant(status: SituationEnum): 'primary' | 'secondary' | 'success' | 'destructive' {
+  getActionButtonVariant(
+    status: SituationEnum
+  ): 'primary' | 'secondary' | 'success' | 'destructive' {
     switch (status) {
       case SituationEnum.ABERTA:
         return 'primary';
@@ -104,6 +127,15 @@ export class SolicitacaoCardComponent {
         return 'visibility';
       default:
         return 'info';
+    }
+  }
+
+  getLink(status: SituationEnum): string {
+    switch (status) {
+      case SituationEnum.APROVADA:
+        return '/admin/manutencao/' + this.solicitacao.id;
+      default:
+        return '/admin/orcamento/' + this.solicitacao.id;
     }
   }
 }

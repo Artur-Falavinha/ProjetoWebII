@@ -10,7 +10,7 @@ import {
   ListarSolicitacoesComponent,
   EfetuarOrcamentoComponent,
   NewOrderComponent,
-  FinalizarSolicitacaoComponent
+  FinalizarSolicitacaoComponent,
 } from '@/app/pages';
 import { RelatoriosComponent } from '@/app/pages/admin/relatorios/relatorios.component';
 import { QuoteComponent } from '../pages/client/quote/quote.component';
@@ -19,6 +19,7 @@ import { ApproveComponent } from '../pages/client/approve/approve.component';
 import { ViewComponent } from '../pages/client/view/view.component';
 import { PaymentComponent } from '../pages/client/payment/payment.component';
 import { authGuard } from '@/app/lib/guards/auth/auth.guard';
+import { EfetuarManutencaoComponent } from '../pages/admin/efetuar-manutencao/efetuar-manutencao.component';
 
 export const routes: Routes = [
   {
@@ -92,6 +93,10 @@ export const routes: Routes = [
   {
     path: 'admin/finalizar/:id',
     component: FinalizarSolicitacaoComponent,
+  },
+  {
+    path: 'admin/manutencao/:id',
+    component: EfetuarManutencaoComponent,
     canActivate: [authGuard],
   },
   {

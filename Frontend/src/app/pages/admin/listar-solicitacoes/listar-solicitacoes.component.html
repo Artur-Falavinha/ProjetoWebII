@@ -15,7 +15,7 @@
           *ngFor="let solicitacao of solicitacoes"
           [solicitacao]="solicitacao"
           (verDetalhes)="verDetalhes($event)"
-          (efetuarOrcamento)="efetuarOrcamento($event)">
+        >
         </app-solicitacao-card>
       </div>
 
@@ -31,12 +31,10 @@
 <!-- Modal de Detalhes da Solicitação -->
 <div class="modal" *ngIf="modalAberto">
   <div class="modal-content">
-    
     <h2>Detalhes da Solicitação</h2>
     <p>Visualize as informações completas da solicitação</p>
 
     <div *ngIf="solicitacaoSelecionada" class="solicitacao-details">
-      
       <!-- Equipamento -->
       <div class="detail-item">
         <label>Equipamento:</label>
@@ -68,12 +66,7 @@
       </div>
 
       <!-- Status -->
-      <div class="detail-item">
-        <label>Status:</label>
-        <span class="status-badge" [class]="getStatusClass(solicitacaoSelecionada.situation)">
-          {{ getStatusText(solicitacaoSelecionada.situation) }}
-        </span>
-      </div>
+      <app-tag [variant]="solicitacaoSelecionada.situation" />
 
       <!-- Descrição do Problema -->
       <div class="detail-item full-width">
@@ -84,20 +77,28 @@
       </div>
 
       <!-- Observações (se houver) -->
-      <div class="detail-item full-width" *ngIf="solicitacaoSelecionada.observacoes">
+      <div
+        class="detail-item full-width"
+        *ngIf="solicitacaoSelecionada.observacoes"
+      >
         <label>Observações:</label>
         <div class="description-box">
           {{ solicitacaoSelecionada.observacoes }}
         </div>
       </div>
-
     </div>
 
     <div class="actions">
       <button mat-button type="button" (click)="fecharModal()">Fechar</button>
-      <button mat-raised-button color="primary" type="button" (click)="efetuarOrcamento(solicitacaoSelecionada!)">
-        Efetuar Orçamento
-      </button>
+      @if (solicitacaoSelecionada?.situation == SituationEnum.ABERTA) {
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        [routerLink]="['/admin/solicitacao', solicitacaoSelecionada!.id]"
+      >
+        Efetuar Orçamento</button
+      >}
     </div>
   </div>
 </div>

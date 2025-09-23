@@ -1,0 +1,124 @@
+<mat-card class="app-quote-card" appearance="outlined">
+  <ng-container *ngIf="order; else noOrder">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>Dados da solicitação</mat-card-title>
+        <mat-card-subtitle>
+          Informações do equipamento e orçamento aprovado
+        </mat-card-subtitle>
+      </mat-card-title-group>
+      <app-tag [variant]="order.situation" />
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="details-wrap">
+        <div class="detail-item">
+          <mat-icon>shopping_cart_checkout</mat-icon>
+          <div class="text-wrap">
+            <p>Equipamento</p>
+            <span>{{ order.product }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>attach_money</mat-icon>
+          <div class="detail-item" class="text-wrap">
+            <p>Valor aprovado</p>
+            <span>{{ order.price }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>person</mat-icon>
+          <div class="detail-item" class="text-wrap">
+            <p>Cliente</p>
+            <span>{{ order.client }}</span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <mat-icon>build</mat-icon>
+          <div class="detail-item" class="text-wrap">
+            <p>Responsável</p>
+            <span>{{ order.atributed_employee }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="issue-related-wrapper">
+        <p>Problema relatado</p>
+        <div class="issue-related-box">
+          {{ order.issue_description }}
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <form
+        [formGroup]="efetuarManutencaoForm"
+        (ngSubmit)="onSubmit()"
+        class="form-wrap"
+      >
+        <app-text-area-input
+          [control]="fixDescriptionControl"
+          label="Descrição da manutenção"
+          placeholder="Descreva detalhadamente os problemas apresentados..."
+          [errorMessages]="{
+            required: 'Campo obrigatório',
+            maxLength: 'Campo com mais de 300 caracteres'
+          }"
+          [hint]="fixDescriptionControl.value?.length + '/300 caracteres'"
+        />
+
+        <app-text-area-input
+          [control]="orientationControl"
+          label="Orientações para o cliente"
+          placeholder="Orientações sobre uso, cuidados, prevenção..."
+          [errorMessages]="{
+            maxLength: 'Campo com mais de 300 caracteres'
+          }"
+          [hint]="orientationControl.value?.length + '/300 caracteres'"
+        />
+      </form>
+
+      <div class="warning-box">
+        <div class="warning-wrap">
+          <p>Não consegue realizar a manutenção?</p>
+          <span
+            >Se não possui as ferramentas ou conhecimento necessário, você pode
+            redirecionar para outro técnico.
+          </span>
+          <app-button
+            title="Repassar"
+            [link]="'/client/reject/' + order.id"
+            variant="secondary"
+            style="width: 40%"
+          />
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div style="width: 100%; display: flex; flex-direction: row; gap: 0.5rem">
+        <app-button
+          style="width: 100%"
+          title="Cancelar"
+          [link]="'/client/reject/' + order.id"
+          variant="secondary"
+        />
+        <app-button
+          style="width: 100%"
+          title="Enviar solicitação"
+          icon="send"
+          variant="primary"
+          [disabled]="efetuarManutencaoForm.invalid"
+          (click)="onSubmit()"
+        />
+      </div>
+    </mat-card-footer>
+  </ng-container>
+  <ng-template #noOrder>
+    <p>a</p>
+  </ng-template>
+</mat-card>

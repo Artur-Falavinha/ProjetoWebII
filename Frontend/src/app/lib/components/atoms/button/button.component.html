@@ -7,7 +7,10 @@
     [disabled]="disabled"
     [routerLink]="link"
     (click)="onClick()"
-    [class]="'app-button primary-button transition-colors' + (!fullWidth ? ' fit-content' : '')"
+    [class]="
+      'app-button primary-button transition-colors' +
+      (!fullWidth ? ' fit-content' : '')
+    "
     [attr.matStepperNext]="matStepperNext ? '' : null"
     [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
   >
@@ -25,7 +28,10 @@
     [disabled]="disabled"
     [routerLink]="link"
     (click)="onClick()"
-    [class]="'app-button secondary-button transition-colors' + (!fullWidth ? ' fit-content' : '')"
+    [class]="
+      'app-button secondary-button transition-colors' +
+      (!fullWidth ? ' fit-content' : '')
+    "
     [attr.matStepperNext]="matStepperNext ? '' : null"
     [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
   >
@@ -43,7 +49,10 @@
     [disabled]="disabled"
     [routerLink]="link"
     (click)="onClick()"
-    [class]="'app-button success-button transition-colors' + (!fullWidth ? ' fit-content' : '')"
+    [class]="
+      'app-button success-button transition-colors' +
+      (!fullWidth ? ' fit-content' : '')
+    "
     [attr.matStepperNext]="matStepperNext ? '' : null"
     [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
   >
@@ -61,7 +70,10 @@
     [disabled]="disabled"
     [routerLink]="link"
     (click)="onClick()"
-    [class]="'app-button destructive-button transition-colors' + (!fullWidth ? ' fit-content' : '')"
+    [class]="
+      'app-button destructive-button transition-colors' +
+      (!fullWidth ? ' fit-content' : '')
+    "
     [attr.matStepperNext]="matStepperNext ? '' : null"
     [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
   >

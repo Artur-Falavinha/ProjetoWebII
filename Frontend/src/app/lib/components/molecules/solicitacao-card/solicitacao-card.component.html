@@ -29,11 +29,11 @@
       icon="visibility"
       (click)="onVerDetalhes()">
     </app-button>
-    <app-button 
+   @if (!(solicitacao.situation === SituationEnum.ORCADA)) { <app-button 
       [title]="getActionButtonText(solicitacao.situation)" 
       [variant]="getActionButtonVariant(solicitacao.situation)"
       [icon]="getActionButtonIcon(solicitacao.situation)"
-      (click)="onEfetuarOrcamento()">
-    </app-button>
+      [link]="getLink(solicitacao.situation)">
+    </app-button>}
   </div>
 </div>
