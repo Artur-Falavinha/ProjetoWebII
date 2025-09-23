@@ -30,6 +30,7 @@ import { TextAreaInputComponent } from '../text-area-input/text-area-input.compo
 import { AuthService, CategoriaService } from '@/app/lib/services';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { SituationEnum } from '@/app/@types';
+import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-new-order-card',
@@ -51,7 +52,6 @@ import { SituationEnum } from '@/app/@types';
   templateUrl: './new-order-card.component.html',
   styleUrls: ['./new-order-card.component.scss'],
 })
-
 export class NewOrderCardComponent implements OnInit {
   newOrderForm!: FormGroup;
 
@@ -98,6 +98,7 @@ export class NewOrderCardComponent implements OnInit {
     this.solicitacaoService.inserir({
       client: user!.name,
       clientEmail: user!.email,
+      order_date: getFormattedDate(),
       category: inject(CategoriaService).buscaPorId(this.categoryControl.value)!.label,
       product: this.productControl.value,
       issue_description: this.issue_descriptionControl.value,

@@ -31,7 +31,7 @@ export class OrderCardComponent {
       case SituationEnum.REJEITADA:
         return {
           title: 'Resgatar',
-          link: `/orders/${this.order.id}/tracking`,
+          link: `/orders/${this.order.id}`,
           icon: 'track_changes',
           variant: 'secondary' as ButtonVariant
         };
