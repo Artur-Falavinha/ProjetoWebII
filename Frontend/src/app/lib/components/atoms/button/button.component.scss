@@ -20,6 +20,8 @@
   height: 2.5rem;
 }
 
+
+
 .fab-secondary-button {
   cursor: pointer;
   color: #000 !important;
@@ -37,6 +39,8 @@
   color: #fafafa !important;
 }
 
+
+
 .primary-button {
   background-color: hsl(var(--primary_color)) !important;
   color: white !important;
@@ -51,6 +55,8 @@
   color: white !important;
 }
 
+
+
 .secondary-button {
   background-color: var(--neutrals_light_200) !important;
   border-color: var(--neutrals_light_300) !important;
@@ -64,21 +70,34 @@
   border-color: hsl(var(--primary_color)) !important;
 }
 
+
+
 .success-button {
-  background-color: hsl(var(--status_success)) !important;
+  background-color: hsl(var(--status_success_alt)) !important;
+  border-color: hsl(var(--status_success_alt)) !important;
+  color: white !important;
+}
+
+.success-button:disabled {
+  color: hsl(var(--status_success_alt)) !important;
+  opacity: 0.5 !important;
 }
 
 .success-button:hover {
-  background-color: hsl(var(--status_success) / 0.9) !important;
+  background-color: hsl(var(--status_success_alt) / 0.9) !important;
+  color: white !important;
 }
+
+
 
 .destructive-button {
   background-color: var(--neutrals_light_100) !important;
-  color: #000 !important;
+  color: hsl(var(--status_danger_alt)) !important;
+  border-color: hsl(var(--status_danger_alt)) !important
 }
 
 .destructive-button:hover {
-  background-color: hsl(var(--status_destructive)) !important;
+  background-color: hsl(var(--status_danger_alt)) !important;
   color: var(--neutrals_light_100) !important;
-  border-color: hsl(var(--status_destructive));
+  border-color: hsl(var(--status_danger_alt)) !important;
 }

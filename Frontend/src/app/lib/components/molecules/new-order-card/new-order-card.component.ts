@@ -25,6 +25,7 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SelectInputComponent } from '../select-input/select-input.component';
 import { TextAreaInputComponent } from '../text-area-input/text-area-input.component';
 import { AuthService, CategoriaService } from '@/app/lib/services';
@@ -48,6 +49,7 @@ import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
     MatInputModule,
     SelectInputComponent,
     TextAreaInputComponent,
+    MatSnackBarModule
   ],
   templateUrl: './new-order-card.component.html',
   styleUrls: ['./new-order-card.component.scss'],
@@ -62,7 +64,8 @@ export class NewOrderCardComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private solicitacaoService: SolicitacaoService,
-    private categoriaService: CategoriaService
+    private categoriaService: CategoriaService,
+    private snackBar: MatSnackBar
   ) {
     this.categories = this.categoriaService.listarTodas();
   }
@@ -99,10 +102,15 @@ export class NewOrderCardComponent implements OnInit {
       client: user!.name,
       clientEmail: user!.email,
       order_date: getFormattedDate(),
-      category: inject(CategoriaService).buscaPorId(this.categoryControl.value)!.label,
+      category: this.categoriaService.buscaPorId(this.categoryControl.value)!.label,
       product: this.productControl.value,
       issue_description: this.issue_descriptionControl.value,
       situation: SituationEnum.ABERTA,
+    });
+
+    this.snackBar.open('Solicitação enviada com sucesso!', 'Fechar', {
+      duration: 5000,
+      panelClass: ['snackbar-success']
     });
 
     this.router.navigate(['/client']);

@@ -16,10 +16,12 @@
           <p>Equipamento</p>
           <span>{{ order.product }}</span>
         </div>
+        @if (order.atributed_employee) {
         <div class="details-wrap">
           <p>Técnico responsável</p>
           <span>{{ order.atributed_employee }}</span>
         </div>
+        }
 
         <div class="separator"></div>
 
@@ -52,9 +54,10 @@
         />
         <app-button
           style="width: 100%"
-          title="Enviar solicitação"
-          icon="send"
-          variant="primary"
+          title="Aprovar solicitação"
+          icon="check"
+          variant="success"
+          (click)="approve()"
         />
       </div>
     </mat-card-footer>

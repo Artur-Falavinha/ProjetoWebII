@@ -64,15 +64,15 @@
       <div style="width: 100%;display: flex; flex-direction: row; gap: 0.5rem;">
         <app-button
           style="width: 100%"
-          title="Cancelar"
+          title="Rejeitar"
           [link]="'/client/reject/'+ order.id"
-          variant="secondary"
+          variant="destructive"
         />
         <app-button
           style="width: 100%"
           title="Enviar solicitação"
           icon="send"
-          variant="primary"
+          variant="success"
           [link]="'/client/approve/'+ order.id"
         />
       </div>

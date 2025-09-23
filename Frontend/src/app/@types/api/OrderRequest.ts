@@ -18,4 +18,5 @@ export type OrderRequest = {
   approval_date?: string;
   completion_date?: string;
   observacoes?: string;
+  reject_reason?: string;
 }

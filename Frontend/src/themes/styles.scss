@@ -85,11 +85,37 @@ body {
   --status_success_200: #619d7a;
   --status_success_100: #dcf8e9;
 
+  --status_danger_alt: 0 75% 55%;
+
+  --status_success_alt: 145 85% 45%;
+
   --input_border_100: #4096ff;
   --input_border_200: #1677ff;
 
   --box_shadow_input: rgba(27, 101, 151, 0.075);
   --box_shadow_error_input: rgba(151, 27, 27, 0.075);
+}
+
+.snackbar-success,
+.snackbar-success .mdc-snackbar__surface,
+.snackbar-success .mat-mdc-snackbar-surface {
+  background: var(--status_success_200) !important;
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.snackbar-error,
+.snackbar-error .mdc-snackbar__surface,
+.snackbar-error .mat-mdc-snackbar-surface {
+  background: var(--status_danger_200) !important;
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 ::selection {
