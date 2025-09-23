@@ -1,0 +1,108 @@
+<div class="relatorios-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="auth-card">
+    <div class="card-header">
+      <div>
+        <h2>Relatórios</h2>
+        <p>Visualize relatórios de receitas e performance da empresa</p>
+      </div>
+
+      <app-button
+        title="Gerar Todos os Relatórios"
+        variant="primary"
+        icon="download"
+        (click)="gerarTodosRelatorios()"
+        [disabled]="gerandoRelatorio">
+      </app-button>
+    </div>
+
+    <div class="card-body">
+      <div class="relatorios-list">
+        <app-relatorio-card
+          *ngFor="let relatorio of relatorios"
+          [relatorio]="relatorio"
+          [gerandoRelatorio]="gerandoRelatorio"
+          [filtroReceitas]="filtroReceitas"
+          (gerarRelatorio)="onGerarRelatorio($event, relatorio.id)">
+        </app-relatorio-card>
+      </div>
+</div>
+
+<!-- Modal de Preview do Relatório -->
+  <div class="modal" *ngIf="modalRelatorioAberto">
+    <div class="modal-content relatorio-modal">
+      <div class="modal-header">
+        <h2>{{ relatorioAtual?.titulo }}</h2>
+        <button mat-icon-button (click)="fecharModal()" class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="relatorio-preview">
+          <div class="relatorio-header">
+            <h3>Relatório de {{ relatorioAtual?.titulo }}</h3>
+            <p>Período: {{ relatorioAtual?.periodo }}</p>
+            <p>Gerado em: {{ relatorioAtual?.dataGeracao }}</p>
+          </div>
+          
+          <div class="relatorio-content">
+            <ng-container [ngSwitch]="relatorioAtual?.tipo">
+              <!-- Relatório de Receitas por Período -->
+              <div *ngSwitchCase="'receitas'" class="receitas-relatorio">
+                <div class="resumo-total">
+                  <h4>Resumo Total</h4>
+                  <div class="total-value">R$ {{ relatorioAtual?.totalGeral | number:'1.2-2' }}</div>
+                </div>
+                
+                <div class="dados-agrupados">
+                  <h4>Receitas por Dia</h4>
+                  <div class="dados-lista">
+                    <div *ngFor="let item of relatorioAtual?.dados" class="dado-item">
+                      <div class="dado-data">{{ item.data }}</div>
+                      <div class="dado-valor">R$ {{ item.valor | number:'1.2-2' }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Relatório de Receitas por Categoria -->
+              <div *ngSwitchCase="'categorias'" class="categorias-relatorio">
+                <div class="resumo-total">
+                  <h4>Resumo Total</h4>
+                  <div class="total-value">R$ {{ relatorioAtual?.totalGeral | number:'1.2-2' }}</div>
+                </div>
+                
+                <div class="dados-agrupados">
+                  <h4>Receitas por Categoria</h4>
+                  <div class="dados-lista">
+                    <div *ngFor="let item of relatorioAtual?.dados" class="dado-item">
+                      <div class="dado-categoria">{{ item.categoria }}</div>
+                      <div class="dado-valor">R$ {{ item.valor | number:'1.2-2' }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <app-button 
+          title="Fechar" 
+          variant="secondary" 
+          icon="close"
+          (click)="fecharModal()">
+        </app-button>
+        <app-button 
+          title="Baixar PDF" 
+          variant="primary" 
+          icon="download"
+          (click)="baixarPDF()">
+        </app-button>
+      </div>
+    </div>
+  </div>
+</div>

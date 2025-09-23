@@ -1,0 +1,58 @@
+<div class="relatorio-item">
+  <div class="relatorio-info">
+    <div class="icon-box">
+      <mat-icon>{{ relatorio.icon }}</mat-icon>
+    </div>
+    
+    <div class="relatorio-details">
+      <h3>{{ relatorio.titulo }}</h3>
+      <div class="details-grid">
+        <div class="detail-column">
+          <p>Período: {{ relatorio.periodo }}</p>
+          <p>Tipo: {{ relatorio.tipo }}</p>
+          <p>Filtros: {{ relatorio.filtros }}</p>
+        </div>
+        <div class="detail-column">
+          <p>Status: {{ relatorio.status }}</p>
+          <p>Formato: {{ relatorio.formato }}</p>
+        </div>
+        <div class="detail-column">
+          <p>ID: {{ relatorio.id }}</p>
+        </div>
+      </div>
+      
+      <form class="filtro-form" *ngIf="relatorio.temFiltros" (ngSubmit)="onGerarRelatorio()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dataInicial">Data Inicial</label>
+            <input 
+              id="dataInicial"
+              type="date" 
+              [(ngModel)]="filtroReceitas.dataInicial" 
+              name="dataInicial"
+              class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="dataFinal">Data Final</label>
+            <input 
+              id="dataFinal"
+              type="date" 
+              [(ngModel)]="filtroReceitas.dataFinal" 
+              name="dataFinal"
+              class="form-control">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="relatorio-actions">
+    <app-button 
+      [title]="relatorio.botaoTexto"
+      variant="primary" 
+      [icon]="relatorio.botaoIcone"
+      (click)="onGerarRelatorio()"
+      [disabled]="gerandoRelatorio">
+    </app-button>
+  </div>
+</div>

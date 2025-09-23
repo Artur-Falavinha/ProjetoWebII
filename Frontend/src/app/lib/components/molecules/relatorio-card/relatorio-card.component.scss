@@ -1,0 +1,129 @@
+.relatorio-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: white;
+
+  .relatorio-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
+
+    .icon-box {
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .relatorio-details {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 12px 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #111827;
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 16px;
+      }
+
+      .detail-column {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        p {
+          margin: 0;
+          font-size: 0.9rem;
+          color: #6b7280;
+        }
+      }
+    }
+  }
+
+  .relatorio-actions {
+    margin-left: 16px;
+  }
+}
+
+.filtro-form {
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    
+    label {
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .form-control {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+      
+      &:focus {
+        outline: none;
+        border-color: #2563eb;
+      }
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .relatorio-item {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+
+    .relatorio-info {
+      .relatorio-details {
+        .details-grid {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .filtro-form {
+          .form-row {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+        }
+      }
+    }
+
+    .relatorio-actions {
+      margin-left: 0;
+      align-self: flex-end;
+    }
+  }
+}

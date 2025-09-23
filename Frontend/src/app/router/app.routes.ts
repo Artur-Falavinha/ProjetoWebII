@@ -12,6 +12,7 @@ import {
   EfetuarOrcamentoComponent,
   NewOrderComponent,
 } from '@/app/pages';
+import { RelatoriosComponent } from '@/app/pages/admin/relatorios/relatorios.component';
 import { QuoteComponent } from '../pages/client/quote/quote.component';
 import { RejectComponent } from '../pages/client/reject/reject.component';
 import { ApproveComponent } from '../pages/client/approve/approve.component';
@@ -105,7 +106,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin/relatorios',
-    component: FuncionarioComponent,
+    component: RelatoriosComponent,
     canActivate: [authGuard],
   },
 

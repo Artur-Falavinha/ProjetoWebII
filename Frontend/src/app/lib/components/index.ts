@@ -14,6 +14,7 @@ export { SolicitacaoCardComponent as SolicitacaoCardNewComponent } from './molec
 export { SelectInputComponent } from './molecules/select-input/select-input.component';
 export { TextAreaInputComponent } from './molecules/text-area-input/text-area-input.component';
 export { OrderCardComponent } from './molecules/order-card/order-card.component';
+export { RelatorioCardComponent } from './molecules/relatorio-card/relatorio-card.component';
 
 // @ ORGANISMS
 export { SidebarComponent } from './organisms/sidebar/sidebar.component';
