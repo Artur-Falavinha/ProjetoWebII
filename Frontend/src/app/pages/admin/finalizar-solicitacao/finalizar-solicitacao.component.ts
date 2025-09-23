@@ -11,7 +11,7 @@ import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-efetuar-orcamento',
+  selector: 'app-finalizar-solicitacao',
   standalone: true,
   imports: [
     CommonModule,
@@ -26,18 +26,16 @@ import { MatButton } from '@angular/material/button';
     MatButton,
     MatError
   ],
-  templateUrl: './efetuar-orcamento.component.html',
-  styleUrls: ['./efetuar-orcamento.component.scss'],
+  templateUrl: './finalizar-solicitacao.component.html',
+  styleUrls: ['./finalizar-solicitacao.component.scss'],
 })
-export class EfetuarOrcamentoComponent implements OnInit {
+export class FinalizarSolicitacaoComponent implements OnInit {
   solicitacaoSelecionada: OrderRequest | undefined;
-  orcamentoForm!: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private solicitacaoService: SolicitacaoService,
-    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -48,16 +46,8 @@ export class EfetuarOrcamentoComponent implements OnInit {
       if (!this.solicitacaoSelecionada) {
         alert('Solicitação não encontrada!');
         this.router.navigate(['admin/solicitacoes']);
-      } else {
-        this.orcamentoForm = this.fb.group({
-          valor: [this.solicitacaoSelecionada.price ?? '', [Validators.required, Validators.min(0.01)]]
-        });
       }
     }
-  }
-
-  get valorControl() {
-    return this.orcamentoForm.get('valor') as FormControl;
   }
 
   formatarData(data: Date): string {
@@ -78,23 +68,15 @@ export class EfetuarOrcamentoComponent implements OnInit {
     }).format(data);
   }
 
-  salvarOrcamento(): void {
-    if (!this.solicitacaoSelecionada || this.orcamentoForm.invalid) {
-      this.orcamentoForm?.markAllAsTouched();
+  salvarfinalizar(): void {
+    if (!this.solicitacaoSelecionada) {
       return;
     }
-
-    const valor = this.valorControl.value;
-    if (!valor || valor <= 0) {
-      alert('Informe um valor válido para o orçamento');
-      return;
-    }
-
-    this.solicitacaoSelecionada.price = valor;
-    this.solicitacaoSelecionada.situation = SituationEnum.ORCADA;
+    
+    this.solicitacaoSelecionada.situation = SituationEnum.FINALIZADA;
 
     this.solicitacaoService.atualizar(this.solicitacaoSelecionada);
-    alert('Orçamento salvo com sucesso!');
+    alert('Solicitação finalizada!');
     this.router.navigate(['admin/solicitacoes']);
   }
 

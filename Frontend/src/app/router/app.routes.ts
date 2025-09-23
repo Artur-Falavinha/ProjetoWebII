@@ -5,12 +5,12 @@ import {
   ClientHomeComponent,
   FuncionarioComponent,
   ListarCategoriaComponent,
-  InserirCategoriaComponent,
   ListarFuncionarioComponent,
   InserirFuncionarioComponent,
   ListarSolicitacoesComponent,
   EfetuarOrcamentoComponent,
   NewOrderComponent,
+  FinalizarSolicitacaoComponent
 } from '@/app/pages';
 import { RelatoriosComponent } from '@/app/pages/admin/relatorios/relatorios.component';
 import { QuoteComponent } from '../pages/client/quote/quote.component';
@@ -87,6 +87,11 @@ export const routes: Routes = [
   {
     path: 'admin/orcamento/:id',
     component: EfetuarOrcamentoComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin/finalizar/:id',
+    component: FinalizarSolicitacaoComponent,
     canActivate: [authGuard],
   },
   {

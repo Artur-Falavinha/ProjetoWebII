@@ -1,0 +1,116 @@
+<div class="finalizar-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="card-header">
+      <button class="btn-primary" type="button" (click)="cancelar()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h2>Finalizar solicitação</h2>
+        <p>Confirme a finalização definitiva do serviço</p>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="status">
+      <div class="status-icon">
+        <mat-icon color="primary">check_circle</mat-icon>
+      </div>
+        <h3>Serviço Pago e Concluído</h3>
+        <p>O cliente já efetuou o pagamento. Confira os detalhes abaixo.</p>
+    </div>
+
+    <!-- Dados da Solicitação -->
+    <div class="section-card" *ngIf="solicitacaoSelecionada">
+      <h3>Dados da Solicitação</h3>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <mat-icon>build</mat-icon>
+          <div>
+            <strong>Equipamento</strong>
+            <p>{{ solicitacaoSelecionada.product }}</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon>person</mat-icon>
+          <div>
+            <strong>Cliente</strong>
+            <p>{{ solicitacaoSelecionada.client }}</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon>calendar_today</mat-icon>
+          <div>
+            <strong>Data da solicitação</strong>
+            <p>{{ solicitacaoSelecionada.order_date }}</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon>category</mat-icon>
+          <div>
+            <strong>Categoria</strong>
+            <p>{{ solicitacaoSelecionada.category }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problema relatado -->
+    <div class="section-card" *ngIf="solicitacaoSelecionada">
+      <h3>Problema original</h3>
+      <div class="problema-box">
+        <p>{{ solicitacaoSelecionada.issue_description }}</p>
+      </div>
+    </div>
+
+    <!-- Manutenção realizada -->
+    <div class="section-card" *ngIf="solicitacaoSelecionada">
+      <h3>Manutenção realizada</h3>
+      <div class="problema-box">
+        <p>{{ solicitacaoSelecionada.fix_description }}</p>
+      </div>
+    </div>
+
+    <!-- Orientações fornecidas -->
+    <div class="section-card" *ngIf="solicitacaoSelecionada">
+      <h3>Orientações fornecidas</h3>
+      <div class="problema-box">
+        <p>{{ solicitacaoSelecionada.orientation }}</p>
+      </div>
+    </div>
+
+
+
+    <!-- Informações importantes -->
+    <div class="section-card info-box">
+      <h3>Finalização do serviço</h3>
+      <ul>
+        <li> O cliente já efetuou o pagamento do serviço</li>
+        <li>A manutenção foi realizada com sucesso</li>
+        <li>Esta ação marcará a solicitação como definitivamente concluída</li>
+        <li>Não será possível reverter esta operação</li>
+      </ul>
+    </div>
+
+    <!-- Ações -->
+    <div class="actions" *ngIf="solicitacaoSelecionada">
+      <button mat-stroked-button color="warn" (click)="cancelar()">
+        Cancelar
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="salvarfinalizar()"
+      >
+        <mat-icon>check_circle</mat-icon>
+        Finalizar Solicitação
+      </button>
+    </div>
+  </div>
+</div>
