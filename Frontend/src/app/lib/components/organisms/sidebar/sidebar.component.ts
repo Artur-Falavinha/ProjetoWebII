@@ -67,15 +67,14 @@ export class SidebarComponent implements OnInit {
       ];
     }
     
-    // Default para CLIENT
     return [
       {
-        path: '/',
+        path: '/client',
         label: 'Página Inicial',
         icon: 'home'
       },
       {
-        path: '/nova-solicitacao',
+        path: '/client/new-order',
         label: 'Nova Solicitação',
         icon: 'add'
       }

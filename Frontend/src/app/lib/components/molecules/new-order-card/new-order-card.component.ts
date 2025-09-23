@@ -98,7 +98,7 @@ export class NewOrderCardComponent implements OnInit {
     this.solicitacaoService.inserir({
       client: user!.name,
       clientEmail: user!.email,
-      category: this.categoryControl.value,
+      category: inject(CategoriaService).buscaPorId(this.categoryControl.value)!.label,
       product: this.productControl.value,
       issue_description: this.issue_descriptionControl.value,
       situation: SituationEnum.ABERTA,

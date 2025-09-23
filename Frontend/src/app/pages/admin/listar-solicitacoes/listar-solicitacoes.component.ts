@@ -30,12 +30,14 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 })
 export class ListarSolicitacoesComponent implements OnInit {
   solicitacoes: OrderRequest[] = [];
-  router: any;
 
   constructor(
     private solicitacaoService: SolicitacaoService,
     private dialog: MatDialog,
-  ) {}
+    private router: Router
+  ) {
+    this.router = router;
+  }
 
   ngOnInit(): void {
     this.solicitacoes = this.listarTodas();
