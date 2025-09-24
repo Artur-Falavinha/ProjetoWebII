@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { SidebarComponent } from '@/app/lib/components';
 import { MatIcon } from '@angular/material/icon';
-import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 
 @Component({
@@ -20,11 +18,7 @@ import { MatButton } from '@angular/material/button';
     RouterModule,
     SidebarComponent,
     MatIcon,
-    MatLabel,
-    MatFormField,
-    MatInput,
     MatButton,
-    MatError
   ],
   templateUrl: './finalizar-solicitacao.component.html',
   styleUrls: ['./finalizar-solicitacao.component.scss'],

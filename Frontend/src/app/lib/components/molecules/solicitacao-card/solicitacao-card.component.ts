@@ -88,9 +88,11 @@ export class SolicitacaoCardComponent {
       case SituationEnum.ORCADA:
         return 'Aprovar Orçamento';
       case SituationEnum.APROVADA:
+        return 'Efetuar Manutenção';
+      case SituationEnum.PAGA:
         return 'Finalizar Serviço';
       case SituationEnum.FINALIZADA:
-        return 'Ver Detalhes';
+        return 'Ver Detalhes'; //tirar esse 'ver detalhes' está duplicando na tela 
       default:
         return 'Ação';
     }
@@ -123,6 +125,8 @@ export class SolicitacaoCardComponent {
         return 'check_circle';
       case SituationEnum.APROVADA:
         return 'build';
+      case SituationEnum.PAGA:
+        return 'check';
       case SituationEnum.FINALIZADA:
         return 'visibility';
       default:

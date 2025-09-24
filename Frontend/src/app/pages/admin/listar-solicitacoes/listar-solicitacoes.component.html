@@ -88,6 +88,7 @@
       </div>
     </div>
 
+    <!-- Ações -->
     <div class="actions">
       <button mat-button type="button" (click)="fecharModal()">Fechar</button>
       @if (solicitacaoSelecionada?.situation == SituationEnum.ABERTA) {
@@ -95,9 +96,29 @@
         mat-raised-button
         color="primary"
         type="button"
-        [routerLink]="['/admin/solicitacao', solicitacaoSelecionada!.id]"
+        [routerLink]="['/admin/orcamento', solicitacaoSelecionada!.id]"
       >
         Efetuar Orçamento</button
+      >}
+
+      @if (solicitacaoSelecionada?.situation == SituationEnum.APROVADA) {
+      <button
+        mat-raised-button
+        color="success"
+        type="button"
+        [routerLink]="['/admin/manutencao', solicitacaoSelecionada!.id]"
+      >
+        Efetuar manutenção</button
+      >}
+
+      @if (solicitacaoSelecionada?.situation == SituationEnum.PAGA) {
+      <button
+        mat-raised-button
+        color="success"
+        type="button"
+        [routerLink]="['/admin/finalizar', solicitacaoSelecionada!.id]"
+      >
+        Finalizar solicitação</button
       >}
     </div>
   </div>
