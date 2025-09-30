@@ -4,9 +4,13 @@
   <div class="auth-card">
     <!-- Header -->
     <div class="card-header">
-      <button class="btn-primary" type="button" (click)="cancelar()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
+      <app-button
+        title=""
+        variant="secondary"
+        icon="arrow_back"
+        [fullWidth]="false"
+        (click)="cancelar()">
+      </app-button>
       <div>
         <h2>Efetuar Orçamento</h2>
         <p>Revise os detalhes antes de criar o orçamento</p>
@@ -102,18 +106,18 @@
 
     <!-- Ações -->
     <div class="actions" *ngIf="solicitacaoSelecionada">
-      <button mat-stroked-button color="warn" (click)="cancelar()">
-        Cancelar
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="salvarOrcamento()"
+      <app-button
+        title="Cancelar"
+        variant="secondary"
+        (click)="cancelar()">
+      </app-button>
+      <app-button
+        title="Criar Orçamento"
+        variant="primary"
+        icon="attach_money"
         [disabled]="orcamentoForm.invalid"
-      >
-        <mat-icon>attach_money</mat-icon>
-        Criar Orçamento
-      </button>
+        (click)="salvarOrcamento()">
+      </app-button>
     </div>
   </div>
 </div>

@@ -29,13 +29,29 @@ export class SolicitacaoCardComponent {
   @Input() solicitacao!: OrderRequest;
   @Input() showActions: boolean = true;
 
+  /**Evento emitido quando o usuário clica em "Ver detalhes"**/
   @Output() verDetalhes = new EventEmitter<OrderRequest>();
+  
+  /**Evento emitido quando o usuário clica no botão de ação principal (orçamento, manutenção, finalizar)**/
+  @Output() efetuarAcao = new EventEmitter<OrderRequest>();
 
   /**Emite evento de ver detalhes**/
   onVerDetalhes(): void {
     this.verDetalhes.emit(this.solicitacao);
   }
 
+  /**
+   * Emite evento de efetuar ação principal
+   * A ação varia de acordo com o status da solicitação:
+   * - ABERTA: Efetuar Orçamento
+   * - APROVADA: Efetuar Manutenção
+   * - PAGA: Finalizar Serviço
+   **/
+  onEfetuarAcao(): void {
+    this.efetuarAcao.emit(this.solicitacao);
+  }
+
+  /**Expõe o enum para uso no template**/
   SituationEnum = SituationEnum;
 
   // @ REFATORAR ESSA LOUCURA

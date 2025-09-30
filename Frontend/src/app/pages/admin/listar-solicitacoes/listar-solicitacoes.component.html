@@ -15,6 +15,7 @@
           *ngFor="let solicitacao of solicitacoes"
           [solicitacao]="solicitacao"
           (verDetalhes)="verDetalhes($event)"
+          (efetuarAcao)="getButtonStatus($event)"
         >
         </app-solicitacao-card>
       </div>

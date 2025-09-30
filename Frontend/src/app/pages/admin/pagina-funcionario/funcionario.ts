@@ -51,24 +51,48 @@ export class FuncionarioComponent implements OnInit {
   modalAberto = false;
   solicitacaoSelecionada: OrderRequest | null = null;
 
+  private readonly solicitacaoService = inject(SolicitacaoService);
+
   constructor() {
-  this.authService.login({ email: 'funcionario@email.com', password: 'senha' }).subscribe();
-  this.items = inject(SolicitacaoService).listarTodas();
+    // Login automático para demonstração (remover em produção)
+    this.authService.login({ email: 'funcionario@email.com', password: 'senha' }).subscribe();
+    
+    // Carrega todas as solicitações do localStorage
+    this.items = this.solicitacaoService.listarTodas();
   }
 
   ngOnInit(): void {
     this.carregarDadosDashboard();
   }
 
+  /**
+   * Carrega os dados do dashboard do funcionário
+   * Filtra solicitações abertas e calcula estatísticas
+   * Conforme RF011 - Página Inicial de Funcionário
+   */
   carregarDadosDashboard(): void {
     // Filtra apenas solicitações ABERTAS conforme RF011
-    this.solicitacoesAbertas = this.items.filter(item => item.situation === SituationEnum.ABERTA);
+    // Essas necessitam de atenção imediata do funcionário
+    this.solicitacoesAbertas = this.items.filter(
+      item => item.situation === SituationEnum.ABERTA
+    );
     
-    // Calcula estatísticas baseadas no array mock
-    this.estatisticas.abertas = this.items.filter(item => item.situation === SituationEnum.ABERTA).length;
-    this.estatisticas.orcadas = this.items.filter(item => item.situation === SituationEnum.ORCADA).length;
-    this.estatisticas.aprovadas = this.items.filter(item => item.situation === SituationEnum.APROVADA).length;
-    this.estatisticas.finalizadas = this.items.filter(item => item.situation === SituationEnum.FINALIZADA).length;
+    // Calcula estatísticas para os cards
+    this.estatisticas.abertas = this.items.filter(
+      item => item.situation === SituationEnum.ABERTA
+    ).length;
+    
+    this.estatisticas.orcadas = this.items.filter(
+      item => item.situation === SituationEnum.ORCADA
+    ).length;
+    
+    this.estatisticas.aprovadas = this.items.filter(
+      item => item.situation === SituationEnum.APROVADA
+    ).length;
+    
+    this.estatisticas.finalizadas = this.items.filter(
+      item => item.situation === SituationEnum.FINALIZADA
+    ).length;
   }
 
 
@@ -92,20 +116,33 @@ export class FuncionarioComponent implements OnInit {
     }
   }
 
+  /**
+   * Abre o modal com os detalhes da solicitação selecionada
+   */
   verDetalhes(solicitacao: OrderRequest): void {
     this.solicitacaoSelecionada = solicitacao;
     this.modalAberto = true;
   }
 
+  /**
+   * Fecha o modal de detalhes e limpa a solicitação selecionada
+   */
   fecharModal(): void {
     this.modalAberto = false;
     this.solicitacaoSelecionada = null;
   }
 
+  /**
+   * Navega para a tela de efetuar orçamento da solicitação
+   * RF012 - Efetuar Orçamento
+   */
   efetuarOrcamento(solicitacao: OrderRequest): void {
     this.router.navigate(['/admin/orcamento', solicitacao.id]);
   }
 
+  /**
+   * Navega para a listagem completa de todas as solicitações
+   */
   verTodasSolicitacoes(): void {
     this.router.navigate(['/admin/solicitacoes']);
   }
