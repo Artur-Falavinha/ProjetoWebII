@@ -80,6 +80,7 @@ export class SolicitacaoCardComponent {
     }
   }
 
+  //É viável deixar a rota pra tela aqui já?
   /**Obtém o texto do botão de ação baseado no status da solicitação**/
   getActionButtonText(status: SituationEnum): string {
     switch (status) {

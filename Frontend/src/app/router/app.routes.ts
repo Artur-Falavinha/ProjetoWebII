@@ -93,6 +93,7 @@ export const routes: Routes = [
   {
     path: 'admin/finalizar/:id',
     component: FinalizarSolicitacaoComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'admin/manutencao/:id',

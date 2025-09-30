@@ -28,7 +28,6 @@ import { ApproveComponent } from "../../client/approve/approve.component";
     MatChipsModule,
     MatDialogModule,
     TagComponent,
-    ApproveComponent
 ],
   templateUrl: './listar-solicitacoes.component.html',
   styleUrls: ['./listar-solicitacoes.component.scss'],
@@ -72,20 +71,26 @@ export class ListarSolicitacoesComponent implements OnInit {
     }
   }
 
-  getStatusText(status: SituationEnum): string {
-    switch (status) {
+
+  getButtonStatus(solicitacao: OrderRequest): void {
+    this.solicitacaoSelecionada = solicitacao;
+
+    switch (solicitacao.situation) {
       case SituationEnum.ABERTA:
-        return 'Aberta';
-      case SituationEnum.ORCADA:
-        return 'Orçada';
+        this.router.navigate(['/admin/orcamento', solicitacao.id]);
+        break;
       case SituationEnum.APROVADA:
-        return 'Aprovada';
-      case SituationEnum.FINALIZADA:
-        return 'Finalizada';
+        this.router.navigate(['/admin/manutencao', solicitacao.id]);
+        break;
+      case SituationEnum.PAGA:
+        this.router.navigate(['/admin/finalizar', solicitacao.id]);
+        break;
       default:
-        return 'Aberta';
+        this.modalAberto = true; // se não tiver rota, abre modal
+        break;
     }
   }
+
 
   verDetalhes(solicitacao: OrderRequest): void {
     this.solicitacaoSelecionada = solicitacao;
