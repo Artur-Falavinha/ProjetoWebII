@@ -1,213 +1,57 @@
-.finalizar-layout {
+.header-wrap {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 2rem;
+}
+
+.page-subtitle {
+  font-size: var(--16px);
+  color: hsl(215, 15%, 55%);
+  font-weight: 300;
+  letter-spacing: 0.25px;
+}
+
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.admin-content {
+  flex: 1;
+  padding-bottom: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background: #fafafa;
+  overflow-y: auto;
   min-height: 100vh;
-  background: #f9fafb;
+}
+.text-wrap {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: #fafafa;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem;
+}
 
-  app-sidebar {
-    flex-shrink: 0;
-  }
-
-  //box do meio da tela
-  .auth-card {
-    flex: 1;
-    max-width: 900px; 
-    margin: 32px auto; 
-    background: #fff;
-    padding: 32px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  /* Header */
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-
-    button {
-      background: #f3f4f6;
-      border-radius: 8px;
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      mat-icon {
-        color: #374151;
-      }
-    }
-
-    h2 {
-      font-size: 20px;
-      font-weight: 600;
-      margin: 0;
-      color: #111827;
-    }
-
-    p {
-      margin: 0;
-      font-size: 14px;
-      color: #6b7280;
-    }
-  }
-
-    /*Status da solicitação*/
-    .status {
-    text-align: center;
-    margin: 20px 0;
-
-    .status-icon {
-      font-size: 62px;
-      color: #4caf50;
-    }
-
-    h3 {
-      margin: 10px 0 5px 0;
-      
-    }
-
-    p {
-      margin: 0;
-      color: gray;
-    }
-  }
-
-  /* Cards seções */
-  .section-card {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    h3 {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0;
-      color: #065f46;
-    }
-  }
-
-  /* Grid de informações */
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-  }
-
-  .info-item {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-
-    mat-icon {
-      color: #2563eb;
-    }
-
-    strong {
-      font-size: 14px;
-      color: #374151;
-      display: block;
-    }
-
-    p {
-      margin: 0;
-      font-size: 14px;
-      color: #6b7280;
-    }
-  }
-
-  /* Caixa de problema relatado */
-  .problema-box {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 14px;
-    color: #374151;
-  }
-
-  /* Caixa de informações importantes */
-  .info-box {
-    background: #aff1df;
-    border: 1px solid #065f46;
-    border-radius: 12px;
-
-    ul {
-      margin: 0;
-      padding-left: 18px;
-
-      li {
-        font-size: 14px;
-        color: #065f46;
-        margin-bottom: 6px;
-      }
-    }
-  }
-
-  /* Ações */
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-
-    button {
-      border-radius: 8px;
-      font-weight: 500;
-      padding: 8px 16px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      text-transform: none;
-    }
-
-    /* Botão cancelar */
-    .mat-stroked-button {
-      border: 1px solid #d1d5db;
-      color: #374151;
-      background: #fff;
-
-      &:hover {
-        background: #f9fafb;
-      }
-    }
-
-    /* Botão criar orçamento  */
-    .mat-raised-button {
-      background: #065f46;
-      color: #fff;
-
-      &:hover {
-        background: #065f46;
-      }
-
-      mat-icon {
-        font-size: 18px;
-      }
-    }
-  }
-
-  /* Ajustes dos mat-form-field */
-  mat-form-field {
-    width: 100%;
-
-    input {
-      font-size: 14px;
-    }
-
-    mat-label {
-      font-size: 14px;
-    }
-  }
-
-  small {
-    font-size: 12px;
-    color: #6b7280;
-  }
+.order-card-wrap {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+  gap: 1rem;
 }

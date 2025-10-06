@@ -89,72 +89,20 @@
       </div>
     </div>
 
-    <!-- Ações 
-    <div class="actions">
+    <!-- Actions -->
+    <div 
+      class="actions "
+    >
       <button mat-button type="button" (click)="fecharModal()">Fechar</button>
-      @if (solicitacaoSelecionada?.situation == SituationEnum.ABERTA) {
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        [routerLink]="['/admin/orcamento', solicitacaoSelecionada!.id]"
-      >
-        Efetuar Orçamento</button
-      >}
-      
-    <div class="actions">
-      <button mat-button type="button" (click)="fecharModal()">Fechar</button>
-      @if (solicitacaoSelecionada?.situation == SituationEnum.ABERTA) {
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        [routerLink]="['/admin/orcamento', solicitacaoSelecionada!.id]"
-      >
-        Efetuar Orçamento</button
-      >}
-
-    <div class="actions">
-      <button mat-button type="button" (click)="fecharModal()">Fechar</button>
-      @if (solicitacaoSelecionada?.situation == SituationEnum.ABERTA) {
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        [routerLink]="['/admin/orcamento', solicitacaoSelecionada!.id]"
-      >
-        Efetuar Orçamento</button
-      >}
-    
-      @if (solicitacaoSelecionada?.situation == SituationEnum.APROVADA) {
-      <button
-        mat-raised-button
-        color="success"
-        type="button"
-        [routerLink]="['/admin/manutencao', solicitacaoSelecionada!.id]"
-      >
-        Efetuar manutenção</button
-      >}
-
-      @if (solicitacaoSelecionada?.situation == SituationEnum.PAGA) {
-      <button
-        mat-raised-button
-        color="success"
-        type="button"
-        [routerLink]="['/admin/finalizar', solicitacaoSelecionada!.id]"
-      >
-        Finalizar solicitação</button
-      >}
-      </div> -->
 
       <button
         mat-raised-button
         color="success"
         type="button"
-        (click)="getButtonStatus(solicitacaoSelecionada!)"
+        (click) ="getButtonStatus(solicitacaoSelecionada!)"
+        >
+      Efetuar ação necessária  
+      </button
       >
-        Finalizar solicitação</button
-      >
-    
-  </div>
+  </div>  
 </div>

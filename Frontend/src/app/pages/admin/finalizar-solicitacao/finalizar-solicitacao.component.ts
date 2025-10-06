@@ -1,80 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { SidebarComponent, ButtonComponent } from '@/app/lib/components';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OrderRequest, SituationEnum } from '@/app/@types';
+import { RejectCardComponent } from '@/app/lib/components/molecules/reject-card/reject-card.component';
+import { S } from '@angular/cdk/keycodes';
+import { delay, map, Observable, of, switchMap, tap } from 'rxjs';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { FinishCardComponent } from '@/app/lib/components/molecules/finish-card/finish-card.component';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
-import { SidebarComponent } from '@/app/lib/components';
-import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-finalizar-solicitacao',
-  standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
+    AsyncPipe,
+    NgIf,
     SidebarComponent,
-    MatIcon,
-    MatButton,
+    ButtonComponent,
+    FinishCardComponent,
   ],
   templateUrl: './finalizar-solicitacao.component.html',
-  styleUrls: ['./finalizar-solicitacao.component.scss'],
+  styleUrl: './finalizar-solicitacao.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FinalizarSolicitacaoComponent implements OnInit {
-  solicitacaoSelecionada: OrderRequest | undefined;
+export class FinalizarSolicitacaoComponent {
+  public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private solicitacaoService: SolicitacaoService,
-  ) {}
+  public id!: number;
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.solicitacaoSelecionada = this.solicitacaoService.buscaPorId(id);
+  order$!: Observable<OrderRequest | undefined>;
 
-      if (!this.solicitacaoSelecionada) {
-        alert('Solicitação não encontrada!');
-        this.router.navigate(['admin/solicitacoes']);
-      }
-    }
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {
+    this.order$ = this.route.paramMap.pipe(
+      map((params) => Number(params.get('id'))),
+      switchMap((id) =>
+        of(this.items.find((v) => v.id === id)).pipe(delay(500))
+      ),
+      tap((order) => {
+        if (!order) {
+          this.router.navigate(['/admin/solicitacoes']);
+        }
 
-  formatarData(data: Date): string {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(data);
-  }
-
-  formatarDataSimples(data: Date): string {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).format(data);
-  }
-
-  salvarfinalizar(): void {
-    if (!this.solicitacaoSelecionada) {
-      return;
-    }
-    
-    this.solicitacaoSelecionada.situation = SituationEnum.FINALIZADA;
-
-    this.solicitacaoService.atualizar(this.solicitacaoSelecionada);
-    alert('Solicitação finalizada!');
-    this.router.navigate(['admin/solicitacoes']);
-  }
-
-  cancelar(): void {
-    this.router.navigate(['admin/solicitacoes']);
+        if (order && order.situation !== SituationEnum.PAGA) {
+          this.router.navigate(['/admin/solicitacoes']);
+        }
+      })
+    );
   }
 }

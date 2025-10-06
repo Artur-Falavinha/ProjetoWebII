@@ -1,0 +1,76 @@
+<mat-card class="app-finish-card" appearance="outlined">
+  <ng-container *ngIf="order; else noOrder">
+    <mat-card-header>
+      <div class="rounded-finish">
+        <mat-icon>check</mat-icon>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="title-text-wrap">
+        <p>Serviço Pago e Concluído</p>
+        <span>O cliente já efetuou o pagamento. Confira os detalhes abaixo</span>
+      </div>
+      <div class="details-box">
+        <div class="details-wrap">
+          <mat-icon>inbox_out</mat-icon>
+          <p>Equipamento</p>
+          <span>{{ order.product }}</span>
+        </div>
+
+        <div class="details-wrap">
+          <mat-icon>person</mat-icon>
+          <p>Cliente</p>
+          <span>{{ order.client }}</span>
+        </div>
+
+        <div class="details-wrap">
+          <mat-icon>person</mat-icon>
+          <p>Técnico</p>
+          <span>{{ order.atributed_employee }}</span>
+        </div>
+        
+
+        <div class="separator"></div>
+
+        <div class="quote-wrap">
+          <mat-icon>attach_money</mat-icon>
+          <div class="quote-text">
+            <p>Valor aprovado</p>
+            <span>R$ {{ order.price }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="information-box">
+        <p>O que acontece após a aprovação?</p>
+        <ul>
+          <li>• A manutenção será iniciada pelo técnico responsável</li>
+          <li>• Você receberá atualizações sobre o progresso</li>
+          <li>• O pagamento só será solicitado após a conclusão</li>
+          <li>• Você poderá acompanhar o status na página inicial</li>
+        </ul>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div style="width: 100%; display: flex; flex-direction: row; gap: 0.5rem">
+        <app-button
+          style="width: 100%"
+          title="Cancelar"
+          link="/client"
+          variant="secondary"
+        />
+        <app-button
+          style="width: 100%"
+          title="Aprovar solicitação"
+          icon="check"
+          variant="success"
+          (click)="finish()"
+        />
+      </div>
+    </mat-card-footer>
+  </ng-container>
+  <ng-template #noOrder>
+    <p>a</p>
+  </ng-template>
+</mat-card>

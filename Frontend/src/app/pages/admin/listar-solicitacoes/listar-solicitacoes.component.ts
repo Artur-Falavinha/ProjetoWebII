@@ -77,7 +77,7 @@ export class ListarSolicitacoesComponent implements OnInit {
 
     switch (solicitacao.situation) {
       case SituationEnum.ABERTA:
-        this.router.navigate(['/admin/orcamento', solicitacao.id]);
+        this.router.navigate(['/admin/orcamento', solicitacao.id]);  
         break;
       case SituationEnum.APROVADA:
         this.router.navigate(['/admin/manutencao', solicitacao.id]);
@@ -87,7 +87,7 @@ export class ListarSolicitacoesComponent implements OnInit {
         break;
       default:
         this.modalAberto = true; // se não tiver rota, abre modal
-        break;
+        break; 
     }
   }
 
