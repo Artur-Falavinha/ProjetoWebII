@@ -11,44 +11,100 @@
         <p>Serviço Pago e Concluído</p>
         <span>O cliente já efetuou o pagamento. Confira os detalhes abaixo</span>
       </div>
+
+      <!--Detalhes da solicitação-->
       <div class="details-box">
-        <div class="details-wrap">
-          <mat-icon>inbox_out</mat-icon>
-          <p>Equipamento</p>
-          <span>{{ order.product }}</span>
+
+        <!--Primeira linha-->
+        <div class="details-rows">
+          <!-- Equipamento -->
+          <div class="details-wrap">
+            <mat-icon>inbox</mat-icon>
+            <div class="details-text">
+              <p>Equipamento</p>
+              <span>{{ order.product }}</span>
+            </div>
+          </div>
+
+          <!-- Cliente -->
+          <div class="details-wrap">
+            <mat-icon>person</mat-icon>
+            <div class="details-text">         
+              <p>Cliente</p>
+              <span>{{ order.client }}</span>
+            </div>
+          </div>
         </div>
 
-        <div class="details-wrap">
-          <mat-icon>person</mat-icon>
-          <p>Cliente</p>
-          <span>{{ order.client }}</span>
-        </div>
+        <!--Segunda linha-->
+        <div class="details-rows">      
+          <!-- Técnico -->
+          <div class="details-wrap">
+            <mat-icon>build</mat-icon>
+            <div class="details-text">
+              <p>Técnico</p>
+              <span>{{ order.atributed_employee }}</span>
+            </div>
+          </div>
 
-        <div class="details-wrap">
-          <mat-icon>person</mat-icon>
-          <p>Técnico</p>
-          <span>{{ order.atributed_employee }}</span>
-        </div>
-        
+          <!-- Valor -->
+          <div class="details-wrap">
+            <mat-icon>attach_money</mat-icon>
+            <div class="details-text">
+              <p>Valor pago</p>
+              <span>R$ {{ order.price }}</span>
+            </div>
+          </div>
+        </div>  
 
         <div class="separator"></div>
 
-        <div class="quote-wrap">
-          <mat-icon>attach_money</mat-icon>
-          <div class="quote-text">
-            <p>Valor aprovado</p>
-            <span>R$ {{ order.price }}</span>
+        <!-- Pagamento -->
+        <div class="details-wrap">
+          <mat-icon>today</mat-icon>
+          <div class="details-text">
+            <p>Pagamento realizado em: </p>
+            <span>{{ order.approval_date }}</span>
           </div>
         </div>
+
       </div>
 
+        <div class="separator"></div>
+
+        <!-- Problema relatado -->
+        <div class="section-card">
+          <h4>Problema original</h4>
+          <div class="problema-box">
+            <p>{{ order.issue_description }}</p>
+          </div>
+        </div>
+
+        <!-- Manutenção realizada -->
+        <div class="section-card">
+          <h4>Manutenção realizada</h4>
+          <div class="problema-box">
+            <p>{{ order.fix_description }}</p>
+          </div>
+        </div>
+
+        <!-- Orientações fornecidas -->
+        <div class="section-card">
+          <h4>Orientações fornecidas</h4>
+          <div class="problema-box">
+            <p>{{ order.orientation }}</p>
+          </div>
+        </div>
+        
+        <div class="separator"></div>
+
       <div class="information-box">
-        <p>O que acontece após a aprovação?</p>
+        <p>Finalização do serviço</p>
         <ul>
-          <li>• A manutenção será iniciada pelo técnico responsável</li>
-          <li>• Você receberá atualizações sobre o progresso</li>
-          <li>• O pagamento só será solicitado após a conclusão</li>
-          <li>• Você poderá acompanhar o status na página inicial</li>
+          <li>• O cliente já efetuou o pagamento do serviço</li>
+          <li>• A manutenção foi realizada com sucesso</li>
+          <li>• Esta ação marcará a solicitação como definitivamente concluída</li>
+          <li>• Não será possível reverter esta operação</li>
         </ul>
       </div>
     </mat-card-content>
@@ -57,12 +113,12 @@
         <app-button
           style="width: 100%"
           title="Cancelar"
-          link="/client"
+          link="/admin/solicitacoes"
           variant="secondary"
         />
         <app-button
           style="width: 100%"
-          title="Aprovar solicitação"
+          title="Finalizar solicitação"
           icon="check"
           variant="success"
           (click)="finish()"
