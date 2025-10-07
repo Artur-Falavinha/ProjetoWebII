@@ -17,92 +17,94 @@
       </app-button>
     </div>
 
-    <!-- Cards de Estatísticas -->
-    <div class="stats-section">
-      <div class="stats-grid">
-        <app-stat-card
-          icon="schedule"
-          [number]="estatisticas.abertas"
-          label="Abertas"
-          variant="warning"
-        >
-        </app-stat-card>
+    <div class="card-body">
+      <!-- Cards de Estatísticas -->
+      <div class="stats-section">
+        <div class="stats-grid">
+          <app-stat-card
+            icon="schedule"
+            [number]="estatisticas.abertas"
+            label="Abertas"
+            variant="warning"
+          >
+          </app-stat-card>
 
-        <app-stat-card
-          icon="monetization_on"
-          [number]="estatisticas.orcadas"
-          label="Orçadas"
-          variant="info"
-        >
-        </app-stat-card>
+          <app-stat-card
+            icon="monetization_on"
+            [number]="estatisticas.orcadas"
+            label="Orçadas"
+            variant="info"
+          >
+          </app-stat-card>
 
-        <app-stat-card
-          icon="check_circle"
-          [number]="estatisticas.aprovadas"
-          label="Aprovadas"
-          variant="primary"
-        >
-        </app-stat-card>
+          <app-stat-card
+            icon="check_circle"
+            [number]="estatisticas.aprovadas"
+            label="Aprovadas"
+            variant="primary"
+          >
+          </app-stat-card>
 
-        <app-stat-card
-          icon="done_all"
-          [number]="estatisticas.finalizadas"
-          label="Finalizadas"
-          variant="success"
-        >
-        </app-stat-card>
-      </div>
-    </div>
-
-    <!-- Seção de Solicitações Abertas - RF011 -->
-    <div class="solicitacoes-section">
-      <h2>Solicitações Abertas</h2>
-      <p>Necessitam de atenção imediata do funcionário</p>
-
-      <div class="solicitacoes-list" *ngIf="solicitacoesAbertas.length > 0">
-        <div
-          class="solicitacao-item"
-          *ngFor="let solicitacao of solicitacoesAbertas"
-        >
-          <div class="solicitacao-info">
-            <div class="icon-box">
-              <mat-icon>build</mat-icon>
-            </div>
-            <div class="solicitacao-details">
-              <h3>{{ solicitacao.product }}</h3>
-              <div class="details-grid">
-                <div class="detail-column">
-                  <p>Data: {{ solicitacao.order_date }}</p>
-                  <p>Categoria: {{ solicitacao.category }}</p>
-                  @if(solicitacao.price) {
-                  <p>Preço: R$ {{ solicitacao.price | number:'1.2-2' }}</p>
-                  }
-                </div>
-                <div class="detail-column">
-                  <p>Status: {{ getStatusText(solicitacao.situation) }}</p>
-                </div>
-                <div class="detail-column">
-                  <p>ID: {{ solicitacao.id }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="solicitacao-actions">
-            <app-button
-              title="Efetuar Orçamento"
-              variant="primary"
-              icon="monetization_on"
-              (click)="efetuarOrcamento(solicitacao)"
-            >
-            </app-button>
-          </div>
+          <app-stat-card
+            icon="done_all"
+            [number]="estatisticas.finalizadas"
+            label="Finalizadas"
+            variant="success"
+          >
+          </app-stat-card>
         </div>
       </div>
 
-      <div class="empty-state" *ngIf="solicitacoesAbertas.length === 0">
-        <mat-icon class="empty-icon">inbox</mat-icon>
-        <h3>Não há solicitações em aberto</h3>
-        <p>Bom trabalho! Todas as solicitações estão em dia.</p>
+      <!-- Seção de Solicitações Abertas - RF011 -->
+      <div class="solicitacoes-section">
+        <h2>Solicitações Abertas</h2>
+        <p>Necessitam de atenção imediata do funcionário</p>
+
+        <div class="solicitacoes-list" *ngIf="solicitacoesAbertas.length > 0">
+          <div
+            class="solicitacao-item"
+            *ngFor="let solicitacao of solicitacoesAbertas"
+          >
+            <div class="solicitacao-info">
+              <div class="icon-box">
+                <mat-icon>build</mat-icon>
+              </div>
+              <div class="solicitacao-details">
+                <h3>{{ solicitacao.product }}</h3>
+                <div class="details-grid">
+                  <div class="detail-column">
+                    <p>Data: {{ solicitacao.order_date }}</p>
+                    <p>Categoria: {{ solicitacao.category }}</p>
+                    @if(solicitacao.price) {
+                    <p>Preço: R$ {{ solicitacao.price | number:'1.2-2' }}</p>
+                    }
+                  </div>
+                  <div class="detail-column">
+                    <p>Status: {{ getStatusText(solicitacao.situation) }}</p>
+                  </div>
+                  <div class="detail-column">
+                    <p>ID: {{ solicitacao.id }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="solicitacao-actions">
+              <app-button
+                title="Efetuar Orçamento"
+                variant="primary"
+                icon="monetization_on"
+                (click)="efetuarOrcamento(solicitacao)"
+              >
+              </app-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="solicitacoesAbertas.length === 0">
+          <mat-icon class="empty-icon">inbox</mat-icon>
+          <h3>Não há solicitações em aberto</h3>
+          <p>Bom trabalho! Todas as solicitações estão em dia.</p>
+        </div>
       </div>
     </div>
   </div>

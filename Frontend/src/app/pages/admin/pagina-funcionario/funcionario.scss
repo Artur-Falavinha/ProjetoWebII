@@ -17,11 +17,10 @@
   justify-content: space-between;
   align-items: center;
   background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
 
   h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: var(--24px);
     font-weight: 600;
     color: #111827;
     letter-spacing: 0.5px;
@@ -29,16 +28,19 @@
 
   p {
     margin: 4px 0 0;
-    font-size: 14px;
+    font-size: var(--16px);
     color: #6b7280;
     letter-spacing: 0.5px;
   }
 }
 
+.card-body {
+  padding: 24px;
+}
 
 // Seção de estatísticas
 .stats-section {
-  padding: 0 24px 24px 24px;
+  margin-bottom: 32px;
 }
 
 .stats-grid {
@@ -49,11 +51,9 @@
 
 // Seção de solicitações
 .solicitacoes-section {
-  padding: 0 24px 24px 24px;
-
   h2 {
     margin: 0 0 8px 0;
-    font-size: 1.5rem;
+    font-size: var(--24px);
     font-weight: 600;
     color: #111827;
     letter-spacing: 0.5px;
@@ -61,7 +61,7 @@
 
   p {
     margin: 0 0 20px 0;
-    font-size: 1rem;
+    font-size: var(--16px);
     color: #6b7280;
   }
 }
@@ -103,7 +103,7 @@
 
       h3 {
         margin: 0 0 12px 0;
-        font-size: 1.1rem;
+        font-size: var(--20px);
         font-weight: 600;
         color: #111827;
       }
@@ -121,7 +121,7 @@
 
         p {
           margin: 0;
-          font-size: 0.9rem;
+          font-size: var(--14px);
           color: #6b7280;
         }
       }
@@ -136,41 +136,37 @@
 // Estado vazio
 .empty-state {
   text-align: center;
-  padding: 40px 20px;
+  padding: 60px 20px;
   background: white;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #e5e7eb;
   
   .empty-icon {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
     color: #6b7280;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
   
   h3 {
-    margin: 0 0 6px 0;
-    font-size: 15px;
+    margin: 0 0 8px 0;
+    font-size: var(--16px);
     font-weight: 500;
     color: #111827;
   }
   
   p {
     margin: 0;
-    font-size: 13px;
+    font-size: var(--12px);
     color: #6b7280;
   }
 }
 
 // Responsividade
 @media (max-width: 768px) {
-  .stats-section {
-    padding: 0 16px 16px 16px;
-  }
-  
-  .solicitacoes-section {
-    padding: 0 16px 16px 16px;
+  .card-body {
+    padding: 16px;
   }
   
   .card-header {
@@ -232,14 +228,14 @@
 
   h2 {
     margin: 0 0 8px 0;
-    font-size: 24px;
+    font-size: var(--24px);
     font-weight: 600;
     color: #111827;
   }
 
   p {
     margin: 0 0 24px 0;
-    font-size: 16px;
+    font-size: var(--16px);
     color: #6b7280;
   }
 }
@@ -261,12 +257,12 @@
 
     label {
       font-weight: 500;
-      font-size: 14px;
+      font-size: var(--14px);
       color: #374151;
     }
 
     span {
-      font-size: 14px;
+      font-size: var(--14px);
       color: #111827;
     }
 
@@ -274,7 +270,7 @@
       display: inline-block;
       padding: 4px 8px;
       border-radius: 4px;
-      font-size: 12px;
+      font-size: var(--12px);
       font-weight: 500;
       text-transform: uppercase;
 
@@ -304,7 +300,7 @@
       border: 1px solid #e5e7eb;
       border-radius: 6px;
       padding: 12px;
-      font-size: 14px;
+      font-size: var(--14px);
       line-height: 1.5;
       color: #111827;
       white-space: pre-wrap;

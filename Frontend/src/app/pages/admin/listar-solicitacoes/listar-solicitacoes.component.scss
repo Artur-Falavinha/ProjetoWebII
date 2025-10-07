@@ -19,7 +19,7 @@
 
   h2 {
     margin: 0;
-    font-size: 25px;
+    font-size: var(--24px);
     font-weight: 600;
     color: #111827;
     letter-spacing: 0.5px;
@@ -27,7 +27,7 @@
 
   p {
     margin: 4px 0 0;
-    font-size: 16px;
+    font-size: var(--16px);
     color: #6b7280;
     letter-spacing: 0.5px;
   }
@@ -65,14 +65,14 @@
   
   h3 {
     margin: 0 0 8px 0;
-    font-size: 16px;
+    font-size: var(--16px);
     font-weight: 500;
     color: #111827;
   }
   
   p {
     margin: 0;
-    font-size: 13px;
+    font-size: var(--12px);
     color: #6b7280;
   }
 }
@@ -103,14 +103,14 @@
 
   h2 {
     margin: 0 0 8px 0;
-    font-size: 24px;
+    font-size: var(--24px);
     font-weight: 600;
     color: #111827;
   }
 
   p {
     margin: 0 0 24px 0;
-    font-size: 16px;
+    font-size: var(--16px);
     color: #6b7280;
   }
 }
@@ -132,12 +132,12 @@
 
     label {
       font-weight: 500;
-      font-size: 14px;
+      font-size: var(--14px);
       color: #374151;
     }
 
     span {
-      font-size: 14px;
+      font-size: var(--14px);
       color: #111827;
     }
 
@@ -145,7 +145,7 @@
       display: inline-block;
       padding: 4px 8px;
       border-radius: 4px;
-      font-size: 12px;
+      font-size: var(--12px);
       font-weight: 500;
       text-transform: uppercase;
 
@@ -175,7 +175,7 @@
       border: 1px solid #e5e7eb;
       border-radius: 6px;
       padding: 12px;
-      font-size: 14px;
+      font-size: var(--14px);
       line-height: 1.5;
       color: #111827;
       white-space: pre-wrap;

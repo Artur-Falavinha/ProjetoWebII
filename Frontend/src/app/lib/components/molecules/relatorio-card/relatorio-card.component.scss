@@ -29,7 +29,7 @@
 
       h3 {
         margin: 0 0 12px 0;
-        font-size: 1.1rem;
+        font-size: var(--20px);
         font-weight: 600;
         color: #111827;
       }
@@ -48,7 +48,7 @@
 
         p {
           margin: 0;
-          font-size: 0.9rem;
+          font-size: var(--14px);
           color: #6b7280;
         }
       }
@@ -80,14 +80,14 @@
       font-weight: 500;
       color: #374151;
       margin-bottom: 8px;
-      font-size: 14px;
+      font-size: var(--14px);
     }
     
     .form-control {
       padding: 8px 12px;
       border: 1px solid #d1d5db;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: var(--14px);
       transition: border-color 0.2s ease;
       
       &:focus {

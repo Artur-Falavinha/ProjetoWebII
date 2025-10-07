@@ -33,7 +33,7 @@
 
       h3 {
         margin: 0 0 12px 0;
-        font-size: 16px;
+        font-size: var(--20px);
         font-weight: 500;
         color: #111827;
       }
@@ -51,7 +51,7 @@
 
         p {
           margin: 0;
-          font-size: 13px;
+          font-size: var(--12px);
           color: #6b7280;
         }
       }

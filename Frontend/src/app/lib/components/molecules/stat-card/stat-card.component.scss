@@ -36,14 +36,14 @@
     flex: 1;
     
     .stat-number {
-      font-size: 28px;
+      font-size: var(--28px);
       font-weight: 600;
       line-height: 1;
       margin-bottom: 4px;
     }
     
     .stat-label {
-      font-size: 13px;
+      font-size: var(--12px);
       font-weight: 500;
       color: #6b7280;
     }
