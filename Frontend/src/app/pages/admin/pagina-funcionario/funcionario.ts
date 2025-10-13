@@ -13,28 +13,28 @@ import { Router } from '@angular/router';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 
 @Component({
-  selector: 'app-funcionario', 
-  standalone: true,           
+  selector: 'app-funcionario',
+  standalone: true,
   imports: [
-    CommonModule,              
+    CommonModule,
     SidebarComponent,
     StatCardComponent,
     ButtonComponent,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    MatChipsModule
+    MatChipsModule,
   ],
   templateUrl: './funcionario.html',
-  styleUrls: ['./funcionario.scss']
+  styleUrls: ['./funcionario.scss'],
 })
 export class FuncionarioComponent implements OnInit {
   private readonly authService = inject(AuthService);
-  
+
   // Expor o enum para uso no template
   SituationEnum = SituationEnum;
   private readonly router = inject(Router);
-  
+
   /**Array de dados para o dashboard vindo do service**/
   public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
 
@@ -44,7 +44,7 @@ export class FuncionarioComponent implements OnInit {
     abertas: 0,
     orcadas: 0,
     aprovadas: 0,
-    finalizadas: 0
+    finalizadas: 0,
   };
 
   /**Modal de detalhes**/
@@ -54,11 +54,10 @@ export class FuncionarioComponent implements OnInit {
   private readonly solicitacaoService = inject(SolicitacaoService);
 
   constructor() {
-    // Login automático para demonstração (remover em produção)
-    this.authService.login({ email: 'funcionario@email.com', password: 'senha' }).subscribe();
-    
-    // Carrega todas as solicitações do localStorage
-    this.items = this.solicitacaoService.listarTodas();
+    this.authService
+      .login({ email: 'funcionario@email.com', password: 'senha' })
+      .subscribe();
+    this.items = inject(SolicitacaoService).listarTodas();
   }
 
   ngOnInit(): void {
@@ -72,47 +71,52 @@ export class FuncionarioComponent implements OnInit {
    */
   carregarDadosDashboard(): void {
     // Filtra apenas solicitações ABERTAS conforme RF011
-    // Essas necessitam de atenção imediata do funcionário
     this.solicitacoesAbertas = this.items.filter(
-      item => item.situation === SituationEnum.ABERTA
+      (item) => item.situation === SituationEnum.ABERTA
     );
-    
-    // Calcula estatísticas para os cards
+
+    // Calcula estatísticas baseadas no array mock
     this.estatisticas.abertas = this.items.filter(
-      item => item.situation === SituationEnum.ABERTA
+      (item) => item.situation === SituationEnum.ABERTA
     ).length;
-    
     this.estatisticas.orcadas = this.items.filter(
-      item => item.situation === SituationEnum.ORCADA
+      (item) => item.situation === SituationEnum.ORCADA
     ).length;
-    
     this.estatisticas.aprovadas = this.items.filter(
-      item => item.situation === SituationEnum.APROVADA
+      (item) => item.situation === SituationEnum.PAGA
     ).length;
-    
     this.estatisticas.finalizadas = this.items.filter(
-      item => item.situation === SituationEnum.FINALIZADA
+      (item) => item.situation === SituationEnum.FINALIZADA
     ).length;
   }
 
-
   getStatusClass(status: SituationEnum): string {
-    switch(status) {
-      case SituationEnum.ABERTA: return 'status-aberta';
-      case SituationEnum.ORCADA: return 'status-orcada';
-      case SituationEnum.APROVADA: return 'status-aprovada';
-      case SituationEnum.FINALIZADA: return 'status-finalizada';
-      default: return 'status-aberta';
+    switch (status) {
+      case SituationEnum.ABERTA:
+        return 'status-aberta';
+      case SituationEnum.ORCADA:
+        return 'status-orcada';
+      case SituationEnum.PAGA:
+        return 'status-aprovada';
+      case SituationEnum.FINALIZADA:
+        return 'status-finalizada';
+      default:
+        return 'status-aberta';
     }
   }
 
   getStatusText(status: SituationEnum): string {
-    switch(status) {
-      case SituationEnum.ABERTA: return 'Aberta';
-      case SituationEnum.ORCADA: return 'Orçada';
-      case SituationEnum.APROVADA: return 'Aprovada';
-      case SituationEnum.FINALIZADA: return 'Finalizada';
-      default: return 'Aberta';
+    switch (status) {
+      case SituationEnum.ABERTA:
+        return 'Aberta';
+      case SituationEnum.ORCADA:
+        return 'Orçada';
+      case SituationEnum.PAGA:
+        return 'Aprovada';
+      case SituationEnum.FINALIZADA:
+        return 'Finalizada';
+      default:
+        return 'Aberta';
     }
   }
 
@@ -154,7 +158,7 @@ export class FuncionarioComponent implements OnInit {
         return 'Efetuar Orçamento';
       case SituationEnum.ORCADA:
         return 'Aprovar Orçamento';
-      case SituationEnum.APROVADA:
+      case SituationEnum.PAGA:
         return 'Finalizar Serviço';
       case SituationEnum.FINALIZADA:
         return 'Ver Detalhes';
@@ -164,13 +168,15 @@ export class FuncionarioComponent implements OnInit {
   }
 
   /**Obtém a variante do botão baseado no status da solicitação**/
-  getActionButtonVariant(status: SituationEnum): 'primary' | 'secondary' | 'success' | 'destructive' {
+  getActionButtonVariant(
+    status: SituationEnum
+  ): 'primary' | 'secondary' | 'success' | 'destructive' {
     switch (status) {
       case SituationEnum.ABERTA:
         return 'primary';
       case SituationEnum.ORCADA:
         return 'success';
-      case SituationEnum.APROVADA:
+      case SituationEnum.PAGA:
         return 'primary';
       case SituationEnum.FINALIZADA:
         return 'secondary';
@@ -186,7 +192,7 @@ export class FuncionarioComponent implements OnInit {
         return 'monetization_on';
       case SituationEnum.ORCADA:
         return 'check_circle';
-      case SituationEnum.APROVADA:
+      case SituationEnum.PAGA:
         return 'build';
       case SituationEnum.FINALIZADA:
         return 'visibility';

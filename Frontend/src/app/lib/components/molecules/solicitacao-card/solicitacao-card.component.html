@@ -23,19 +23,21 @@
   </div>
 
   <div class="solicitacao-actions" *ngIf="showActions">
-    <app-button 
-      title="Ver detalhes" 
-      variant="secondary" 
+    <app-button
+      title="Ver detalhes"
+      variant="secondary"
       icon="visibility"
-      (click)="onVerDetalhes()">
+      (click)="onVerDetalhes()"
+    >
     </app-button>
-   @if (!(solicitacao.situation === SituationEnum.ORCADA)) { 
-    <app-button 
-      [title]="getActionButtonText(solicitacao.situation)" 
+    @if (!(solicitacao.situation === SituationEnum.ORCADA)) {
+    <app-button
+      [title]="getActionButtonText(solicitacao.situation)"
       [variant]="getActionButtonVariant(solicitacao.situation)"
       [icon]="getActionButtonIcon(solicitacao.situation)"
-      (click)="onEfetuarAcao()">
-    </app-button>
-   }
+      [link]="getLink(solicitacao.situation)"
+    >
+    </app-button
+    >}
   </div>
 </div>

@@ -27,7 +27,7 @@ import { ApproveComponent } from "../../client/approve/approve.component";
     MatCardModule,
     MatChipsModule,
     MatDialogModule,
-    TagComponent,
+    TagComponent
 ],
   templateUrl: './listar-solicitacoes.component.html',
   styleUrls: ['./listar-solicitacoes.component.scss'],

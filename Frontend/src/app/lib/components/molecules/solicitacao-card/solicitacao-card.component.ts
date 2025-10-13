@@ -63,7 +63,7 @@ export class SolicitacaoCardComponent {
         return 'status-aberta';
       case SituationEnum.ORCADA:
         return 'status-orcada';
-      case SituationEnum.APROVADA:
+      case SituationEnum.PAGA:
         return 'status-aprovada';
       case SituationEnum.FINALIZADA:
         return 'status-finalizada';
@@ -96,20 +96,19 @@ export class SolicitacaoCardComponent {
     }
   }
 
-  //É viável deixar a rota pra tela aqui já?
-  /**Obtém o texto do botão de ação baseado no status da solicitação**/
+  /** Obtém o texto do botão de ação baseado no status da solicitação **/
   getActionButtonText(status: SituationEnum): string {
     switch (status) {
       case SituationEnum.ABERTA:
         return 'Efetuar Orçamento';
       case SituationEnum.ORCADA:
         return 'Aprovar Orçamento';
-      case SituationEnum.APROVADA:
-        return 'Efetuar Manutenção';
+      case SituationEnum.PAGA:
+        return 'Finalizar Serviço';
       case SituationEnum.PAGA:
         return 'Finalizar Serviço';
       case SituationEnum.FINALIZADA:
-        return 'Ver Detalhes'; //tirar esse 'ver detalhes' está duplicando na tela 
+        return 'Detalhes';
       default:
         return 'Ação';
     }
@@ -124,7 +123,7 @@ export class SolicitacaoCardComponent {
         return 'primary';
       case SituationEnum.ORCADA:
         return 'success';
-      case SituationEnum.APROVADA:
+      case SituationEnum.PAGA:
         return 'primary';
       case SituationEnum.FINALIZADA:
         return 'secondary';
@@ -140,7 +139,7 @@ export class SolicitacaoCardComponent {
         return 'monetization_on';
       case SituationEnum.ORCADA:
         return 'check_circle';
-      case SituationEnum.APROVADA:
+      case SituationEnum.PAGA:
         return 'build';
       case SituationEnum.PAGA:
         return 'check';
@@ -153,6 +152,8 @@ export class SolicitacaoCardComponent {
 
   getLink(status: SituationEnum): string {
     switch (status) {
+      case SituationEnum.PAGA:
+        return '/admin/finalizar/' + this.solicitacao.id;
       case SituationEnum.APROVADA:
         return '/admin/manutencao/' + this.solicitacao.id;
       default:
