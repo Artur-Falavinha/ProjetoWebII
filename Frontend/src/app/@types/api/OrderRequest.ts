@@ -16,6 +16,7 @@ export type OrderRequest = {
   history?: HistoryType[];
   order_date?: string;
   approval_date?: string;
+  payment_date?: string;
   completion_date?: string;
   observacoes?: string;
   reject_reason?: string;

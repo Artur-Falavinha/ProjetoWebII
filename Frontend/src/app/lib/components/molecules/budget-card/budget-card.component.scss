@@ -1,27 +1,10 @@
-.app-finish-card {
+.app-budget-card {
   border-color: hsl(210 20% 90%);
   gap: 1.5rem;
   background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  .rounded-finish {
-    background-color: var(--status_success_100);
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 4rem;
-    height: 4rem;
-
-    mat-icon {
-      color: var(--status_success_200);
-      font-size: 2.8rem;
-      height: unset;
-      width: unset;
-    }
-  }
 
   mat-card-content {
     display: flex;
@@ -32,8 +15,6 @@
     .title-text-wrap {
       display: flex;
       flex-direction: column;
-      align-items: center;
-
       p {
         font-size: 1.25rem;
         line-height: 1.75rem;
@@ -137,21 +118,21 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    background-color: rgb(239, 255, 248);
-    border-color: rgb(191, 254, 230);
+    background-color: rgb(234, 240, 255);
+    border-color: rgb(191, 222, 254);
     border-width: 1px;
     border-style: solid;
     border-radius: 0.5rem;
     gap: 0.75rem;
 
     p {
-      color: rgb(30, 138, 64);
+      color: rgb(30, 82, 138);
       font-weight: 500;
       font-size: 1rem;
     }
 
     li {
-      color: rgb(30, 138, 64);
+      color: rgb(21, 66, 114);
       font-size: 1rem;
       list-style: none;
       font-size: 0.875rem;

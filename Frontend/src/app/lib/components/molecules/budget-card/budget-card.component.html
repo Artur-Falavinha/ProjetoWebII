@@ -1,0 +1,123 @@
+<mat-card class="app-budget-card" appearance="outlined">
+  <ng-container *ngIf="order; else noOrder">
+
+    <mat-card-content>
+      <div class="title-text-wrap">
+        <p>Dados da Solicitação</p>
+        <span>Revise os detalhes antes de criar o orçamento</span>
+      </div>
+
+      <!--Detalhes da solicitação-->
+      <div class="details-box">
+
+        <!--Primeira linha-->
+        <div class="details-rows">
+
+          <!-- Equipamento -->
+          <div class="details-wrap">
+            <mat-icon>inbox</mat-icon>
+            <div class="details-text">
+              <p>Equipamento</p>
+              <span>{{ order.product }}</span>
+            </div>
+          </div>
+
+          <!-- Cliente -->
+          <div class="details-wrap">
+            <mat-icon>person</mat-icon>
+            <div class="details-text">         
+              <p>Cliente</p>
+              <span>{{ order.client }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!--Segunda linha-->
+        <div class="details-rows">      
+
+          <!-- Data solicitacao -->
+          <div class="details-wrap">
+            <mat-icon>today</mat-icon>
+            <div class="details-text">
+              <p>Data da solicitação: </p>
+              <span>{{ order.order_date }}</span>
+            </div>
+          </div>
+
+          <!-- Categoria -->
+          <div class="details-wrap">
+            <mat-icon>category</mat-icon>
+            <div class="details-text">
+              <p>Categoria</p>
+              <span>{{ order.category }}</span>
+            </div>
+          </div>
+        </div>  
+      </div>
+
+      <!-- Problema relatado -->
+      <div class="separator"></div>
+        <div class="section-card">
+          <h4>Problema relatado pelo cliente:</h4>
+          <div class="problem-box">
+            <p>{{ order.issue_description }}</p>
+          </div>
+        </div>
+      <div class="separator"></div>
+
+      <!-- Formulário -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-wrap">
+        <h4>Valor do orçamento (R$): </h4>
+        <div class="form-wrap">
+          <app-input
+            [control]="valorControl"
+            label="Valor do orçamento"
+            placeholder="0"
+            type="number"
+            [errorMessages]="{
+              required: 'Campo obrigatório',
+              min: 'O valor deve ser maior que zero'
+            }"
+            [hint]="'Informe o valor total da manutenção'"
+            appearance="outline"
+          ></app-input>
+        </div>
+      </form>
+
+      <!-- Informações importantes -->
+      <div class="information-box">
+        <p>Informações importantes</p>
+        <ul>
+          <li>• O cliente receberá uma notificação sobre o orçamento</li>
+          <li>• Ele poderá aprovar ou rejeitar o valor proposto</li>
+          <li>• Após aprovação, você poderá iniciar a manutenção</li>
+          <li>• O pagamento só será solicitado após conclusão do serviço</li>
+        </ul>
+      </div>
+    </mat-card-content>
+
+    <mat-card-footer>
+      <div style="width: 100%; display: flex; flex-direction: row; gap: 0.5rem">
+        <app-button
+          style="width: 100%"
+          title="Cancelar"
+          link="/admin/solicitacoes"
+          variant="secondary"
+        ></app-button>
+
+        <app-button
+          style="width: 100%"
+          title="Efetuar orçamento"
+          icon="attach_money"
+          variant="primary"
+          type="submit"
+          [disabled]="form.invalid"
+        ></app-button>
+      </div>
+    </mat-card-footer>
+  </ng-container>
+
+  <ng-template #noOrder>
+    <p>Nenhuma solicitação selecionada.</p>
+  </ng-template>
+</mat-card>

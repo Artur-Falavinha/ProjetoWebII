@@ -64,7 +64,7 @@
           <mat-icon>today</mat-icon>
           <div class="details-text">
             <p>Pagamento realizado em: </p>
-            <span>{{ order.approval_date }}</span>
+            <span>{{ order.payment_date }}</span>
           </div>
         </div>
 
@@ -75,7 +75,7 @@
         <!-- Problema relatado -->
         <div class="section-card">
           <h4>Problema original</h4>
-          <div class="problema-box">
+          <div class="problem-box">
             <p>{{ order.issue_description }}</p>
           </div>
         </div>
@@ -83,7 +83,7 @@
         <!-- Manutenção realizada -->
         <div class="section-card">
           <h4>Manutenção realizada</h4>
-          <div class="problema-box">
+          <div class="problem-box">
             <p>{{ order.fix_description }}</p>
           </div>
         </div>
@@ -91,7 +91,7 @@
         <!-- Orientações fornecidas -->
         <div class="section-card">
           <h4>Orientações fornecidas</h4>
-          <div class="problema-box">
+          <div class="problem-box">
             <p>{{ order.orientation }}</p>
           </div>
         </div>

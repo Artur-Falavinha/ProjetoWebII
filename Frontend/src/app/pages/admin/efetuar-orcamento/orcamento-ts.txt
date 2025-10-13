@@ -1,0 +1,144 @@
+.ts
+
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { OrderRequest, SituationEnum } from '@/app/@types';
+import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
+import { SidebarComponent, ButtonComponent } from '@/app/lib/components';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { AuthService } from '@/app/lib/services';
+
+/**
+ * Componente para efetuar orçamento de uma solicitação
+ * Permite que o funcionário informe o valor do orçamento para uma solicitação ABERTA
+ * Após salvar, a solicitação muda para o estado ORCADA
+ */
+
+@Component({
+  selector: 'app-efetuar-orcamento',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    SidebarComponent,
+    ButtonComponent,
+    MatIcon,
+    MatLabel,
+    MatFormField,
+    MatInput,
+    MatError
+  ],
+  templateUrl: './efetuar-orcamento.component.html',
+  styleUrls: ['./efetuar-orcamento.component.scss'],
+})
+export class EfetuarOrcamentoComponent implements OnInit {
+  solicitacaoSelecionada: OrderRequest | undefined;
+  orcamentoForm!: FormGroup;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private solicitacaoService: SolicitacaoService,
+    private authService: AuthService,
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
+    // Obtém o ID da solicitação da rota
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (id) {
+      // Busca a solicitação no serviço
+      this.solicitacaoSelecionada = this.solicitacaoService.buscaPorId(id);
+
+      if (!this.solicitacaoSelecionada) {
+        // Solicitação não encontrada - redireciona para listagem
+        alert('Solicitação não encontrada!');
+        this.router.navigate(['admin/solicitacoes']);
+      } else {
+        // Só permite efetuar orçamento se a solicitação estiver ABERTA
+        if (this.solicitacaoSelecionada.situation !== SituationEnum.ABERTA) {
+          alert('Esta solicitação não está disponível para orçamento!');
+          this.router.navigate(['/admin']);
+          return;
+        }
+
+        // Inicializa o formulário com o valor atual (se existir)
+        this.orcamentoForm = this.fb.group({
+          valor: [
+            this.solicitacaoSelecionada.price ?? '', 
+            [Validators.required, Validators.min(0.01)]
+          ]
+        });
+      }
+    }
+  }
+
+  get valorControl() {
+    return this.orcamentoForm.get('valor') as FormControl;
+  }
+
+  formatarData(data: Date): string {
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(data);
+  }
+
+  formatarDataSimples(data: Date): string {
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(data);
+  }
+
+  /**
+   * Salva o orçamento da solicitação
+   * Valida os dados, atualiza a solicitação e redireciona para a listagem
+   */
+  salvarOrcamento(): void {
+    // Valida se há solicitação e se o formulário é válido
+    if (!this.solicitacaoSelecionada || this.orcamentoForm.invalid) {
+      this.orcamentoForm?.markAllAsTouched();
+      return;
+    }
+
+    // Obtém o valor do formulário
+    const valor = this.valorControl.value;
+    if (!valor || valor <= 0) {
+      alert('Informe um valor válido para o orçamento');
+      return;
+    }
+
+    // Obtém o funcionário logado para atribuir à solicitação
+    const employee = this.authService.getCurrentUser();
+
+    // Atualiza os dados da solicitação
+    this.solicitacaoSelecionada.price = valor;
+    this.solicitacaoSelecionada.situation = SituationEnum.ORCADA;
+    this.solicitacaoSelecionada.atributed_employee = employee?.name;
+
+    // Persiste as alterações no localStorage
+    this.solicitacaoService.atualizar(this.solicitacaoSelecionada);
+    
+    alert('Orçamento salvo com sucesso!');
+    this.router.navigate(['admin/solicitacoes']);
+  }
+
+  /**
+   * Cancela a operação e volta para a listagem de solicitações
+   */
+  cancelar(): void {
+    this.router.navigate(['admin/solicitacoes']);
+  }
+}

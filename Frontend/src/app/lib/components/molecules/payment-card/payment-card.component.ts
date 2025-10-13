@@ -18,6 +18,7 @@ import { OrderRequest, SituationEnum } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-payment-card',
@@ -49,6 +50,7 @@ export class PaymentCardComponent {
 
   onSubmit() {
     this.order!.situation = SituationEnum.PAGA;
+    this.order!.payment_date = getFormattedDate();
 
     this.solicitacaoService.atualizar(this.order!);
 

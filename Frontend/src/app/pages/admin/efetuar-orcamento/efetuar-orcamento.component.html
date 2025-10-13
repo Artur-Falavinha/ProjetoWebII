@@ -1,123 +1,26 @@
-<div class="orcamento-layout">
+<div class="admin-layout">
   <app-sidebar></app-sidebar>
-
-  <div class="auth-card">
-    <!-- Header -->
-    <div class="card-header">
-      <app-button
-        title=""
-        variant="secondary"
-        icon="arrow_back"
-        [fullWidth]="false"
-        (click)="cancelar()">
-      </app-button>
-      <div>
-        <h2>Efetuar Orçamento</h2>
-        <p>Revise os detalhes antes de criar o orçamento</p>
-      </div>
-    </div>
-
-    <!-- Dados da Solicitação -->
-    <div class="section-card" *ngIf="solicitacaoSelecionada">
-      <h3>Dados da Solicitação</h3>
-
-      <div class="info-grid">
-        <div class="info-item">
-          <mat-icon>build</mat-icon>
-          <div>
-            <strong>Equipamento</strong>
-            <p>{{ solicitacaoSelecionada.product }}</p>
-          </div>
-        </div>
-
-        <div class="info-item">
-          <mat-icon>person</mat-icon>
-          <div>
-            <strong>Cliente</strong>
-            <p>{{ solicitacaoSelecionada.client }}</p>
-          </div>
-        </div>
-
-        <div class="info-item">
-          <mat-icon>calendar_today</mat-icon>
-          <div>
-            <strong>Data da solicitação</strong>
-            <p>{{ solicitacaoSelecionada.order_date }}</p>
-          </div>
-        </div>
-
-        <div class="info-item">
-          <mat-icon>category</mat-icon>
-          <div>
-            <strong>Categoria</strong>
-            <p>{{ solicitacaoSelecionada.category }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Problema relatado -->
-    <div class="section-card" *ngIf="solicitacaoSelecionada">
-      <h3>Problema relatado pelo cliente</h3>
-      <div class="problema-box">
-        <p>{{ solicitacaoSelecionada.issue_description }}</p>
-      </div>
-    </div>
-
-    <!-- Valor do Orçamento -->
-    <form
-      class="section-card"
-      *ngIf="solicitacaoSelecionada"
-      [formGroup]="orcamentoForm"
-    >
-      <h3>Valor do orçamento (R$) *</h3>
-      <mat-form-field floatLabel="always" appearance="outline">
-        <mat-label>Valor</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="0"
-          formControlName="valor"
-          required
-          min="0.01"
+  <main class="admin-content">
+    <div style="max-width: 42rem; margin-left: auto; margin-right: auto">
+      <div class="text-wrap">
+        <app-button
+          class="header-button"
+          variant="fab-secondary"
+          icon="arrow_back"
+          link="/admin/solicitacoes"
         />
-        <mat-error
-          *ngIf="valorControl.hasError('required') && valorControl.touched"
-        >
-          Campo obrigatório
-        </mat-error>
-        <mat-error *ngIf="valorControl.hasError('min') && valorControl.touched">
-          O valor deve ser maior que zero
-        </mat-error>
-      </mat-form-field>
-      <small>Informe o valor total para a manutenção do equipamento</small>
-    </form>
+        <div>
+          <h1 class="page-title">Efetuar Orçamento</h1>
+          <p class="page-subtitle">Analise a solicitação e defina o valor do serviço</p>
+        </div>
+      </div>
+      <ng-container *ngIf="order$ | async as order; else loading">
+        <app-budget-card [order]="order"></app-budget-card>
+      </ng-container>
 
-    <!-- Informações importantes -->
-    <div class="section-card info-box">
-      <h3>Informações importantes</h3>
-      <ul>
-        <li>O cliente receberá uma notificação sobre o orçamento</li>
-        <li>Ele poderá aprovar ou rejeitar o valor proposto</li>
-        <li>Após aprovação, você poderá iniciar a manutenção</li>
-        <li>O pagamento só será solicitado após conclusão do serviço</li>
-      </ul>
+      <ng-template #loading>
+        <p>Carregando solicitação...</p>
+      </ng-template>
     </div>
-
-    <!-- Ações -->
-    <div class="actions" *ngIf="solicitacaoSelecionada">
-      <app-button
-        title="Cancelar"
-        variant="secondary"
-        (click)="cancelar()">
-      </app-button>
-      <app-button
-        title="Criar Orçamento"
-        variant="primary"
-        icon="attach_money"
-        [disabled]="orcamentoForm.invalid"
-        (click)="salvarOrcamento()">
-      </app-button>
-    </div>
-  </div>
+  </main>
 </div>

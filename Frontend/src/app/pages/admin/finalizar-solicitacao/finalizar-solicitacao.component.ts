@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SidebarComponent, ButtonComponent } from '@/app/lib/components';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderRequest, SituationEnum } from '@/app/@types';
-import { RejectCardComponent } from '@/app/lib/components/molecules/reject-card/reject-card.component';
-import { S } from '@angular/cdk/keycodes';
 import { delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { FinishCardComponent } from '@/app/lib/components/molecules/finish-card/finish-card.component';
