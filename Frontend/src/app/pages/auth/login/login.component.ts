@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private  snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -47,23 +49,30 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: (authState) => {
-        if (authState.isAuthenticated) {
-          alert(`Login bem-sucedido! Bem-vindo(a), ${authState.user?.name}!`);
-          
-          const userRole = authState.user?.role;
-
-          if (userRole === 'EMPLOYEE') {
-            this.router.navigate(['/admin']);
-          } else {
-            this.router.navigate(['/client']);
-          }
+    next: (authState) => {
+      if (authState.isAuthenticated) {
+        this.snackBar.open(
+          `Bem-vindo(a), ${authState.user?.name}!`, 
+          'Fechar', 
+          { duration: 3000 }
+        );
+        
+        const userRole = authState.user?.role;
+        if (userRole === 'EMPLOYEE') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/client']);
         }
-      },
-      error: (err) => {
-        alert('Falha no login. Verifique suas credenciais.');
-        console.error(err);
       }
-    });
+    },
+    error: (err) => {
+      this.snackBar.open(
+        'Falha no login. Verifique suas credenciais.', 
+        'Fechar',
+        { duration: 4000 }
+      );
+      console.error(err);
+    }
+  });
   }
 }

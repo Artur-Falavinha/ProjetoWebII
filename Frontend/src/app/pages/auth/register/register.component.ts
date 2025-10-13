@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } 
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../../lib/services/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -37,7 +38,8 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar
   ) {}
 
   get nomeControl() { return this.registerForm.get('dadosPessoais.nome') as FormControl; }
@@ -117,15 +119,25 @@ export class RegisterComponent implements OnInit {
     this.authService.register(dadosNovoUsuario).subscribe({
       next: (response) => {
         this.isLoading = false;
-        alert(
-          `Cadastro de ${response.user.perfil.toLowerCase()} realizado com sucesso!\n\n` +
-          `SENHA DE ACESSO: ${response.password}`
+        
+          this.snackBar.open(
+          `Cadastro realizado com sucesso! Verifique seu e-mail (${this.emailControl.value}).`,
+          'Fechar',
+          { duration: 5000 } 
         );
+
         this.router.navigate(['/login']);
       },
       error: (err) => {
         this.isLoading = false;
-        alert(`Erro no cadastro: ${err.message}`);
+        
+        const errorMessage = err.error?.message || 'Não foi possível concluir o cadastro.';
+        this.snackBar.open(
+          `Erro no cadastro: ${errorMessage}`,
+          'Fechar',
+          { duration: 4000 } 
+        );
+
         console.error(err);
       }
     });
