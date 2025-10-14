@@ -13,3 +13,4 @@ export { NewOrderComponent } from "./client/new-order/new-order.component"
 export { ListarSolicitacoesComponent } from './admin/listar-solicitacoes/listar-solicitacoes.component';
 export { EfetuarOrcamentoComponent } from './admin/efetuar-orcamento/efetuar-orcamento.component';
 export { FinalizarSolicitacaoComponent } from './admin/finalizar-solicitacao/finalizar-solicitacao.component'
+export { RedirecionarManutencaoComponent } from './admin/redirecionar-manutencao/redirecionar-manutencao.component'

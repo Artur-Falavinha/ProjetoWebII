@@ -20,6 +20,7 @@ import { ViewComponent } from '../pages/client/view/view.component';
 import { PaymentComponent } from '../pages/client/payment/payment.component';
 import { authGuard } from '@/app/lib/guards/auth/auth.guard';
 import { EfetuarManutencaoComponent } from '../pages/admin/efetuar-manutencao/efetuar-manutencao.component';
+import { RedirecionarManutencaoComponent } from '../pages/admin/redirecionar-manutencao/redirecionar-manutencao.component';
 
 export const routes: Routes = [
   {
@@ -98,6 +99,11 @@ export const routes: Routes = [
   {
     path: 'admin/manutencao/:id',
     component: EfetuarManutencaoComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin/redirecionar-manutencao/:id',
+    component: RedirecionarManutencaoComponent,
     canActivate: [authGuard],
   },
   {

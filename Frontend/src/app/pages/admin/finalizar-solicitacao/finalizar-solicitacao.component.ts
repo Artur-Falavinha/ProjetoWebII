@@ -5,13 +5,7 @@ import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { FinishCardComponent } from '@/app/lib/components/molecules/finish-card/finish-card.component';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
-// Importe os componentes/materials usados no template
-import { MatIcon } from '@angular/material/icon';
-import { MatLabel } from '@angular/material/form-field';
-import { MatFormField } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
-import { MatError } from '@angular/material/form-field';
+import { ButtonComponent } from '@/app/lib/components/atoms/button/button.component';
 import { SidebarComponent } from '@/app/lib/components';
 
 @Component({
@@ -21,6 +15,8 @@ import { SidebarComponent } from '@/app/lib/components';
     AsyncPipe,
     NgIf,
     SidebarComponent,
+    ButtonComponent,
+    FinishCardComponent,
   ],
   templateUrl: './finalizar-solicitacao.component.html',
   styleUrl: './finalizar-solicitacao.component.scss',
@@ -28,6 +24,7 @@ import { SidebarComponent } from '@/app/lib/components';
 })
 export class FinalizarSolicitacaoComponent implements OnInit {
   public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
+  order$: Observable<OrderRequest | undefined> | undefined;
   solicitacaoSelecionada: OrderRequest | undefined;
 
   constructor(

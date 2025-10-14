@@ -1,0 +1,83 @@
+<div class="admin-layout">
+  <app-sidebar></app-sidebar>
+  <main class="admin-content">
+    <div style="max-width: 42rem; margin-left: auto; margin-right: auto">
+      <div class="text-wrap">
+        <app-button
+          class="header-button"
+          variant="fab-secondary"
+          icon="arrow_back"
+          link="/admin/solicitacoes"
+        />
+        <div>
+          <h1 class="page-title">Redirecionar Manutenção</h1>
+          <p class="page-subtitle">Transfira a responsabilidade para outro funcionário</p>
+        </div>
+      </div>
+
+      <mat-card *ngIf="solicitacao" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>Dados da Solicitação</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="info-section">
+            <div class="info-item">
+              <strong>Equipamento:</strong>
+              <span>{{ solicitacao.product }}</span>
+            </div>
+            <div class="info-item">
+              <strong>Cliente:</strong>
+              <span>{{ solicitacao.client }}</span>
+            </div>
+            <div class="info-item">
+              <strong>Responsável Atual:</strong>
+              <span>{{ solicitacao.atributed_employee }}</span>
+            </div>
+          </div>
+
+          <form [formGroup]="redirecionarForm" (ngSubmit)="onSubmit()">
+            <app-select-input
+              [control]="funcionarioControl"
+              label="Novo Responsável"
+              placeholder="Selecione o funcionário"
+              [options]="funcionariosOptions"
+              [errorMessages]="{
+                required: 'Selecione um funcionário'
+              }"
+            />
+
+            <app-text-area-input
+              [control]="observacaoControl"
+              label="Motivo do Redirecionamento (Opcional)"
+              placeholder="Descreva o motivo do redirecionamento..."
+              [errorMessages]="{
+                maxLength: 'Máximo de 300 caracteres'
+              }"
+              [hint]="observacaoControl.value?.length + '/300 caracteres'"
+            />
+          </form>
+        </mat-card-content>
+
+        <mat-card-footer>
+          <div style="width: 100%; display: flex; gap: 0.5rem">
+            <app-button
+              style="width: 100%"
+              title="Cancelar"
+              variant="secondary"
+              (click)="cancelar()"
+            />
+            <app-button
+              style="width: 100%"
+              title="Redirecionar"
+              icon="send"
+              variant="primary"
+              [disabled]="redirecionarForm.invalid"
+              (click)="onSubmit()"
+            />
+          </div>
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </main>
+</div>
