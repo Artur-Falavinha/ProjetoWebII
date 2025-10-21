@@ -65,10 +65,10 @@
         </div>
       <div class="separator"></div>
 
-      <!-- Formulário -->
+      <!-- Formulário (valor) -->
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-wrap">
         <h4>Valor do orçamento (R$): </h4>
-        <div class="form-wrap">
+        <div class="problem-box">
           <app-input
             [control]="valorControl"
             label="Valor do orçamento"
