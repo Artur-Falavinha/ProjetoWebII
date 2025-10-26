@@ -14,6 +14,7 @@ import { InputComponent } from '../input/input.component';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { AuthService } from '@/app/lib/services';
+import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-budget-card',
@@ -69,7 +70,8 @@ export class BudgetCardComponent implements OnInit {
     if (this.order) {
       this.order.situation = SituationEnum.ORCADA;
       this.order.price = this.valorControl.value;
-      this.order.atributed_employee = user?.name
+      this.order.atributed_employee = user?.name;
+      this.order.budge_date = getFormattedDate();
       this.solicitacaoService.atualizar(this.order);
     }
 

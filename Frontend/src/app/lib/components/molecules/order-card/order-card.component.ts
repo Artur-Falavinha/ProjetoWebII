@@ -15,6 +15,11 @@ import { ButtonVariant, SituationEnum, OrderRequest } from '@/app/@types';
 export class OrderCardComponent {
   @Input() order!: OrderRequest;
 
+  getShortDescription(descricao: string): string {
+    if (!descricao) return '';
+    return descricao.length > 30 ? descricao.substring(0, 30) + '...' : descricao;
+  }
+
   public get action() {
     if (!this.order) return null;
 

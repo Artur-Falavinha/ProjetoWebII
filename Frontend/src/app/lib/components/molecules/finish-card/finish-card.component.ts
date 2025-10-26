@@ -13,6 +13,7 @@ import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
+import { AuthService } from '@/app/lib/services';
 
 
 @Component({
@@ -40,13 +41,16 @@ export class FinishCardComponent {
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,
-    private solicitacaoService: SolicitacaoService
+    private solicitacaoService: SolicitacaoService,
+    private authService: AuthService
   ) {}
 
   public finish() {
+    const user = this.authService.getCurrentUser();
+    
     this.order!.situation = SituationEnum.FINALIZADA;
     this.order!.completion_date = getFormattedDate();
-
+    this.order!.atributed_employee = user?.name;
     this.solicitacaoService.atualizar(this.order!);
 
     this.snackBar.open('Solicitação finalizada com sucesso!', 'Fechar', {

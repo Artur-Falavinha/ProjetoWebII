@@ -52,34 +52,23 @@ export class SolicitacaoCardComponent {
   }
 
   /** Getters auxiliares **/
-  getStatusClass(status: SituationEnum): string {
-    switch (status) {
-      case SituationEnum.ABERTA: return 'status-aberta';
-      case SituationEnum.ORCADA: return 'status-orcada';
-      case SituationEnum.PAGA: return 'status-aprovada';
-      case SituationEnum.FINALIZADA: return 'status-finalizada';
-      default: return 'status-aberta';
-    }
-  }
+  public exibButton(status: SituationEnum): boolean {
+    const statusNaoPermitidos = [
+      SituationEnum.ORCADA,
+      SituationEnum.ARRUMADA,
+      SituationEnum.REJEITADA,
+      SituationEnum.FINALIZADA
+    ];
 
-  getStatusText(status: SituationEnum): string {
-    switch (status) {
-      case SituationEnum.ABERTA: return 'Aberta';
-      case SituationEnum.ORCADA: return 'Orçada';
-      case SituationEnum.REJEITADA: return 'Rejeitada';
-      case SituationEnum.APROVADA: return 'Aprovada';
-      case SituationEnum.REDIRECIONADA: return 'Redirecionada';
-      case SituationEnum.ARRUMADA: return 'Arrumada';
-      case SituationEnum.PAGA: return 'Paga';
-      case SituationEnum.FINALIZADA: return 'Finalizada';
-      default: return 'Desconhecida';
-    }
+    return !statusNaoPermitidos.includes(status);
   }
 
   getActionButtonText(status: SituationEnum): string {
     switch (status) {
       case SituationEnum.ABERTA: return 'Efetuar Orçamento';
       case SituationEnum.ORCADA: return 'Aprovar Orçamento';
+      case SituationEnum.APROVADA: return 'Efetuar Manutenção';
+      case SituationEnum.REDIRECIONADA: return 'Efetuar Manutenção';
       case SituationEnum.PAGA: return 'Finalizar Serviço';
       default: return 'Ação';
     }
@@ -110,6 +99,8 @@ export class SolicitacaoCardComponent {
       case SituationEnum.PAGA:
         return '/admin/finalizar/' + this.solicitacao.id;
       case SituationEnum.APROVADA:
+        return '/admin/manutencao/' + this.solicitacao.id;
+      case SituationEnum.REDIRECIONADA:
         return '/admin/manutencao/' + this.solicitacao.id;
       default:
         return '/admin/orcamento/' + this.solicitacao.id;

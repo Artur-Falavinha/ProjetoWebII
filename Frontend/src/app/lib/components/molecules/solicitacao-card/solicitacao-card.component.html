@@ -4,9 +4,11 @@
       <h3>{{ solicitacao.product }}</h3>
       <small>#{{ solicitacao.id }} • Cliente: {{ solicitacao.client }}</small>
     </div>
+    <!--Status da solicitação-->
     <app-tag [variant]="solicitacao.situation"></app-tag>
   </div>
 
+  <!-- Informações do card de solicitação -->
   <div class="card-body">
     <div class="info-grid">
       <div>
@@ -40,6 +42,7 @@
   </div>
 
   <mat-card-actions align="end" *ngIf="showActions">
+    <!-- Botão para modal -->
     <app-button
       title="Ver detalhes"
       variant="secondary"
@@ -47,19 +50,17 @@
       (click)="onVerDetalhes()"
     ></app-button> 
     
-
-    @if (!(solicitacao.situation === SituationEnum.ORCADA)
-    && !(solicitacao.situation === SituationEnum.FINALIZADA)) {
-      <app-button
-        [title]="getActionButtonText(solicitacao.situation)"
-        [variant]="getActionButtonVariant(solicitacao.situation)"
-        [icon]="getActionButtonIcon(solicitacao.situation)"
-        [link]="getLink(solicitacao.situation)"
-      />
-    }
+    <!-- Botão de ação -->
+    <app-button
+      *ngIf="exibButton(solicitacao.situation)"
+      [title]="getActionButtonText(solicitacao.situation)"
+      [variant]="getActionButtonVariant(solicitacao.situation)"
+      [icon]="getActionButtonIcon(solicitacao.situation)"
+      [link]="getLink(solicitacao.situation)"
+    />
   </mat-card-actions>
 
-    <!-- Modal de Detalhes da Solicitação -->
+  <!-- Modal de Detalhes da Solicitação -->
   <div class="modal" *ngIf="modalAberto">
     <div class="modal-content">
       <h2>Detalhes da Solicitação</h2>
@@ -96,6 +97,13 @@
           <span>{{ solicitacao.order_date }}</span>
         </div>
 
+        <!-- Técnico responsável -->
+        <div class="detail-item"
+          *ngIf="solicitacao.atributed_employee">
+          <label>Técnico:</label>
+          <span>{{ solicitacao.atributed_employee }}</span>
+        </div>
+
         <!-- Status -->
         <app-tag [variant]="solicitacao.situation" />
 
@@ -104,6 +112,26 @@
           <label>Problema Relatado:</label>
           <div class="description-box">
             {{ solicitacao.issue_description }}
+          </div>
+        </div>
+
+        <!-- Motivo da rejeição -->
+        <div class="detail-item full-width"
+          *ngIf="solicitacao.reject_reason"
+        >
+          <label>Motivo da rejeição:</label>
+          <div class="description-box">
+            {{ solicitacao.reject_reason }}
+          </div>
+        </div>
+
+        <!-- Descrição da manutenção -->
+        <div class="detail-item full-width"
+          *ngIf="solicitacao.fix_description"
+        >
+          <label>Descrição da correção:</label>
+          <div class="description-box">
+            {{ solicitacao.fix_description }}
           </div>
         </div>
 
@@ -123,15 +151,14 @@
       <div class="actions">
         <button mat-button type="button" (click)="fecharModal()">Fechar</button>
 
-        @if (!(solicitacao.situation === SituationEnum.ORCADA)
-        && !(solicitacao.situation === SituationEnum.FINALIZADA)) {
-          <app-button
-            [title]="getActionButtonText(solicitacao.situation)"
-            [variant]="getActionButtonVariant(solicitacao.situation)"
-            [icon]="getActionButtonIcon(solicitacao.situation)"
-            [link]="getLink(solicitacao.situation)"
-          />
-        }
+        <app-button
+          *ngIf="exibButton(solicitacao.situation)"
+          [title]="getActionButtonText(solicitacao.situation)"
+          [variant]="getActionButtonVariant(solicitacao.situation)"
+          [icon]="getActionButtonIcon(solicitacao.situation)"
+          [link]="getLink(solicitacao.situation)"
+        />
+  
     </div>  
   </div>
   </div>

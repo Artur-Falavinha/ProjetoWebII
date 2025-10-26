@@ -6,6 +6,20 @@
     font-size: 1.125rem;
     line-height: 1.75rem;
     font-weight: 500;
+    margin-bottom: 0.25rem; 
+  }
+
+  .description {
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+    font-weight: 400;
+    color: #4b5563; 
+    margin-bottom: 0.25rem;
+    display: block;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    max-width: 100%; 
   }
 
   mat-card-subtitle {
@@ -25,6 +39,7 @@
       line-height: 1.25rem;
       font-weight: 500;
     }
+
     span {
       font-size: 0.875rem;
       line-height: 1.25rem;

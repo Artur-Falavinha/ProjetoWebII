@@ -72,9 +72,9 @@ export class RejectCardComponent implements OnInit {
 
     this.solicitacaoService.atualizar(this.order!);
 
-    this.snackBar.open('Solicitação aprovada com sucesso!', 'Fechar', {
+    this.snackBar.open('Serviço rejeitado!', 'Fechar', {
       duration: 5000,
-      panelClass: ['snackbar-success'],
+      panelClass: ['snackbar-destructive'],
     });
 
     this.router.navigate(['/client']);

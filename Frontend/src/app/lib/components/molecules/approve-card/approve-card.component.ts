@@ -46,10 +46,14 @@ export class ApproveCardComponent {
 
     this.solicitacaoService.atualizar(this.order!);
 
-    this.snackBar.open('Solicitação aprovada com sucesso!', 'Fechar', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
+    this.snackBar.open(
+      `Serviço aprovado no valor de R$ ${this.order?.price}`, // mensagem
+      'Fechar', 
+      {
+        duration: 5000,
+        panelClass: ['snackbar-success'],
+      }
+    );
 
     this.router.navigate(['/client']);
   }

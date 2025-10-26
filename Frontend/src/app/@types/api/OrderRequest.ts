@@ -2,22 +2,23 @@ import { SituationEnum } from "@/app/@types";
 import { HistoryType } from "../misc/HistoryType";
 
 export type OrderRequest = {
-  id: number;
+  id: number; 
   client: string;
   clientEmail: string;
   product: string;
   category: string;
-  issue_description: string;
+  issue_description: string; //descrição feita pelo cliente
   situation: SituationEnum;
-  price?: number;
+  price?: number; 
   atributed_employee?: string;
-  fix_description?: string;
-  orientation?: string;
-  history?: HistoryType[];
-  order_date?: string;
-  approval_date?: string;
-  payment_date?: string;
-  completion_date?: string;
-  observacoes?: string;
-  reject_reason?: string;
+  fix_description?: string; //descrição da manutenção, pelo funcionário
+  orientation?: string; //observações feitas pelo funcionário
+  history?: HistoryType[]; 
+  order_date?: string; //data da abertura da solicitação 
+  budge_date?: string; //data do orçamento
+  approval_date?: string; //data de aprovação do orçamento, pelo usuário
+  payment_date?: string; //data de pagamento, pelo usuário
+  completion_date?: string; //data em que a solicitação foi finalizada
+  observacoes?: string; 
+  reject_reason?: string; //motivo da rejeição do orçamento 
 }

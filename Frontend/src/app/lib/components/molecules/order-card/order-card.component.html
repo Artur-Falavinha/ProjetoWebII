@@ -2,16 +2,22 @@
   <mat-card-header>
     <mat-card-title-group>
       <mat-card-title>{{ order.product }}</mat-card-title>
+
+      <div class="description">{{ getShortDescription(order.issue_description) }}</div>
+
       <mat-card-subtitle>{{ order.order_date }}</mat-card-subtitle>
     </mat-card-title-group>
+
     <app-tag [variant]="order.situation" />
   </mat-card-header>
+
   <mat-card-footer>
     <div class="text-wrap">
       <p>Categoria: {{ order.category }}</p>
       @if (order.price) {
       <span>Valor: R$ {{ order.price }} </span>}
     </div>
+
     <mat-card-actions>
       @if (action) {
       <app-button
@@ -22,5 +28,6 @@
       />
       }
     </mat-card-actions>
+
   </mat-card-footer>
 </mat-card>
