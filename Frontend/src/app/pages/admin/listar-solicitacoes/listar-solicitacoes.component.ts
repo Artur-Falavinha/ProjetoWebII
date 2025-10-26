@@ -11,7 +11,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Router, RouterModule } from '@angular/router';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TagComponent } from '@/app/lib/components';
 import { ApproveComponent } from "../../client/approve/approve.component";
 
 @Component({
@@ -27,7 +26,6 @@ import { ApproveComponent } from "../../client/approve/approve.component";
     MatCardModule,
     MatChipsModule,
     MatDialogModule,
-    TagComponent
 ],
   templateUrl: './listar-solicitacoes.component.html',
   styleUrls: ['./listar-solicitacoes.component.scss'],
@@ -86,13 +84,13 @@ export class ListarSolicitacoesComponent implements OnInit {
         this.router.navigate(['/admin/finalizar', solicitacao.id]);
         break;
       default:
-        this.modalAberto = true; // se não tiver rota, abre modal
+        this.modalAberto = true; 
         break; 
     }
   }
 
 
-  verDetalhes(solicitacao: OrderRequest): void {
+  verDetalhes(solicitacao: OrderRequest) {
     this.solicitacaoSelecionada = solicitacao;
     this.modalAberto = true;
   }

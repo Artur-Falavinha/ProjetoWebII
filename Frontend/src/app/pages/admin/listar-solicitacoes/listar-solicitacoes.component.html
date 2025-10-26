@@ -15,7 +15,6 @@
           *ngFor="let solicitacao of solicitacoes"
           [solicitacao]="solicitacao"
           (verDetalhes)="verDetalhes($event)"
-          (efetuarAcao)="getButtonStatus($event)"
         >
         </app-solicitacao-card>
       </div>
@@ -29,80 +28,3 @@
   </div>
 </div>
 
-<!-- Modal de Detalhes da Solicitação -->
-<div class="modal" *ngIf="modalAberto">
-  <div class="modal-content">
-    <h2>Detalhes da Solicitação</h2>
-    <p>Visualize as informações completas da solicitação</p>
-
-    <div *ngIf="solicitacaoSelecionada" class="solicitacao-details">
-      <!-- Equipamento -->
-      <div class="detail-item">
-        <label>Equipamento:</label>
-        <span>{{ solicitacaoSelecionada.product }}</span>
-      </div>
-
-      <!-- Categoria -->
-      <div class="detail-item">
-        <label>Categoria:</label>
-        <span>{{ solicitacaoSelecionada.category }}</span>
-      </div>
-
-      <!-- Cliente -->
-      <div class="detail-item">
-        <label>Cliente:</label>
-        <span>{{ solicitacaoSelecionada.client }}</span>
-      </div>
-
-      <!-- Email do Cliente -->
-      <div class="detail-item">
-        <label>Email:</label>
-        <span>{{ solicitacaoSelecionada.clientEmail }}</span>
-      </div>
-
-      <!-- Data/Hora -->
-      <div class="detail-item">
-        <label>Data/Hora:</label>
-        <span>{{ solicitacaoSelecionada.order_date }}</span>
-      </div>
-
-      <!-- Status -->
-      <app-tag [variant]="solicitacaoSelecionada.situation" />
-
-      <!-- Descrição do Problema -->
-      <div class="detail-item full-width">
-        <label>Problema Relatado:</label>
-        <div class="description-box">
-          {{ solicitacaoSelecionada.issue_description }}
-        </div>
-      </div>
-
-      <!-- Observações (se houver) -->
-      <div
-        class="detail-item full-width"
-        *ngIf="solicitacaoSelecionada.observacoes"
-      >
-        <label>Observações:</label>
-        <div class="description-box">
-          {{ solicitacaoSelecionada.observacoes }}
-        </div>
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div 
-      class="actions "
-    >
-      <button mat-button type="button" (click)="fecharModal()">Fechar</button>
-
-      <button
-        mat-raised-button
-        color="success"
-        type="button"
-        (click) ="getButtonStatus(solicitacaoSelecionada!)"
-        >
-      Efetuar ação necessária  
-      </button
-      >
-  </div>  
-</div>

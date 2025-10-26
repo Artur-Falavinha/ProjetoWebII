@@ -39,7 +39,7 @@
           <div class="details-wrap">
             <mat-icon>today</mat-icon>
             <div class="details-text">
-              <p>Data da solicitação: </p>
+              <p>Data da solicitação </p>
               <span>{{ order.order_date }}</span>
             </div>
           </div>
@@ -66,24 +66,25 @@
       <div class="separator"></div>
 
       <!-- Formulário (valor) -->
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-wrap">
-        <h4>Valor do orçamento (R$): </h4>
-        <div class="problem-box">
-          <app-input
-            [control]="valorControl"
-            label="Valor do orçamento"
-            placeholder="0"
-            type="number"
-            [errorMessages]="{
-              required: 'Campo obrigatório',
-              min: 'O valor deve ser maior que zero'
-            }"
-            [hint]="'Informe o valor total da manutenção'"
-            appearance="outline"
-          ></app-input>
+        <div class="section-card"> 
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-wrap">
+            <h4>Valor do orçamento (R$): </h4>
+              <div class="problem-box">
+                <app-input
+                  [control]="valorControl"
+                  label="Valor do orçamento"
+                  placeholder="00,00"
+                  type="number"
+                  [errorMessages]="{
+                    required: 'Informe o valor total para a manutenção do equipamento',
+                    min: 'O valor deve ser maior que zero'
+                  }"
+                  [hint]="'Informe o valor total da manutenção'"
+                  appearance="outline"
+                ></app-input>
+              </div>
+          </form>
         </div>
-      </form>
-
       <!-- Informações importantes -->
       <div class="information-box">
         <p>Informações importantes</p>
@@ -112,6 +113,7 @@
           variant="primary"
           type="submit"
           [disabled]="form.invalid"
+          (click)="onSubmit()"
         ></app-button>
       </div>
     </mat-card-footer>

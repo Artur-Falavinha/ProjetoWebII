@@ -1,43 +1,138 @@
-<div class="solicitacao-item">
-  <div class="solicitacao-info">
-    <div class="icon-box">
-      <mat-icon>build</mat-icon>
-    </div>
-    <div class="solicitacao-details">
+<mat-card class="app-request-card" appearance="outlined">
+  <div class="card-header">
+    <div>
       <h3>{{ solicitacao.product }}</h3>
-      <div class="details-grid">
-        <div class="detail-column">
-          <p>Cliente: {{ solicitacao.client }}</p>
-          <p>Categoria: {{ solicitacao.category }}</p>
-          <p>Data: {{ solicitacao.order_date }}</p>
-        </div>
-        <div class="detail-column">
-          <p>Status: {{ getStatusText(solicitacao.situation) }}</p>
-          <p>Email: {{ solicitacao.clientEmail }}</p>
-        </div>
-        <div class="detail-column">
-          <p>ID: {{ solicitacao.id }}</p>
-        </div>
+      <small>#{{ solicitacao.id }} • Cliente: {{ solicitacao.client }}</small>
+    </div>
+    <app-tag [variant]="solicitacao.situation"></app-tag>
+  </div>
+
+  <div class="card-body">
+    <div class="info-grid">
+      <div>
+        <h4>Categoria</h4>
+        <p>{{ solicitacao.category }}</p>
+      </div>
+      <div>
+        <h4>Data</h4>
+        <p>{{ solicitacao.order_date }}</p>
+      </div>
+      @if (solicitacao.atributed_employee) {
+      <div>
+        <h4>Técnico responsável</h4>
+        <p>{{ solicitacao.atributed_employee }}</p>
+      </div>
+      }
+      @if (solicitacao.price) {
+      <div>
+        <h4>Valor</h4>
+        <div class="price">R$ {{ solicitacao.price }}</div>
+      </div>
+      }
+    </div>
+
+    <div class="problem-section">
+      <h4>Problema</h4>
+      <div class="problem-box">
+        {{ solicitacao.issue_description }}
       </div>
     </div>
   </div>
 
-  <div class="solicitacao-actions" *ngIf="showActions">
+  <mat-card-actions align="end" *ngIf="showActions">
     <app-button
       title="Ver detalhes"
       variant="secondary"
       icon="visibility"
       (click)="onVerDetalhes()"
-    >
-    </app-button>
-    @if (!(solicitacao.situation === SituationEnum.ORCADA)) {
-    <app-button
-      [title]="getActionButtonText(solicitacao.situation)"
-      [variant]="getActionButtonVariant(solicitacao.situation)"
-      [icon]="getActionButtonIcon(solicitacao.situation)"
-      [link]="getLink(solicitacao.situation)"
-    >
-    </app-button
-    >}
+    ></app-button> 
+    
+
+    @if (!(solicitacao.situation === SituationEnum.ORCADA)
+    && !(solicitacao.situation === SituationEnum.FINALIZADA)) {
+      <app-button
+        [title]="getActionButtonText(solicitacao.situation)"
+        [variant]="getActionButtonVariant(solicitacao.situation)"
+        [icon]="getActionButtonIcon(solicitacao.situation)"
+        [link]="getLink(solicitacao.situation)"
+      />
+    }
+  </mat-card-actions>
+
+    <!-- Modal de Detalhes da Solicitação -->
+  <div class="modal" *ngIf="modalAberto">
+    <div class="modal-content">
+      <h2>Detalhes da Solicitação</h2>
+      <p>Visualize as informações completas da solicitação</p>
+
+      <div class="solicitacao-details">
+        <!-- Equipamento -->
+        <div class="detail-item">
+          <label>Equipamento:</label>
+          <span>{{ solicitacao.product }}</span>
+        </div>
+
+        <!-- Categoria -->
+        <div class="detail-item">
+          <label>Categoria:</label>
+          <span>{{ solicitacao.category }}</span>
+        </div>
+
+        <!-- Cliente -->
+        <div class="detail-item">
+          <label>Cliente:</label>
+          <span>{{ solicitacao.client }}</span>
+        </div>
+
+        <!-- Email do Cliente -->
+        <div class="detail-item">
+          <label>Email:</label>
+          <span>{{ solicitacao.clientEmail }}</span>
+        </div>
+
+        <!-- Data/Hora -->
+        <div class="detail-item">
+          <label>Data/Hora:</label>
+          <span>{{ solicitacao.order_date }}</span>
+        </div>
+
+        <!-- Status -->
+        <app-tag [variant]="solicitacao.situation" />
+
+        <!-- Descrição do Problema -->
+        <div class="detail-item full-width">
+          <label>Problema Relatado:</label>
+          <div class="description-box">
+            {{ solicitacao.issue_description }}
+          </div>
+        </div>
+
+        <!-- Observações (se houver) -->
+        <div
+          class="detail-item full-width"
+          *ngIf="solicitacao.observacoes"
+        >
+          <label>Observações:</label>
+          <div class="description-box">
+            {{ solicitacao.observacoes }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button mat-button type="button" (click)="fecharModal()">Fechar</button>
+
+        @if (!(solicitacao.situation === SituationEnum.ORCADA)
+        && !(solicitacao.situation === SituationEnum.FINALIZADA)) {
+          <app-button
+            [title]="getActionButtonText(solicitacao.situation)"
+            [variant]="getActionButtonVariant(solicitacao.situation)"
+            [icon]="getActionButtonIcon(solicitacao.situation)"
+            [link]="getLink(solicitacao.situation)"
+          />
+        }
+    </div>  
   </div>
-</div>
+  </div>
+</mat-card>

@@ -1,89 +1,210 @@
-/**
- * Card de solicitação reutilizável
- * Segue o design system do projeto
- */
-.solicitacao-item {
+/* Card da solicitação */
+.app-request-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+  padding: 1rem 1.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12); // efeito hover
+  }
+}
+
+/* Cabeçalho do card */
+.card-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; // título à esquerda, tag à direita
   align-items: center;
-  padding: 32px 20px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  background: white;
+  margin-bottom: 0.75rem;
 
-  .solicitacao-info {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    line-height: 1.5;
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+    color: #1e1e1e;
+  }
 
-    .icon-box {
-      background: #eff6ff;
-      color: #2563eb;
-      padding: 8px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 4px;
+  small {
+    color: #6b6b6b;
+  }
+}
+
+/* Grid de informações principais */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+
+  h4 {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #0a0a0a;
+    margin-bottom: 0.2rem;
+  }
+
+  p {
+    color: #3f3f3f;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .price {
+    color: #005bff;
+    font-weight: 550;
+  }
+}
+
+/* Seção de Problema */
+.problem-section {
+  margin-top: 1rem;
+
+  h4 {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #0a0a0a;
+    margin-bottom: 0.3rem;
+  }
+
+  .problem-box {
+    background-color: #f3f6f9;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    color: #4a4a4a;
+    font-size: 0.9rem;
+  }
+}
+
+/* Modal de detalhes */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .modal-content {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+    h2 {
+      margin: 0 0 8px 0;
+      font-size: var(--24px);
+      font-weight: 600;
+      color: #111827;
     }
 
+    p {
+      margin: 0 0 24px 0;
+      font-size: var(--16px);
+      color: #6b7280;
+    }
+
+    /* Detalhes da solicitação dentro do modal */
     .solicitacao-details {
-      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
 
-      h3 {
-        margin: 0 0 12px 0;
-        font-size: var(--20px);
-        font-weight: 500;
-        color: #111827;
-      }
-
-      .details-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 20px;
-      }
-
-      .detail-column {
+      .detail-item {
         display: flex;
         flex-direction: column;
         gap: 4px;
 
-        p {
-          margin: 0;
+        &.full-width {
+          grid-column: 1 / -1; 
+        }
+
+        label {
+          font-weight: 500;
+          font-size: var(--14px);
+          color: #374151;
+        }
+
+        span {
+          font-size: var(--14px);
+          color: #111827;
+        }
+
+        /* Badge de status */
+        .status-badge {
+          display: inline-block;
+          padding: 4px 8px;
+          border-radius: 4px;
           font-size: var(--12px);
-          color: #6b7280;
+          font-weight: 500;
+          text-transform: uppercase;
+
+          &.status-aberta {
+            background: #fef3c7;
+            color: #92400e;
+          }
+
+          &.status-orcada {
+            background: #dbeafe;
+            color: #1e40af;
+          }
+
+          &.status-aprovada {
+            background: #d1fae5;
+            color: #065f46;
+          }
+
+          &.status-finalizada {
+            background: #e5e7eb;
+            color: #374151;
+          }
+        }
+
+        /* Caixa de descrição do problema */
+        .description-box {
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
+          border-radius: 6px;
+          padding: 12px;
+          font-size: var(--14px);
+          line-height: 1.5;
+          color: #111827;
+          white-space: pre-wrap;
         }
       }
     }
-  }
 
-  .solicitacao-actions {
-    display: flex;
-    gap: 8px;
-    margin-left: 16px;
+    /* Botões dentro do modal */
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e7eb;
+
+      button {
+        min-width: 100px;
+      }
+    }
   }
 }
 
-// Responsividade
-@media (max-width: 768px) {
-  .solicitacao-item {
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
+/* Botões */
+mat-card-actions {
+  display: flex;
+  gap: 8px; 
+  margin-top: 1rem;
+}
 
-    .solicitacao-info {
-      .solicitacao-details {
-        .details-grid {
-          grid-template-columns: 1fr;
-          gap: 12px;
-        }
-      }
-    }
-
-    .solicitacao-actions {
-      justify-content: center;
-      margin-left: 0;
-    }
-  }
+app-button {
+  margin-left: 0;
 }

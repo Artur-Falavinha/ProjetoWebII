@@ -30,73 +30,59 @@
     }
   }
 
-.details-box {
-  background-color: #f9fafba4;
-  padding: 1rem 1.25rem;
-  border-radius: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-
-  .details-rows {
+  /* Dados da solicitação */
+  .details-box {
+    background-color: #f9fafba4;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
     display: flex;
-    justify-content: space-between; 
-    align-items: flex-start;
-    gap: 2rem; 
-  }
+    flex-direction: column;
+    gap: 0.75rem;
 
-  .details-wrap {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 0.5rem; 
-    flex: 1; 
-
-    mat-icon {
-      color: var(--text-light-gray);
-      font-size: 1.25rem;
-      height: auto;
-      width: auto;
-      margin-top: 0.1rem; 
+    .details-rows {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
     }
 
-    .details-text {
+    .details-wrap {
       display: flex;
-      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      flex: 1;
 
-      p {
-        font-weight: 600;
-        font-size: 0.875rem;
-        margin: 0;
-      }
-
-      span {
-        font-weight: 500;
-        font-size: 0.875rem;
+      mat-icon {
         color: var(--text-light-gray);
+        font-size: 1.25rem;
         margin-top: 0.1rem;
       }
+
+      .details-text {
+        p {
+          margin: 0;
+          font-weight: 500;
+          font-size: 0.875rem;
+          letter-spacing: -0.025em;
+          color: #1a1a1a;
+        }
+
+        span {
+          font-size: 0.875rem;
+          color: var(--text-light-gray);
+          margin-top: 0.1rem;
+        }
+      }
+    }
+
+    .separator {
+      border-top: 1px solid var(--border-light, rgba(0, 0, 0, 0.1));
+      margin: 0.25rem 0;
     }
   }
 
-  .separator {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 0.25rem 0;
-  }
 
-  .details-wrap:last-of-type {
-    mat-icon {
-      color: var(--text-light-gray);
-    }
-
-    .details-text p {
-      font-weight: 600;
-      color: #1a1a1a;
-    }
-  }
-}
-
-  /* Informações do problema e orientações */
+  /* Problema relatado pelo cliente e forms valor*/
   .section-card{
 
     .problem-box {
@@ -106,6 +92,10 @@
       padding: 12px;
       font-size: 14px;
       color: #374151;
+    }
+
+    h4 {
+      font-weight: 500;
     }
   }
 
@@ -136,10 +126,11 @@
       font-size: 1rem;
       list-style: none;
       font-size: 0.875rem;
-      line-height: 1.25rem;
+      line-height: 1.50rem;
     }
   }
 
+  /* Botões */
   mat-card-footer {
     width: 100%;
     display: flex;
