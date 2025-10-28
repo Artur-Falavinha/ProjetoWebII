@@ -18,7 +18,7 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import { OrderRequest } from '@/app/@types';
+import { OrderRequest, SituationEnum, ButtonVariant } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -34,11 +34,28 @@ import { MatIcon } from '@angular/material/icon';
     MatOptionModule,
     MatInputModule,
     TagComponent,
-    MatIcon
+    MatIcon,
+    ButtonComponent
   ],
   templateUrl: './view-card.component.html',
   styleUrls: ['./view-card.component.scss'],
 })
 export class ViewCardComponent {
   @Input() order?: OrderRequest;
+
+  public get actionButton() {
+    if (!this.order) return null;
+
+    switch (this.order.situation) {
+      case SituationEnum.ARRUMADA:
+        return {
+          title: 'Pagar Serviço',
+          link: `/client/payment/${this.order.id}`,
+          icon: 'payment',
+          variant: 'primary' as ButtonVariant
+        };
+      default:
+        return null;
+    }
+  }
 }

@@ -77,6 +77,17 @@
       </div>
       }
     </mat-card-content>
+    <mat-card-footer>
+      @if (actionButton) {
+      <app-button
+        style="width: 100%"
+        [title]="actionButton.title"
+        [link]="actionButton.link"
+        [icon]="actionButton.icon"
+        [variant]="actionButton.variant"
+      />
+      }
+    </mat-card-footer>
   </ng-container>
   <ng-template #noOrder>
     <p>a</p>

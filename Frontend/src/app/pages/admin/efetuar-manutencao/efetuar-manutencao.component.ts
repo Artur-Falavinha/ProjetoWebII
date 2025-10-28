@@ -38,7 +38,7 @@ export class EfetuarManutencaoComponent {
           this.router.navigate(['/admin']);
         }
 
-        if (order && order.situation !== SituationEnum.APROVADA) {
+        if (order && order.situation !== SituationEnum.APROVADA && order.situation !== SituationEnum.REDIRECIONADA) {
           this.router.navigate(['/admin']);
         }
       })

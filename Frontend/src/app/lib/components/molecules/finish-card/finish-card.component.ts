@@ -47,13 +47,26 @@ export class FinishCardComponent {
 
   public finish() {
     const user = this.authService.getCurrentUser();
+    const dataHora = getFormattedDate();
     
     this.order!.situation = SituationEnum.FINALIZADA;
-    this.order!.completion_date = getFormattedDate();
-    this.order!.atributed_employee = user?.name;
+    this.order!.completion_date = dataHora;
+
+    if (!this.order!.history) {
+      this.order!.history = [];
+    }
+
+    this.order!.history.push({
+      action: SituationEnum.FINALIZADA,
+      date: dataHora,
+      time: dataHora,
+      description: 'Solicitação finalizada',
+      employee: user?.name
+    });
+
     this.solicitacaoService.atualizar(this.order!);
 
-    this.snackBar.open('Solicitação finalizada com sucesso!', 'Fechar', {
+    this.snackBar.open('Solicitação Finalizada com Sucesso', 'OK', {
       duration: 5000,
       panelClass: ['snackbar-success'],
     });

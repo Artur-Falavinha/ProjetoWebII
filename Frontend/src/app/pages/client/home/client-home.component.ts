@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { SidebarComponent, OrderCardComponent, ButtonComponent } from '@/app/lib/components';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
+import { AuthService } from '@/app/lib/services/auth/auth.service';
 
 @Component({
   selector: 'app-client',
@@ -10,8 +11,24 @@ import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.s
   styleUrl: './client-home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientHomeComponent {
-  public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
+export class ClientHomeComponent implements OnInit {
+  private solicitacaoService = inject(SolicitacaoService);
+  private authService = inject(AuthService);
+  public items = signal<OrderRequest[]>([]);
 
+  ngOnInit(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      const todasSolicitacoes = this.solicitacaoService.listarTodas();
+      const solicitacoesDoCliente = todasSolicitacoes
+        .filter(s => s.clientEmail === currentUser.email)
+        .sort((a, b) => {
+          const dateA = a.order_date ? new Date(a.order_date).getTime() : 0;
+          const dateB = b.order_date ? new Date(b.order_date).getTime() : 0;
+          return dateA - dateB;
+        });
+      this.items.set(solicitacoesDoCliente);
+    }
+  }
 }
 

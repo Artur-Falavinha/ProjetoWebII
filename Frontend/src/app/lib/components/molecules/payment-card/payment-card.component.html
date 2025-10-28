@@ -8,7 +8,7 @@
 
     <mat-card-content>
       <div class="title-text-wrap">
-        <p>Confirmar Aprovação</p>
+        <p>Pagamento do Serviço</p>
         <span>Seu equipamento foi reparado com sucesso</span>
       </div>
       <div class="details-box">
@@ -48,7 +48,7 @@
         <div class="quote-box">
           <mat-icon>attach_money</mat-icon>
           <div class="quote-text-wrap">
-            <p>Valor do orçamento</p>
+            <p>Valor a Pagar</p>
             <span>R$ {{ order.price }}</span>
           </div>
         </div>
@@ -74,8 +74,8 @@
     <mat-card-footer>
       <app-button
         style="width: 100%"
-        title="Pagar"
-        icon="send"
+        title="Confirmar Pagamento"
+        icon="payment"
         variant="success"
         (click)="onSubmit()"
       />

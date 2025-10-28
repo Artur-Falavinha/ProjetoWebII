@@ -113,6 +113,12 @@
                   <input matInput formControlName="cidade">
                   <mat-error *ngIf="registerForm.get('endereco.cidade')?.hasError('required')">Cidade é obrigatória.</mat-error>
                 </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Estado</mat-label>
+                  <input matInput formControlName="estado" placeholder="Ex: SP" maxlength="2">
+                  <mat-error *ngIf="registerForm.get('endereco.estado')?.hasError('required')">Estado é obrigatório.</mat-error>
+                </mat-form-field>
               </div>
               
               <div class="step-actions">

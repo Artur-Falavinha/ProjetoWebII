@@ -12,6 +12,13 @@ import { Router, RouterModule } from '@angular/router';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ApproveComponent } from "../../client/approve/approve.component";
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { ButtonComponent } from '@/app/lib/components';
 
 @Component({
   selector: 'app-solicitacoes-component',
@@ -26,28 +33,100 @@ import { ApproveComponent } from "../../client/approve/approve.component";
     MatCardModule,
     MatChipsModule,
     MatDialogModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    ButtonComponent
 ],
   templateUrl: './listar-solicitacoes.component.html',
   styleUrls: ['./listar-solicitacoes.component.scss'],
 })
 export class ListarSolicitacoesComponent implements OnInit {
   solicitacoes: OrderRequest[] = [];
+  todasSolicitacoes: OrderRequest[] = [];
   SituationEnum = SituationEnum;
+  filterForm!: FormGroup;
+  filtroAtivo: string = 'ABERTA';
 
   constructor(
     private solicitacaoService: SolicitacaoService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private fb: FormBuilder
   ) {
     this.router = router;
   }
 
   ngOnInit(): void {
-    this.solicitacoes = this.listarTodas();
+    this.filterForm = this.fb.group({
+      dataInicio: [null],
+      dataFim: [null]
+    });
+    
+    this.todasSolicitacoes = this.listarTodas();
+    this.aplicarFiltro('ABERTA');
   }
 
   listarTodas(): OrderRequest[] {
-    return this.solicitacaoService.listarTodas();
+    const user = this.authService.getCurrentUser();
+    return this.solicitacaoService.listarTodas()
+      .filter(s => {
+        if (s.situation === SituationEnum.REDIRECIONADA) {
+          return s.atributed_employee === user?.name;
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        const dateA = a.order_date ? new Date(a.order_date).getTime() : 0;
+        const dateB = b.order_date ? new Date(b.order_date).getTime() : 0;
+        return dateA - dateB;
+      });
+  }
+
+  aplicarFiltro(tipo: string): void {
+    this.filtroAtivo = tipo;
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    switch (tipo) {
+      case 'HOJE':
+        this.solicitacoes = this.todasSolicitacoes.filter(s => {
+          if (!s.order_date) return false;
+          const dataSolicitacao = this.parseDate(s.order_date);
+          dataSolicitacao.setHours(0, 0, 0, 0);
+          return dataSolicitacao.getTime() === hoje.getTime();
+        });
+        break;
+      case 'TODAS':
+        this.solicitacoes = [...this.todasSolicitacoes];
+        break;
+      case 'ABERTA':
+        this.solicitacoes = this.todasSolicitacoes.filter(s => s.situation === SituationEnum.ABERTA);
+        break;
+    }
+  }
+
+  filtrarPorPeriodo(): void {
+    const dataInicio = this.filterForm.get('dataInicio')?.value;
+    const dataFim = this.filterForm.get('dataFim')?.value;
+
+    if (!dataInicio || !dataFim) return;
+
+    this.filtroAtivo = 'PERIODO';
+    this.solicitacoes = this.todasSolicitacoes.filter(s => {
+      if (!s.order_date) return false;
+      const dataSolicitacao = this.parseDate(s.order_date);
+      return dataSolicitacao >= dataInicio && dataSolicitacao <= dataFim;
+    });
+  }
+
+  parseDate(dateStr: string): Date {
+    const parts = dateStr.split(' ')[0].split('/');
+    return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
   }
 
   /**Modal de detalhes**/

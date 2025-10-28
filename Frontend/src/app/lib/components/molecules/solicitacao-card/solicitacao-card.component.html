@@ -1,7 +1,7 @@
 <mat-card class="app-request-card" appearance="outlined">
   <div class="card-header">
     <div>
-      <h3>{{ solicitacao.product }}</h3>
+      <h3>{{ getShortProduct(solicitacao.product) }}</h3>
       <small>#{{ solicitacao.id }} • Cliente: {{ solicitacao.client }}</small>
     </div>
     <!--Status da solicitação-->

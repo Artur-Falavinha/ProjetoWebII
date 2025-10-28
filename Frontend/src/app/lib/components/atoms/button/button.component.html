@@ -11,8 +11,8 @@
       'app-button primary-button transition-colors' +
       (!fullWidth ? ' fit-content' : '')
     "
-    [attr.matStepperNext]="matStepperNext ? '' : null"
-    [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
+    [attr.matStepperNext]="matStepperNext || null"
+    [attr.matStepperPrevious]="matStepperPrevious || null"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -32,8 +32,8 @@
       'app-button secondary-button transition-colors' +
       (!fullWidth ? ' fit-content' : '')
     "
-    [attr.matStepperNext]="matStepperNext ? '' : null"
-    [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
+    [attr.matStepperNext]="matStepperNext || null"
+    [attr.matStepperPrevious]="matStepperPrevious || null"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -53,8 +53,8 @@
       'app-button success-button transition-colors' +
       (!fullWidth ? ' fit-content' : '')
     "
-    [attr.matStepperNext]="matStepperNext ? '' : null"
-    [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
+    [attr.matStepperNext]="matStepperNext || null"
+    [attr.matStepperPrevious]="matStepperPrevious || null"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>
@@ -74,8 +74,8 @@
       'app-button destructive-button transition-colors' +
       (!fullWidth ? ' fit-content' : '')
     "
-    [attr.matStepperNext]="matStepperNext ? '' : null"
-    [attr.matStepperPrevious]="matStepperPrevious ? '' : null"
+    [attr.matStepperNext]="matStepperNext || null"
+    [attr.matStepperPrevious]="matStepperPrevious || null"
   >
     @if (icon) {
     <mat-icon>{{ icon }}</mat-icon>

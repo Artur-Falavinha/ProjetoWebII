@@ -49,10 +49,11 @@
         />
         <app-button
           style="width: 100%"
-          title="Enviar solicitação"
-          icon="send"
+          title="Confirmar Rejeição"
+          icon="close"
           variant="destructive"
           (click)="onSubmit()"
+          [disabled]="rejectForm.invalid"
         />
       </div>
     </mat-card-footer>

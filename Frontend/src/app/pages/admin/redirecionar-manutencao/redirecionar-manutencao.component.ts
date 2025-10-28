@@ -10,6 +10,8 @@ import { OrderRequest, SituationEnum, FuncionarioRequest } from '@/app/@types';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { FuncionarioService } from '@/app/lib/services/funcionario/funcionario.service';
 import { ButtonComponent, SidebarComponent, TextAreaInputComponent, SelectInputComponent } from '@/app/lib/components';
+import { AuthService } from '@/app/lib/services';
+import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-redirecionar-manutencao',
@@ -40,7 +42,8 @@ export class RedirecionarManutencaoComponent implements OnInit {
     private fb: FormBuilder,
     private solicitacaoService: SolicitacaoService,
     private funcionarioService: FuncionarioService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +51,12 @@ export class RedirecionarManutencaoComponent implements OnInit {
     this.solicitacao = this.solicitacaoService.buscaPorId(id);
 
     if (!this.solicitacao) {
+      this.router.navigate(['admin/solicitacoes']);
+      return;
+    }
+
+    if (this.solicitacao.situation !== SituationEnum.APROVADA && 
+        this.solicitacao.situation !== SituationEnum.REDIRECIONADA) {
       this.router.navigate(['admin/solicitacoes']);
       return;
     }
@@ -80,13 +89,30 @@ export class RedirecionarManutencaoComponent implements OnInit {
       return;
     }
 
-    this.solicitacao!.atributed_employee = this.funcionarioControl.value;
+    const user = this.authService.getCurrentUser();
+    const dataHora = getFormattedDate();
+    const funcionarioOrigem = this.solicitacao!.atributed_employee;
+    const funcionarioDestino = this.funcionarioControl.value;
+
+    this.solicitacao!.atributed_employee = funcionarioDestino;
     this.solicitacao!.situation = SituationEnum.REDIRECIONADA;
     this.solicitacao!.observacoes = this.observacaoControl.value;
 
+    if (!this.solicitacao!.history) {
+      this.solicitacao!.history = [];
+    }
+
+    this.solicitacao!.history.push({
+      action: SituationEnum.REDIRECIONADA,
+      date: dataHora,
+      time: dataHora,
+      description: `Redirecionado de ${funcionarioOrigem} para ${funcionarioDestino}`,
+      employee: user?.name
+    });
+
     this.solicitacaoService.atualizar(this.solicitacao!);
 
-    this.snackBar.open('Manutenção redirecionada com sucesso!', 'Fechar', {
+    this.snackBar.open('Manutenção Redirecionada com Sucesso', 'OK', {
       duration: 5000,
       panelClass: ['snackbar-success']
     });

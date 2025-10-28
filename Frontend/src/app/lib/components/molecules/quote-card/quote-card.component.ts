@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent, TagComponent } from '@/app/lib/components';
@@ -12,8 +12,10 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import { OrderRequest } from '@/app/@types';
+import { OrderRequest, SituationEnum } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
+import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-quote-card',
@@ -29,11 +31,34 @@ import { MatIcon } from '@angular/material/icon';
     MatOptionModule,
     MatInputModule,
     TagComponent,
-    MatIcon
+    MatIcon,
+    MatSnackBarModule
   ],
   templateUrl: './quote-card.component.html',
   styleUrls: ['./quote-card.component.scss'],
 })
 export class QuoteCardComponent {
   @Input() order?: OrderRequest;
+
+  constructor(
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private solicitacaoService: SolicitacaoService
+  ) {}
+
+  public approveService() {
+    this.order!.situation = SituationEnum.APROVADA;
+    this.solicitacaoService.atualizar(this.order!);
+
+    this.snackBar.open(
+      `Serviço Aprovado no Valor R$ ${this.order?.price}`,
+      'OK',
+      {
+        duration: 5000,
+        panelClass: ['snackbar-success'],
+      }
+    ).afterDismissed().subscribe(() => {
+      this.router.navigate(['/client']);
+    });
+  }
 }

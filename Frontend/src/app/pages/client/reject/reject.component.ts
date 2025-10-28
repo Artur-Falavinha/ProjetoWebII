@@ -3,6 +3,7 @@ import { SidebarComponent, ButtonComponent } from '@/app/lib/components';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { RejectCardComponent } from '@/app/lib/components/molecules/reject-card/reject-card.component';
+import { RescueCardComponent } from '@/app/lib/components/molecules/rescue-card/rescue-card.component';
 import { S } from '@angular/cdk/keycodes';
 import { delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
@@ -16,6 +17,7 @@ import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.s
     SidebarComponent,
     ButtonComponent,
     RejectCardComponent,
+    RescueCardComponent,
   ],
   templateUrl: './reject.component.html',
   styleUrl: './reject.component.scss',
@@ -39,7 +41,7 @@ export class RejectComponent {
           this.router.navigate(['/client']);
         }
 
-        if (order && order.situation !== SituationEnum.ORCADA) {
+        if (order && order.situation !== SituationEnum.ORCADA && order.situation !== SituationEnum.REJEITADA) {
           this.router.navigate(['/client']);
         }
       })

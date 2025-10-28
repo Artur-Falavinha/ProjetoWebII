@@ -4,9 +4,52 @@
   <div class="auth-card">
     <div class="card-header">
       <div>
-        <h2>Todas as solicitações</h2>
-        <p>Gerencie todas as solicitações de manutenção</p>
+        <h2>Visualização de Solicitações</h2>
+        <p>Gerencie e filtre todas as solicitações de manutenção</p>
       </div>
+    </div>
+
+    <div class="filter-section" style="padding: 1rem; background: #f5f5f5; border-radius: 8px; margin-bottom: 1rem;">
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <app-button
+          title="Abertas"
+          [variant]="filtroAtivo === 'ABERTA' ? 'primary' : 'secondary'"
+          (click)="aplicarFiltro('ABERTA')"
+        />
+        <app-button
+          title="Hoje"
+          [variant]="filtroAtivo === 'HOJE' ? 'primary' : 'secondary'"
+          (click)="aplicarFiltro('HOJE')"
+        />
+        <app-button
+          title="Todas"
+          [variant]="filtroAtivo === 'TODAS' ? 'primary' : 'secondary'"
+          (click)="aplicarFiltro('TODAS')"
+        />
+      </div>
+
+      <form [formGroup]="filterForm" style="display: flex; gap: 1rem; align-items: end; flex-wrap: wrap;">
+        <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+          <mat-label>Data Início</mat-label>
+          <input matInput [matDatepicker]="pickerInicio" formControlName="dataInicio">
+          <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+          <mat-datepicker #pickerInicio></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+          <mat-label>Data Fim</mat-label>
+          <input matInput [matDatepicker]="pickerFim" formControlName="dataFim">
+          <mat-datepicker-toggle matSuffix [for]="pickerFim"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFim></mat-datepicker>
+        </mat-form-field>
+
+        <app-button
+          title="Filtrar Período"
+          icon="filter_list"
+          variant="primary"
+          (click)="filtrarPorPeriodo()"
+        />
+      </form>
     </div>
 
     <div class="card-body">
@@ -21,8 +64,8 @@
 
       <div class="empty-state" *ngIf="solicitacoes.length === 0">
         <mat-icon class="empty-icon">inbox</mat-icon>
-        <h3>Não há solicitações</h3>
-        <p>Nenhuma solicitação foi encontrada no sistema.</p>
+        <h3>Não há solicitações abertas</h3>
+        <p>Nenhuma solicitação aberta foi encontrada no momento.</p>
       </div>
     </div>
   </div>

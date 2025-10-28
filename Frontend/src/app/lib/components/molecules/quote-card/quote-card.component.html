@@ -13,6 +13,14 @@
     <mat-card-content>
       <div class="details-wrap">
         <div class="detail-item">
+          <mat-icon>person</mat-icon>
+          <div class="text-wrap">
+            <p>Cliente</p>
+            <span>{{ order.client }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
           <mat-icon>calendar_today</mat-icon>
           <div class="text-wrap">
             <p>Data da Solicitação</p>
@@ -22,19 +30,29 @@
 
         <div class="detail-item">
           <mat-icon>category</mat-icon>
-          <div class="detail-item" class="text-wrap">
+          <div class="text-wrap">
             <p>Categoria</p>
             <span>{{ order.category }}</span>
           </div>
         </div>
 
         <div class="detail-item">
-          <mat-icon>person</mat-icon>
-          <div class="detail-item" class="text-wrap">
+          <mat-icon>engineering</mat-icon>
+          <div class="text-wrap">
             <p>Técnico responsável</p>
             <span>{{ order.atributed_employee }}</span>
           </div>
         </div>
+
+        @if (order.budge_date) {
+        <div class="detail-item">
+          <mat-icon>schedule</mat-icon>
+          <div class="text-wrap">
+            <p>Data do Orçamento</p>
+            <span>{{ order.budge_date }}</span>
+          </div>
+        </div>
+        }
       </div>
 
       <div class="separator"></div>
@@ -64,16 +82,16 @@
       <div style="width: 100%;display: flex; flex-direction: row; gap: 0.5rem;">
         <app-button
           style="width: 100%"
-          title="Rejeitar"
-          [link]="'/client/reject/'+ order.id"
+          title="Rejeitar o Serviço"
           variant="destructive"
+          [link]="'/client/reject/'+ order.id"
         />
         <app-button
           style="width: 100%"
-          title="Enviar solicitação"
-          icon="send"
+          title="Aprovar o Serviço"
+          icon="check"
           variant="success"
-          [link]="'/client/approve/'+ order.id"
+          (click)="approveService()"
         />
       </div>
       <p>

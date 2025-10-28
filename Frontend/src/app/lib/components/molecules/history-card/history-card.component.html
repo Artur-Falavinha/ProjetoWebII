@@ -18,6 +18,9 @@
           {{ get_situation_icon(item.action)!.action }}
         </p>
         <span style="margin-bottom: 4px;">{{ item.date }}</span>
+        @if (item.employee) {
+        <span style="margin-bottom: 4px;">Funcionário: {{ item.employee }}</span>
+        }
         <span>{{ item.description }}</span>
       </div>
     </div>

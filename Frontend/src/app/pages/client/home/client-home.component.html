@@ -16,7 +16,7 @@
     </div>
 
     <div class="order-card-wrap">
-      @for (item of items; track $index) {
+      @for (item of items(); track item.id) {
       <app-order-card [order]="item" />
       }
     </div>

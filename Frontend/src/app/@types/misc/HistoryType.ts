@@ -5,4 +5,5 @@ export type HistoryType = {
     date: string;
     time: string;
     description: string;
+    employee?: string;
 }

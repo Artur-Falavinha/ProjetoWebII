@@ -19,12 +19,18 @@
     </div>
 
     <mat-card-actions>
-      @if (action) {
       <app-button
-        title="{{ action.title }}"
-        link="{{ action.link }}"
-        icon="{{ action.icon }}"
-        [variant]="action.variant"
+        title="Visualizar"
+        link="/client/view/{{ order.id }}"
+        icon="visibility"
+        variant="secondary"
+      />
+      @if (actionButton) {
+      <app-button
+        title="{{ actionButton.title }}"
+        link="{{ actionButton.link }}"
+        icon="{{ actionButton.icon }}"
+        [variant]="actionButton.variant"
       />
       }
     </mat-card-actions>

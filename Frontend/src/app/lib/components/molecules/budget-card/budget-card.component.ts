@@ -66,16 +66,30 @@ export class BudgetCardComponent implements OnInit {
     }
 
     const user = this.authService.getCurrentUser();
+    const dataHora = getFormattedDate();
 
     if (this.order) {
       this.order.situation = SituationEnum.ORCADA;
       this.order.price = this.valorControl.value;
       this.order.atributed_employee = user?.name;
-      this.order.budge_date = getFormattedDate();
+      this.order.budge_date = dataHora;
+
+      if (!this.order.history) {
+        this.order.history = [];
+      }
+
+      this.order.history.push({
+        action: SituationEnum.ORCADA,
+        date: dataHora,
+        time: dataHora,
+        description: `Orçamento realizado no valor de R$ ${this.valorControl.value}`,
+        employee: user?.name
+      });
+
       this.solicitacaoService.atualizar(this.order);
     }
 
-    this.snackBar.open('Solicitação orçada com sucesso!', 'Fechar', {
+    this.snackBar.open('Orçamento Efetuado com Sucesso', 'OK', {
       duration: 5000,
       panelClass: ['snackbar-success'],
     });

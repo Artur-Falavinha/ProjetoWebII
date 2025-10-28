@@ -20,26 +20,10 @@ export class OrderCardComponent {
     return descricao.length > 30 ? descricao.substring(0, 30) + '...' : descricao;
   }
 
-  public get action() {
+  public get actionButton() {
     if (!this.order) return null;
 
     switch (this.order.situation) {
-      case SituationEnum.APROVADA:
-        return null;
-      case SituationEnum.ARRUMADA:
-        return {
-          title: 'Pagar serviço',
-          link: `/client/payment/${this.order.id}`,
-          icon: 'visibility',
-          variant: 'secondary' as ButtonVariant
-        };
-      case SituationEnum.REJEITADA:
-        return {
-          title: 'Resgatar',
-          link: `/orders/${this.order.id}`,
-          icon: 'track_changes',
-          variant: 'secondary' as ButtonVariant
-        };
       case SituationEnum.ORCADA:
         return {
           title: 'Aprovar/Rejeitar',
@@ -47,13 +31,23 @@ export class OrderCardComponent {
           icon: 'currency_exchange',
           variant: 'primary' as ButtonVariant
         };
-      default:
+      case SituationEnum.REJEITADA:
         return {
-          title: 'Visualizar',
-          link: `/client/view/${this.order.id}`,
-          icon: 'info',
+          title: 'Resgatar',
+          link: `/client/reject/${this.order.id}`,
+          icon: 'track_changes',
           variant: 'secondary' as ButtonVariant
         };
+      case SituationEnum.ARRUMADA:
+        return {
+          title: 'Pagar Serviço',
+          link: `/client/payment/${this.order.id}`,
+          icon: 'payment',
+          variant: 'primary' as ButtonVariant
+        };
+      case SituationEnum.APROVADA:
+      default:
+        return null;
     }
   }
 };

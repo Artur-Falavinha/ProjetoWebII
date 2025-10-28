@@ -1,0 +1,51 @@
+<mat-card class="app-rescue-card" appearance="outlined">
+  <ng-container *ngIf="order; else noOrder">
+    <mat-card-header>
+      <div class="rounded-rescue">
+        <mat-icon>restore</mat-icon>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="title-text-wrap">
+        <p>Resgatar Serviço</p>
+        <span>Você está prestes a resgatar este serviço rejeitado</span>
+      </div>
+      <div class="details-box">
+        <p>Equipamento: {{ order.product }}</p>
+        <span>Técnico: {{ order.atributed_employee }}</span>
+        <span>Valor: R$ {{ order.price }}</span>
+      </div>
+      <div class="info-box">
+        <mat-icon>info</mat-icon>
+        <div class="info-wrap">
+          <p>O que acontece ao resgatar?</p>
+          <span>
+            O serviço voltará ao estado APROVADA e entrará novamente no fluxo de manutenção.
+            Esta ação será registrada no histórico da solicitação.
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div style="width: 100%; display: flex; flex-direction: row; gap: 0.5rem">
+        <app-button
+          style="width: 100%"
+          title="Cancelar"
+          link="/client"
+          variant="secondary"
+        />
+        <app-button
+          style="width: 100%"
+          title="Resgatar Serviço"
+          icon="restore"
+          variant="success"
+          (click)="rescueService()"
+        />
+      </div>
+    </mat-card-footer>
+  </ng-container>
+  <ng-template #noOrder>
+    <p>Solicitação não encontrada</p>
+  </ng-template>
+</mat-card>

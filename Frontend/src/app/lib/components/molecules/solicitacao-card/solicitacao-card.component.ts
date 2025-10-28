@@ -53,14 +53,14 @@ export class SolicitacaoCardComponent {
 
   /** Getters auxiliares **/
   public exibButton(status: SituationEnum): boolean {
-    const statusNaoPermitidos = [
-      SituationEnum.ORCADA,
-      SituationEnum.ARRUMADA,
-      SituationEnum.REJEITADA,
-      SituationEnum.FINALIZADA
+    const statusPermitidos = [
+      SituationEnum.ABERTA,
+      SituationEnum.APROVADA,
+      SituationEnum.REDIRECIONADA,
+      SituationEnum.PAGA
     ];
 
-    return !statusNaoPermitidos.includes(status);
+    return statusPermitidos.includes(status);
   }
 
   getActionButtonText(status: SituationEnum): string {
@@ -105,5 +105,10 @@ export class SolicitacaoCardComponent {
       default:
         return '/admin/orcamento/' + this.solicitacao.id;
     }
+  }
+
+  getShortProduct(product: string): string {
+    if (!product) return '';
+    return product.length > 30 ? product.substring(0, 30) + '...' : product;
   }
 }
