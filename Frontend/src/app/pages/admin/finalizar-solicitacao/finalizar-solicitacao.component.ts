@@ -12,7 +12,6 @@ import { SidebarComponent } from '@/app/lib/components';
   selector: 'app-finalizar-solicitacao',
   standalone: true,
   imports: [
-    AsyncPipe,
     NgIf,
     SidebarComponent,
     ButtonComponent,

@@ -58,19 +58,22 @@
             </div>
             
             <div class="step-actions">
-              <app-button 
+              <button 
                 *ngIf="tipoCadastro === 'CLIENT'"
-                [title]="'Continuar'"
-                [variant]="'primary'"
-                [matStepperNext]="true">
-              </app-button>
-              <app-button 
+                mat-flat-button
+                matStepperNext
+                type="button"
+                class="app-button primary-button">
+                Continuar
+              </button>
+              <button 
                 *ngIf="tipoCadastro === 'EMPLOYEE'"
-                [title]="'Finalizar Cadastro'"
-                [variant]="'primary'"
-                [submit]="true"
-                [disabled]="!!registerForm.get('dadosPessoais')?.invalid">
-              </app-button>
+                mat-flat-button
+                type="submit"
+                class="app-button primary-button"
+                [disabled]="registerForm.get('dadosPessoais')?.invalid">
+                Finalizar Cadastro
+              </button>
             </div>
           </mat-step>
 
@@ -122,17 +125,20 @@
               </div>
               
               <div class="step-actions">
-                <app-button 
-                  [title]="'Voltar'"
-                  [variant]="'secondary'"
-                  [matStepperPrevious]="true">
-                </app-button>
-                <app-button 
-                  [title]="'Finalizar Cadastro'"
-                  [variant]="'primary'"
-                  [submit]="true"
-                  [disabled]="!!registerForm.invalid">
-                </app-button>
+                <button 
+                  mat-stroked-button
+                  matStepperPrevious
+                  type="button"
+                  class="app-button secondary-button">
+                  Voltar
+                </button>
+                <button 
+                  mat-flat-button
+                  type="submit"
+                  class="app-button primary-button"
+                  [disabled]="registerForm.invalid">
+                  Finalizar Cadastro
+                </button>
               </div>
             </mat-step>
           </ng-container>
