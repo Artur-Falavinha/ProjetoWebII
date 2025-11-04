@@ -7,7 +7,7 @@ import { OrderRequest, SituationEnum } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
+import { getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-rescue-card',
@@ -41,8 +41,8 @@ export class RescueCardComponent {
     
     this.order!.history.push({
       action: SituationEnum.APROVADA,
-      date: getFormattedDate(),
-      time: getFormattedDate(),
+      date: getFormattedDateOnly(),
+      time: getFormattedTimeOnly(),
       description: 'Serviço resgatado - passou de REJEITADA para APROVADA'
     });
 

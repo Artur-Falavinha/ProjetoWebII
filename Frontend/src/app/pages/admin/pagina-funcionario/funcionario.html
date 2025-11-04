@@ -70,20 +70,21 @@
                 <mat-icon>build</mat-icon>
               </div>
               <div class="solicitacao-details">
-                <h3>{{ solicitacao.product }}</h3>
+                <h3>{{ solicitacao.product.length > 30 ? solicitacao.product.substring(0, 30) + '...' : solicitacao.product }}</h3>
                 <div class="details-grid">
                   <div class="detail-column">
+                    <p>Cliente: {{ solicitacao.client }}</p>
                     <p>Data: {{ solicitacao.order_date }}</p>
-                    <p>Categoria: {{ solicitacao.category }}</p>
-                    @if(solicitacao.price) {
-                    <p>Preço: R$ {{ solicitacao.price | number:'1.2-2' }}</p>
-                    }
                   </div>
                   <div class="detail-column">
+                    <p>Categoria: {{ solicitacao.category }}</p>
                     <p>Status: {{ getStatusText(solicitacao.situation) }}</p>
                   </div>
                   <div class="detail-column">
                     <p>ID: {{ solicitacao.id }}</p>
+                    @if(solicitacao.price) {
+                    <p>Preço: R$ {{ solicitacao.price | number:'1.2-2' }}</p>
+                    }
                   </div>
                 </div>
               </div>

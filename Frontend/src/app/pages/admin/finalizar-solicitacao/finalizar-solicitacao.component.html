@@ -14,8 +14,8 @@
           <p class="page-subtitle">Confirme a finalização definitiva do serviço</p>
         </div>
       </div>
-      <ng-container *ngIf="order$ | async as order; else loading">
-        <app-finish-card [order]="order"></app-finish-card>
+      <ng-container *ngIf="solicitacaoSelecionada; else loading">
+        <app-finish-card [order]="solicitacaoSelecionada"></app-finish-card>
       </ng-container>
 
       <ng-template #loading>

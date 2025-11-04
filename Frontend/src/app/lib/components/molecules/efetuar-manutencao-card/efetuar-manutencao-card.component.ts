@@ -17,7 +17,7 @@ import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@/app/lib/services';
-import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
+import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-efetuar-manutencao-card',
@@ -87,8 +87,8 @@ export class EfetuarManutencaoCardComponent implements OnInit {
 
     this.order!.history.push({
       action: SituationEnum.ARRUMADA,
-      date: dataHora,
-      time: dataHora,
+      date: getFormattedDateOnly(),
+      time: getFormattedTimeOnly(),
       description: 'Manutenção concluída',
       employee: user?.name
     });

@@ -46,6 +46,10 @@ export class OrderCardComponent {
           variant: 'primary' as ButtonVariant
         };
       case SituationEnum.APROVADA:
+      case SituationEnum.ABERTA:
+      case SituationEnum.REDIRECIONADA:
+      case SituationEnum.PAGA:
+      case SituationEnum.FINALIZADA:
       default:
         return null;
     }

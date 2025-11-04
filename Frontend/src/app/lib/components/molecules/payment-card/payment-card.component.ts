@@ -18,7 +18,7 @@ import { OrderRequest, SituationEnum } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
+import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-payment-card',
@@ -58,8 +58,8 @@ export class PaymentCardComponent {
 
     this.order!.history.push({
       action: SituationEnum.PAGA,
-      date: getFormattedDate(),
-      time: getFormattedDate(),
+      date: getFormattedDateOnly(),
+      time: getFormattedTimeOnly(),
       description: 'Pagamento confirmado'
     });
 

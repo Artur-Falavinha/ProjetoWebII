@@ -17,7 +17,7 @@
         <p>
           {{ get_situation_icon(item.action)!.action }}
         </p>
-        <span style="margin-bottom: 4px;">{{ item.date }}</span>
+        <span style="margin-bottom: 4px;">{{ item.date }}@if (item.time) { - {{ item.time }}}</span>
         @if (item.employee) {
         <span style="margin-bottom: 4px;">Funcionário: {{ item.employee }}</span>
         }

@@ -14,7 +14,7 @@ import { InputComponent } from '../input/input.component';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { AuthService } from '@/app/lib/services';
-import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
+import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-budget-card',
@@ -80,8 +80,8 @@ export class BudgetCardComponent implements OnInit {
 
       this.order.history.push({
         action: SituationEnum.ORCADA,
-        date: dataHora,
-        time: dataHora,
+        date: getFormattedDateOnly(),
+        time: getFormattedTimeOnly(),
         description: `Orçamento realizado no valor de R$ ${this.valorControl.value}`,
         employee: user?.name
       });

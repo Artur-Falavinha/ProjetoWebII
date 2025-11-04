@@ -70,6 +70,10 @@ export class AuthService {
       return new Observable(observer => observer.error({ message: 'Este email já está cadastrado!' }));
     }
 
+    if (usuarios.some((user: any) => user.cpf === userData.cpf)) {
+      return new Observable(observer => observer.error({ message: 'Este CPF já está cadastrado!' }));
+    }
+
     const senhaAleatoria = Math.floor(1000 + Math.random() * 9000).toString();
     const novoUsuario = { ...userData, senha: senhaAleatoria };
 

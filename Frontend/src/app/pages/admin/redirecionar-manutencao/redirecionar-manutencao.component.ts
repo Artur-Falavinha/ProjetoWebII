@@ -11,7 +11,7 @@ import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.s
 import { FuncionarioService } from '@/app/lib/services/funcionario/funcionario.service';
 import { ButtonComponent, SidebarComponent, TextAreaInputComponent, SelectInputComponent } from '@/app/lib/components';
 import { AuthService } from '@/app/lib/services';
-import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
+import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-redirecionar-manutencao',
@@ -104,10 +104,10 @@ export class RedirecionarManutencaoComponent implements OnInit {
 
     this.solicitacao!.history.push({
       action: SituationEnum.REDIRECIONADA,
-      date: dataHora,
-      time: dataHora,
-      description: `Redirecionado de ${funcionarioOrigem} para ${funcionarioDestino}`,
-      employee: user?.name
+      date: getFormattedDateOnly(),
+      time: getFormattedTimeOnly(),
+      description: `Redirecionado de ${funcionarioOrigem} para ${funcionarioDestino}${this.observacaoControl.value ? '. Motivo: ' + this.observacaoControl.value : ''}`,
+      employee: funcionarioOrigem
     });
 
     this.solicitacaoService.atualizar(this.solicitacao!);
