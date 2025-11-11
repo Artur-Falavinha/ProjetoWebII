@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '@/app/lib/components/organisms/sidebar/sidebar.component';
 import { SolicitacaoCardComponent as SolicitacaoCardNewComponent } from '@/app/lib/components/molecules/solicitacao-card/solicitacao-card.component';
@@ -19,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ButtonComponent } from '@/app/lib/components';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-solicitacoes-component',
@@ -44,12 +45,13 @@ import { ButtonComponent } from '@/app/lib/components';
   templateUrl: './listar-solicitacoes.component.html',
   styleUrls: ['./listar-solicitacoes.component.scss'],
 })
-export class ListarSolicitacoesComponent implements OnInit {
+export class ListarSolicitacoesComponent implements OnInit, OnDestroy {
   solicitacoes: OrderRequest[] = [];
   todasSolicitacoes: OrderRequest[] = [];
   SituationEnum = SituationEnum;
   filterForm!: FormGroup;
   filtroAtivo: string = 'ABERTA';
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     private solicitacaoService: SolicitacaoService,
@@ -67,13 +69,25 @@ export class ListarSolicitacoesComponent implements OnInit {
       dataFim: [null]
     });
     
-    this.todasSolicitacoes = this.listarTodas();
+    this.solicitacaoService.observeSolicitacoes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((solicitacoes) => {
+        this.todasSolicitacoes = this.prepararSolicitacoes(solicitacoes);
+        this.aplicarFiltro(this.filtroAtivo);
+      });
+
+    this.solicitacaoService.sincronizar().subscribe();
     this.aplicarFiltro('ABERTA');
   }
 
-  listarTodas(): OrderRequest[] {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private prepararSolicitacoes(solicitacoes: OrderRequest[]): OrderRequest[] {
     const user = this.authService.getCurrentUser();
-    return this.solicitacaoService.listarTodas()
+    return solicitacoes
       .filter(s => {
         if (s.situation === SituationEnum.REDIRECIONADA) {
           return s.atributed_employee === user?.name;
