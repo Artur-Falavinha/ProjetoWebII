@@ -38,7 +38,7 @@ export class HistoryCardComponent {
       case SituationEnum.ARRUMADA:
         return { icon: 'build', action: 'Manutenção concluida' };
       case SituationEnum.FINALIZADA:
-        return { icon: 'currency', action: 'Solicitação finalizada' };
+        return { icon: 'check', action: 'Solicitação finalizada' };
       default:
         return;
     }
