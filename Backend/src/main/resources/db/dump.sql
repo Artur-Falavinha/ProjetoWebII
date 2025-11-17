@@ -24,7 +24,7 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 );
 
 
-CREATE TABLE categories (
+CREATE TABLE categorias (
     id serial PRIMARY KEY,
     name varchar(50)
 );

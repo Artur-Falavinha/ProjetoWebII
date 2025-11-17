@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-import com.tads4.webdois.infra.repository.CategoryRepository;
+import com.tads4.webdois.infra.repository.CategoriaRepository;
 import com.tads4.webdois.web.dto.*;
-import com.tads4.webdois.domain.Category;
-import com.tads4.webdois.infra.mapper.CategoryMapper;
+import com.tads4.webdois.domain.Categoria;
+import com.tads4.webdois.infra.mapper.CategoriaMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -20,19 +20,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @Tag(name = "Categorias", description = "Operações relacionadas às categorias")
-public class CategoryController {
+public class CategoriaController {
 
-    private final CategoryRepository repo;
+    private final CategoriaRepository repo;
 
-    public CategoryController(CategoryRepository repo) {
+    public CategoriaController(CategoriaRepository repo) {
         this.repo = repo;
     }
 
     @GetMapping
     @Operation(summary = "Listar todas as categorias", description = "Retorna uma lista de todas as categorias cadastradas.")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
-    public List<CategoryResponse> findAll() {
-        return repo.findAll().stream().map(CategoryMapper::toResponse).toList();
+    public List<CategoriaResponse> findAll() {
+        return repo.findAll().stream().map(CategoriaMapper::toResponse).toList();
     }
 
     @GetMapping("/{id}")
@@ -41,10 +41,10 @@ public class CategoryController {
         @ApiResponse(responseCode = "200", description = "Categoria encontrada"),
         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
-    public CategoryResponse findById(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
-        Category category = repo.findById(id)
+    public CategoriaResponse findById(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
+        Categoria Categoria = repo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-        return CategoryMapper.toResponse(category);
+        return CategoriaMapper.toResponse(Categoria);
     }
 
     @PostMapping
@@ -53,12 +53,12 @@ public class CategoryController {
         @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos ou categoria já existente")
     })
-    public ResponseEntity<CategoryResponse> create(@Valid @RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoriaResponse> create(@Valid @RequestBody CategoriaRequest request) {
         if (repo.existsByName(request.name())) {
             throw new RuntimeException("Categoria já cadastrada");
         }
-        Category category = repo.save(CategoryMapper.toEntity(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(CategoryMapper.toResponse(category));
+        Categoria Categoria = repo.save(CategoriaMapper.toEntity(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaMapper.toResponse(Categoria));
     }
 
     @PutMapping("/{id}")
@@ -67,12 +67,12 @@ public class CategoryController {
         @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
-    public CategoryResponse update(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id, @Valid @RequestBody CategoryRequest request) {
-        Category foundCategory = repo.findById(id)
+    public CategoriaResponse update(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id, @Valid @RequestBody CategoriaRequest request) {
+        Categoria foundCategoria = repo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-        foundCategory.setName(request.name());
-        Category category = repo.save(foundCategory);
-        return CategoryMapper.toResponse(category);
+        foundCategoria.setName(request.name());
+        Categoria Categoria = repo.save(foundCategoria);
+        return CategoriaMapper.toResponse(Categoria);
     }
 
     @DeleteMapping("/{id}")
