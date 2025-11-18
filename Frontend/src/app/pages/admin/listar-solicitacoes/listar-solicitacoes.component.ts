@@ -50,7 +50,7 @@ export class ListarSolicitacoesComponent implements OnInit, OnDestroy {
   todasSolicitacoes: OrderRequest[] = [];
   SituationEnum = SituationEnum;
   filterForm!: FormGroup;
-  filtroAtivo: string = 'ABERTA';
+  filtroAtivo: string = 'TODAS';
   private readonly destroy$ = new Subject<void>();
 
   constructor(
@@ -77,7 +77,7 @@ export class ListarSolicitacoesComponent implements OnInit, OnDestroy {
       });
 
     this.solicitacaoService.sincronizar().subscribe();
-    this.aplicarFiltro('ABERTA');
+    this.aplicarFiltro('TODAS');
   }
 
   ngOnDestroy(): void {
