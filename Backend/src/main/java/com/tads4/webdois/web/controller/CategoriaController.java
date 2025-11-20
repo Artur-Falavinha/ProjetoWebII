@@ -70,7 +70,7 @@ public class CategoriaController {
     public CategoriaResponse update(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id, @Valid @RequestBody CategoriaRequest request) {
         Categoria foundCategoria = repo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-        foundCategoria.setName(request.name());
+        foundCategoria.setNome(request.name());
         Categoria Categoria = repo.save(foundCategoria);
         return CategoriaMapper.toResponse(Categoria);
     }

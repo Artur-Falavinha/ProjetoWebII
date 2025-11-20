@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tads4.webdois.web.dto.ClienteRequest;
-import com.tads4.webdois.web.dto.EnderecoResponse;
+import com.tads4.webdois.web.dto.EnderecoRequest;
 // import com.tads4.webdois.exception.BadRequestApiException;
-// import com.tads4.webdois.exception.RuntimeException;
+// import com.tads4.webdois.exception.ResourceConflictException;
 // import com.tads4.webdois.exception.ServerErrorException;
 import com.tads4.webdois.domain.Cliente;
 import com.tads4.webdois.domain.Endereco;
@@ -60,7 +60,7 @@ public class ClienteService {
         // garante role de sistema (mesmo que o construtor já defina)
         novo.setRole(RoleUsuario.CLIENTE);
 
-        EnderecoDTO e = cliente.endereco();
+        EnderecoRequest e = cliente.endereco();
         Endereco end = new Endereco();
         end.setCep(e.cep().replace("-", ""));
         end.setLogradouro(e.logradouro());
@@ -150,7 +150,7 @@ public class ClienteService {
             return false;
         }
 
-        EnderecoDTO e = dto.endereco();
+        EnderecoRequest e = dto.endereco();
 
         if (e == null) return false;
 

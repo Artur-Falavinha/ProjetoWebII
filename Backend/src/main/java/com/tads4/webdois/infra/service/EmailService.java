@@ -1,7 +1,6 @@
-/*package com.tads4.webdois.infra.service;
+package com.tads4.webdois.infra.service;
 
 
-//preciso adiconar as dependências do spring mail no pom.xml
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -32,4 +31,4 @@ public class EmailService {
             throw new RuntimeException("Erro ao enviar e-mail.", e);
         }
     }
-}*/
+}

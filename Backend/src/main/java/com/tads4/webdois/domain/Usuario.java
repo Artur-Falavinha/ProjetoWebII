@@ -1,99 +1,68 @@
 package com.tads4.webdois.domain;
 
-import jakarta.persistence.*;
-import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.tads4.webdois.domain.enums.RoleUsuario;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(name = "usuarios")
-public class Usuario implements Serializable {
+@Table(name = "tbl_usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Getter @Setter
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Integer userId;
 
-    @Column(nullable = false)
+    @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email", length = 100, nullable = false, unique = true) 
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "senha", length = 255, nullable = false) 
     private String senha;
 
-    @Column(unique = true, nullable = false)
-    private String cpf;
-    
-    @Column(nullable = false)
-    private String telefone;
-    
-    @Column(nullable = false)
-    private String perfil;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, updatable = false) 
+    private RoleUsuario role;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
-    private Endereco endereco;
+    @Column(name = "status", nullable = false)
+    private boolean status = true; 
 
-    public Long getId() {
-        return id;
+    @Override
+    @JsonIgnore
+    public String getPassword() {
+        return this.senha;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    @JsonIgnore
+    public String getUsername() {
+        return this.email;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(String perfil) {
-        this.perfil = perfil;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.role.toString()));
     }
 }
