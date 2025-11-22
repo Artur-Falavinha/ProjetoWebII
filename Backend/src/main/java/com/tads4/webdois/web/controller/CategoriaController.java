@@ -19,7 +19,7 @@ import com.tads4.webdois.exception.NotFoundException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categoria")
+@RequestMapping("/categoria")
 @Tag(name = "Categorias", description = "Operações relacionadas às categorias")
 public class CategoriaController {
 
