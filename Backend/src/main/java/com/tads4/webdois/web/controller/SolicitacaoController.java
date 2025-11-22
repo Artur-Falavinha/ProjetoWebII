@@ -1,184 +1,119 @@
-// package com.tads4.webdois.web.controller;
+package com.tads4.webdois.web.controller;
 
-// import io.swagger.v3.oas.annotations.tags.Tag;
-// import io.swagger.v3.oas.annotations.Operation;
-// import io.swagger.v3.oas.annotations.Parameter;
-// import io.swagger.v3.oas.annotations.responses.ApiResponse;
-// import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-// import com.tads4.webdois.infra.repository.SolicitacaoRepository;
-// import com.tads4.webdois.web.dto.*;
-// import com.tads4.webdois.domain.Solicitacao;
-// import com.tads4.webdois.infra.mapper.SolicitacaoMapper;
-// import jakarta.validation.Valid;
-// import org.springframework.http.*;
-// import org.springframework.web.bind.annotation.*;
-// import org.springframework.web.server.ResponseStatusException;
+import java.time.LocalDate;
+import java.util.List;
 
-// import java.util.List;
+import com.tads4.webdois.web.dto.OrcamentoRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.RestController;
 
-// @RestController
-// @RequestMapping("/api/users")
-// @Tag(name = "Categorias", description = "Operações relacionadas às categorias")
-// public class SolicitacaoController {
+import com.tads4.webdois.web.dto.SolicitacaoRequest;
+import com.tads4.webdois.web.dto.SolicitacaoResponse;
+import com.tads4.webdois.domain.enums.StatusSolicitacao;
+import com.tads4.webdois.infra.service.SolicitacaoService;
+import com.tads4.webdois.web.dto.SolicitacaoRequest;
+// import com.tads4.webdois.web.dto.EtapaCreateDTO;
+// import com.tads4.webdois.web.dto.EtapaHistoricoDTO;
+import com.tads4.webdois.domain.enums.StatusSolicitacao;
+import jakarta.validation.Valid;
 
-//     private final SolicitacaoRepository repo;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
-//     public SolicitacaoController(SolicitacaoRepository repo) {
-//         this.repo = repo;
-//     }
+@CrossOrigin
+@RestController
+@Tag(name = "Solicitações", description = "Operações relacionadas às solicitações de manutenção e orçamento.")
+public class SolicitacaoController {
+    @Autowired
+    private SolicitacaoService service;
 
-//     @GetMapping
-//     @Operation(summary = "Listar todas as categorias", description = "Retorna uma lista de todas as categorias cadastradas.")
-//     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
-//     public List<SolicitacaoResponse> findAll() {
-//         return repo.findAll().stream().map(SolicitacaoMapper::toResponse).toList();
-//     }
+    @PostMapping("/solicitacao")
+    @PreAuthorize("hasAuthority('CLIENTE')")
+    @Operation(summary = "Criar nova solicitação", description = "Permite que um cliente crie uma nova solicitação de manutenção.",
+        security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Solicitação criada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "409", description = "Conflito de dados")
+    })
+    public SolicitacaoResponse addNewChamado(@Valid @RequestBody SolicitacaoRequest newChamado,
+            @AuthenticationPrincipal UserDetails activeUser) {
+        return service.addNewSolicitacao(newChamado, activeUser);
+    }
 
-//     @GetMapping("/{id}")
-//     @Operation(summary = "Buscar categoria por ID", description = "Retorna uma categoria específica pelo seu ID.")
-//     @ApiResponses({
-//         @ApiResponse(responseCode = "200", description = "Categoria encontrada"),
-//         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
-//     })
-//     public SolicitacaoResponse findById(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
-//         Solicitacao Solicitacao = repo.findById(id)
-//                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-//         return SolicitacaoMapper.toResponse(Solicitacao);
-//     }
+    @GetMapping("/solicitacao")
+    @Operation(summary = "Listar solicitações", description = "Lista todas as solicitações do usuário autenticado, podendo filtrar por status e datas.",
+        security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    public List<SolicitacaoResponse> getChamados(
+            @RequestParam(required = false) StatusSolicitacao status,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataFim,
+            @AuthenticationPrincipal UserDetails activeUser) {
+        return service.buscarSolicitacoes(status, dataInicio, dataFim, activeUser);
+    }
 
-//     @PostMapping
-//     @Operation(summary = "Criar nova categoria", description = "Cria uma nova categoria a partir dos dados enviados.")
-//     @ApiResponses({
-//         @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
-//         @ApiResponse(responseCode = "400", description = "Dados inválidos ou categoria já existente")
-//     })
-//     public ResponseEntity<SolicitacaoResponse> create(@Valid @RequestBody SolicitacaoRequest request) {
-//         if (repo.existsByName(request.name())) {
-//             throw new RuntimeException("Categoria já cadastrada");
-//         }
-//         Solicitacao Solicitacao = repo.save(SolicitacaoMapper.toEntity(request));
-//         return ResponseEntity.status(HttpStatus.CREATED).body(SolicitacaoMapper.toResponse(Solicitacao));
-//     }
+    @GetMapping("/solicitacao/{id}")
+    @Operation(summary = "Buscar solicitação por ID", description = "Retorna uma solicitação pelo seu ID.",
+        security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Solicitação encontrada"),
+        @ApiResponse(responseCode = "404", description = "Solicitação não encontrada")
+    })
+    public SolicitacaoResponse getChamadoById(@PathVariable Integer id) {
+        return service.getSolicitacaoById(id);
+    }
 
-//     @PutMapping("/{id}")
-//     @Operation(summary = "Atualizar categoria", description = "Atualiza os dados de uma categoria existente.")
-//     @ApiResponses({
-//         @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
-//         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
-//     })
-//     public SolicitacaoResponse update(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id, @Valid @RequestBody SolicitacaoRequest request) {
-//         Solicitacao foundSolicitacao = repo.findById(id)
-//                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-//         foundSolicitacao.setName(request.name());
-//         Solicitacao Solicitacao = repo.save(foundSolicitacao);
-//         return SolicitacaoMapper.toResponse(Solicitacao);
-//     }
+    @PutMapping("solicitacao/{id}")
+    @Operation(summary = "Atualizar solicitação", description = "Atualiza os dados de uma solicitação existente.",
+        security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Solicitação atualizada com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Solicitação não encontrada")
+    })
+    public ResponseEntity<SolicitacaoResponse> updateChamado(
+            @PathVariable Integer id,
+            @Valid @RequestBody SolicitacaoRequest updatedChamado,
+            @AuthenticationPrincipal UserDetails activeUser) {
+        SolicitacaoResponse dto = service.updateSolicitacao(id, updatedChamado, activeUser);
+        return ResponseEntity.ok(dto);
+    }   
 
-//     @DeleteMapping("/{id}")
-//     @Operation(summary = "Excluir categoria", description = "Remove uma categoria pelo ID.")
-//     @ApiResponses({
-//         @ApiResponse(responseCode = "204", description = "Categoria excluída com sucesso"),
-//         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
-//     })
-//     public ResponseEntity<Void> delete(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
-//         repo.deleteById(id);
-//         return ResponseEntity.noContent().build();
-//     }
-// }
-
-// package com.tads4.webdois.web.controller;
-
-// import io.swagger.v3.oas.annotations.tags.Tag;
-// import io.swagger.v3.oas.annotations.Operation;
-// import io.swagger.v3.oas.annotations.Parameter;
-// import io.swagger.v3.oas.annotations.responses.ApiResponse;
-// import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-// import com.tads4.webdois.infra.repository.SolicitacaoRepository;
-// import com.tads4.webdois.web.dto.*;
-// import com.tads4.webdois.domain.Solicitacao;
-// import com.tads4.webdois.infra.mapper.SolicitacaoMapper;
-// import jakarta.validation.Valid;
-// import org.springframework.http.*;
-// import org.springframework.web.bind.annotation.*;
-// import org.springframework.web.server.ResponseStatusException;
-
-// import java.util.List;
-
-// @RestController
-// @RequestMapping("/api/users")
-// @Tag(name = "Categorias", description = "Operações relacionadas às categorias")
-// public class SolicitacaoController {
-
-//     private final SolicitacaoRepository repo;
-
-//     public SolicitacaoController(SolicitacaoRepository repo) {
-//         this.repo = repo;
-//     }
-
-//     @GetMapping
-//     @Operation(summary = "Listar todas as categorias", description = "Retorna uma lista de todas as categorias cadastradas.")
-//     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
-//     public List<SolicitacaoResponse> findAll() {
-//         return repo.findAll().stream().map(SolicitacaoMapper::toResponse).toList();
-//     }
-
-//     @GetMapping("/{id}")
-//     @Operation(summary = "Buscar categoria por ID", description = "Retorna uma categoria específica pelo seu ID.")
-//     @ApiResponses({
-//         @ApiResponse(responseCode = "200", description = "Categoria encontrada"),
-//         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
-//     })
-//     public SolicitacaoResponse findById(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
-//         Solicitacao Solicitacao = repo.findById(id)
-//                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-//         return SolicitacaoMapper.toResponse(Solicitacao);
-//     }
-
-//     @PostMapping
-//     @Operation(summary = "Criar nova categoria", description = "Cria uma nova categoria a partir dos dados enviados.")
-//     @ApiResponses({
-//         @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
-//         @ApiResponse(responseCode = "400", description = "Dados inválidos ou categoria já existente")
-//     })
-//     public ResponseEntity<SolicitacaoResponse> create(@Valid @RequestBody SolicitacaoRequest request) {
-//         if (repo.existsByName(request.name())) {
-//             throw new RuntimeException("Categoria já cadastrada");
-//         }
-//         Solicitacao Solicitacao = repo.save(SolicitacaoMapper.toEntity(request));
-//         return ResponseEntity.status(HttpStatus.CREATED).body(SolicitacaoMapper.toResponse(Solicitacao));
-//     }
-
-//     @PutMapping("/{id}")
-//     @Operation(summary = "Atualizar categoria", description = "Atualiza os dados de uma categoria existente.")
-//     @ApiResponses({
-//         @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
-//         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
-//     })
-//     public SolicitacaoResponse update(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id, @Valid @RequestBody SolicitacaoRequest request) {
-//         Solicitacao foundSolicitacao = repo.findById(id)
-//                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-//         foundSolicitacao.setName(request.name());
-//         Solicitacao Solicitacao = repo.save(foundSolicitacao);
-//         return SolicitacaoMapper.toResponse(Solicitacao);
-//     }
-
-//     @DeleteMapping("/{id}")
-//     @Operation(summary = "Excluir categoria", description = "Remove uma categoria pelo ID.")
-//     @ApiResponses({
-//         @ApiResponse(responseCode = "204", description = "Categoria excluída com sucesso"),
-//         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
-//     })
-//     public ResponseEntity<Void> delete(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
-//         repo.deleteById(id);
-//         return ResponseEntity.noContent().build();
-//     }
-// }
+    @PostMapping("solicitacao/{id}/orcamento")
+    @Operation(summary = "Efetuar orçamento", description = "Permite que um funcionário registre o orçamento de uma solicitação.",
+        security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Orçamento registrado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "409", description = "Conflito de dados")
+    })
+    public ResponseEntity<SolicitacaoResponse> efetuarOrcamento(
+            @PathVariable Integer id,
+            @Valid @RequestBody OrcamentoRequest orcamento,
+            @AuthenticationPrincipal UserDetails activeUser) {
+        SolicitacaoResponse dto = service.efetuarOrcamento(id, orcamento, activeUser);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    }
 
 
 
-
-
-
-
+}

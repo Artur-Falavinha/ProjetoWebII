@@ -1,74 +1,91 @@
-// package com.tads4.webdois.domain;
+package com.tads4.webdois.domain;
 
-// import jakarta.persistence.*;
-// import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
-// @Entity
-// @Table(name = "enderecos")
-// public class Solicitacao implements Serializable {
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
-//     private String cep;
-//     private String logradouro;
-//     private String numero;
-//     private String complemento;
-//     private String bairro;
-//     private String cidade;
+import org.hibernate.annotations.CreationTimestamp;
 
-//     public Long getId() {
-//         return id;
-//     }
+import com.tads4.webdois.domain.enums.StatusSolicitacao;
 
-//     public void setId(Long id) {
-//         this.id = id;
-//     }
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-//     public String getCep() {
-//         return cep;
-//     }
+@Entity
+@Table(name = "tbl_solicitacao")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Solicitacao {
 
-//     public void setCep(String cep) {
-//         this.cep = cep;
-//     }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-//     public String getLogradouro() {
-//         return logradouro;
-//     }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
-//     public void setLogradouro(String logradouro) {
-//         this.logradouro = logradouro;
-//     }
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "funcionario_id", nullable = true)
+    private Funcionario funcionario;
 
-//     public String getNumero() {
-//         return numero;
-//     }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoriaEquipamento;
 
-//     public void setNumero(String numero) {
-//         this.numero = numero;
-//     }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 30)
+    private StatusSolicitacao status;
 
-//     public String getComplemento() {
-//         return complemento;
-//     }
+    @Column(name = "descricao_equipamento", columnDefinition = "TEXT", nullable = false)
+    private String descricaoEquipamento;
 
-//     public void setComplemento(String complemento) {
-//         this.complemento = complemento;
-//     }
+    @Column(name = "descricao_falha", columnDefinition = "TEXT", nullable = false)
+    private String descricaoFalha;
 
-//     public String getBairro() {
-//         return bairro;
-//     }
+    @CreationTimestamp
+    @Column(name = "data_criacao", nullable = false, updatable = false)
+    private Instant dataCriacao;
 
-//     public void setBairro(String bairro) {
-//         this.bairro = bairro;
-//     }
+    @Column(name = "data_resposta")
+    private Instant dataResposta;
 
-//     public String getCidade() {
-//         return cidade;
-//     }
+    @Column(name = "preco_base", nullable = false, precision = 12, scale = 2)
+    private BigDecimal precoBase;
 
-//     public void setCidade(String cidade) {
-//         this.cidade = cidade;
-//     }
-// }
+    @OneToMany(mappedBy = "solicitacao", fetch = FetchType.EAGER, 
+    cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("dataCriacao ASC")
+    private List<LogHistorico> logHistoricos = new ArrayList<>();
+
+    @Column(name = "valor_orcamento", precision = 12, scale = 2)
+    private BigDecimal valor;
+
+    @Column(name = "comentario_orcamento", length = 255)
+    private String comentario;
+
+    @Column(name = "descricao_manutencao", nullable = true, length = 255)
+    private String descricaoManutencao;
+
+    @Column(name = "orientacoes_manutencao", nullable = true, length = 255)
+    private String orientacoesManutencao;
+}

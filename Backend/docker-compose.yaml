@@ -16,7 +16,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: dockerfile.dev
     container_name: server
     depends_on:
       - database
@@ -26,6 +26,18 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/web_II
       SPRING_DATASOURCE_USERNAME: devuser
       SPRING_DATASOURCE_PASSWORD: devpwd
+    volumes:
+      - .:/app       # usa seu código local dentro do container
+      - ~/.m2:/root/.m2
+      
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mail
+    ports:
+      - "1025:1025" 
+      - "8025:8025" 
+
 
 volumes:
   pgdata:

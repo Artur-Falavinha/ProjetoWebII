@@ -7,6 +7,6 @@ import com.tads4.webdois.domain.Categoria;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
-    Optional<Categoria> findByName(String name);
-    boolean existsByName(String name);
+    Optional<Categoria> findByNome(String nome);
+    boolean existsByNome(String nome);
 }

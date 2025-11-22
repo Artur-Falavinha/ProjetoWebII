@@ -13,12 +13,13 @@ import com.tads4.webdois.infra.mapper.CategoriaMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import com.tads4.webdois.exception.ConflictException;
+import com.tads4.webdois.exception.NotFoundException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/categoria")
 @Tag(name = "Categorias", description = "Operações relacionadas às categorias")
 public class CategoriaController {
 
@@ -43,7 +44,7 @@ public class CategoriaController {
     })
     public CategoriaResponse findById(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
         Categoria Categoria = repo.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
+            .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
         return CategoriaMapper.toResponse(Categoria);
     }
 
@@ -54,8 +55,8 @@ public class CategoriaController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos ou categoria já existente")
     })
     public ResponseEntity<CategoriaResponse> create(@Valid @RequestBody CategoriaRequest request) {
-        if (repo.existsByName(request.name())) {
-            throw new RuntimeException("Categoria já cadastrada");
+        if (repo.existsByNome(request.nome())) {
+            throw new ConflictException("Categoria já cadastrada");
         }
         Categoria Categoria = repo.save(CategoriaMapper.toEntity(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaMapper.toResponse(Categoria));
@@ -69,8 +70,8 @@ public class CategoriaController {
     })
     public CategoriaResponse update(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id, @Valid @RequestBody CategoriaRequest request) {
         Categoria foundCategoria = repo.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada"));
-        foundCategoria.setName(request.name());
+            .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
+        foundCategoria.setNome(request.nome());
         Categoria Categoria = repo.save(foundCategoria);
         return CategoriaMapper.toResponse(Categoria);
     }
