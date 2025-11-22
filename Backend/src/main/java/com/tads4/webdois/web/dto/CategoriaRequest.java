@@ -3,5 +3,5 @@ package com.tads4.webdois.web.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public record CategoriaRequest(
-        @NotBlank(message = "Nome da categoria não pode ser vazio") String name) {
+        @NotBlank(message = "Nome da categoria não pode ser vazio") String nome) {
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tads4.webdois.web.dto.ClienteRequest;
+import com.tads4.webdois.web.dto.ClienteResponse;
 import com.tads4.webdois.web.dto.EnderecoRequest;
 // import com.tads4.webdois.exception.BadRequestApiException;
 // import com.tads4.webdois.exception.ResourceConflictException;
@@ -18,9 +19,11 @@ import com.tads4.webdois.web.dto.EnderecoRequest;
 import com.tads4.webdois.domain.Cliente;
 import com.tads4.webdois.domain.Endereco;
 import com.tads4.webdois.domain.enums.RoleUsuario;
+import com.tads4.webdois.infra.mapper.ClienteMapper;
 import com.tads4.webdois.infra.repository.ClienteRepository;
 import com.tads4.webdois.infra.repository.UsuarioRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.tads4.webdois.exception.ConflictException;
+import com.tads4.webdois.exception.NotFoundException;
 
 @Service
 public class ClienteService {
@@ -37,76 +40,53 @@ public class ClienteService {
     private EmailService emailService;
 
     @Transactional
-    public Cliente autocadastroCliente(ClienteRequest cliente){
-        if (clienteRepository.existsByCpf(cliente.cpf())){
-            throw new RuntimeException("ERRO: CPF já cadastrado");
+    public ClienteResponse autocadastroCliente(ClienteRequest cliente) {
+        if (clienteRepository.existsByCpf(cliente.cpf())) {
+            throw new ConflictException("ERRO: CPF já cadastrado");
         }
-        if (usuarioRepository.existsByEmail(cliente.email())){
-            throw new RuntimeException("ERRO: Email já cadastrado");
-        }
-
-        if (!validarCliente(cliente)) {
-            throw new RuntimeException("ERRO: Dados Inválidos");
+        if (usuarioRepository.existsByEmail(cliente.email())) {
+            throw new ConflictException("ERRO: Email já cadastrado");
         }
 
         String senha = String.format("%04d", new Random().nextInt(10000));
-        Cliente novo = new Cliente();
-        novo.setNome(cliente.nome());
-        novo.setEmail(cliente.email().toLowerCase());
-        novo.setCpf(cliente.cpf());
-        novo.setTelefone(cliente.telefone());
+        Cliente novo = ClienteMapper.fromRequest(cliente);
+        novo.setEmail(novo.getEmail().toLowerCase());
         novo.setSenha(passwordEncoder.encode(senha));
         novo.setStatus(true);
-        // garante role de sistema (mesmo que o construtor já defina)
         novo.setRole(RoleUsuario.CLIENTE);
-
-        EnderecoRequest e = cliente.endereco();
-        Endereco end = new Endereco();
-        end.setCep(e.cep().replace("-", ""));
-        end.setLogradouro(e.logradouro());
-        end.setComplemento(e.complemento());
-        end.setNumero(e.numero());
-        end.setBairro(e.bairro());
-        end.setCidade(e.cidade());
-        end.setUf(e.uf());
-        novo.setEndereco(end);
-
+        novo.getEndereco().setCep(novo.getEndereco().getCep().replace("-", ""));
         Cliente newCliente = clienteRepository.save(novo);
-
-        try{
-            emailService.sendPasswordEmail(newCliente.getNome(), newCliente.getEmail(), senha);
-        } catch (Exception ex){
-            throw new RuntimeException("ERRO: Não foi possível enviar o email de cadastro");
-        }
-
-        return newCliente;
+        emailService.sendPasswordEmail(newCliente.getNome(), newCliente.getEmail(), senha);
+        return ClienteMapper.toResponse(newCliente);
     }
 
     @Transactional(readOnly = true)
-    public List<Cliente> getAllClientes(){
-        return clienteRepository.findAll();
+    public List<ClienteResponse> getAllClientes() {
+        return clienteRepository.findAll()
+            .stream()
+            .map(ClienteMapper::toResponse)
+            .toList();
     }
 
     @Transactional(readOnly = true)
-    public Cliente buscarPorId(Long id) {
-        return clienteRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("ERRO: Cliente não encontrado"));
+    public ClienteResponse buscarPorId(Integer id) {
+        Cliente cliente = clienteRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("ERRO: Cliente não encontrado"));
+        return ClienteMapper.toResponse(cliente);
     }
 
     @Transactional
-    public Cliente updateCliente(Long id, Cliente clienteAtualizado){
-        Cliente clienteExistente = buscarPorId(id);
-
+    public ClienteResponse updateCliente(Integer id, Cliente clienteAtualizado) {
+        Cliente clienteExistente = clienteRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("ERRO: Cliente não encontrado"));
         if (!clienteExistente.getEmail().equals(clienteAtualizado.getEmail()) &&
-            usuarioRepository.existsByEmail(clienteAtualizado.getEmail())) {
-            throw new IllegalArgumentException("ERRO: Email já cadastrado");
+                usuarioRepository.existsByEmail(clienteAtualizado.getEmail())) {
+            throw new ConflictException("ERRO: Email já cadastrado");
         }
-
         if (!clienteExistente.getCpf().equals(clienteAtualizado.getCpf()) &&
-            clienteRepository.existsByCpf(clienteAtualizado.getCpf())) {
-            throw new IllegalArgumentException("ERRO: CPF já cadastrado");
+                clienteRepository.existsByCpf(clienteAtualizado.getCpf())) {
+            throw new ConflictException("ERRO: CPF já cadastrado");
         }
-
         clienteExistente.setNome(clienteAtualizado.getNome());
         clienteExistente.setEmail(clienteAtualizado.getEmail());
         clienteExistente.setCpf(clienteAtualizado.getCpf());
@@ -114,12 +94,13 @@ public class ClienteService {
         clienteExistente.setTelefone(clienteAtualizado.getTelefone());
         clienteExistente.setEndereco(clienteAtualizado.getEndereco());
         clienteExistente.setStatus(clienteAtualizado.isStatus());
-
-        return clienteRepository.save(clienteExistente);
+        Cliente saved = clienteRepository.save(clienteExistente);
+        return ClienteMapper.toResponse(saved);
     }
 
-    public void deleteCliente(Long id){
-        Cliente cliente = buscarPorId(id);
+    public void deleteCliente(Integer id) {
+        Cliente cliente = clienteRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("ERRO: Cliente não encontrado"));
         cliente.setStatus(false);
         clienteRepository.save(cliente);
     }
@@ -135,24 +116,25 @@ public class ClienteService {
             return false;
         }
 
-        if (dto.email().trim().isBlank() || !patternMatchesEmail(dto.email()) || 
-        dto.email().length() > 50) {
+        if (dto.email().trim().isBlank() || !patternMatchesEmail(dto.email()) ||
+                dto.email().length() > 50) {
             return false;
         }
 
         if (dto.cpf().trim().isBlank() || dto.cpf().length() != 11 ||
-        !dto.cpf().matches("\\d+")) {
+                !dto.cpf().matches("\\d+")) {
             return false;
         }
 
         if (dto.telefone().trim().isBlank() || dto.telefone().length() > 15 ||
-        !dto.telefone().matches("\\d+")) {
+                !dto.telefone().matches("\\d+")) {
             return false;
         }
 
         EnderecoRequest e = dto.endereco();
 
-        if (e == null) return false;
+        if (e == null)
+            return false;
 
         String cep = e.cep().replace("-", "");
         if (cep.isBlank() || !cep.matches("\\d+") || cep.length() != 8) {
@@ -175,9 +157,9 @@ public class ClienteService {
             return false;
         }
 
-        String[] UFs = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", 
-        "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", 
-        "RN", "RO", "RR", "RS", "SC", "SP", "SE", "TO"};
+        String[] UFs = { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES",
+                "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ",
+                "RN", "RO", "RR", "RS", "SC", "SP", "SE", "TO" };
 
         if (!Arrays.asList(UFs).contains(e.uf().toUpperCase())) {
             return false;

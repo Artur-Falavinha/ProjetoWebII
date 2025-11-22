@@ -8,7 +8,7 @@
 // public class Solicitacao implements Serializable {
 //     @Id
 //     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
+//     private Integer id;
 //     private String cep;
 //     private String logradouro;
 //     private String numero;
@@ -16,11 +16,11 @@
 //     private String bairro;
 //     private String cidade;
 
-//     public Long getId() {
+//     public Integer getId() {
 //         return id;
 //     }
 
-//     public void setId(Long id) {
+//     public void setId(Integer id) {
 //         this.id = id;
 //     }
 

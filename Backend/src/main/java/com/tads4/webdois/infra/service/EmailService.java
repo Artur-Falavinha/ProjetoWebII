@@ -15,7 +15,6 @@ public class EmailService {
     public void sendPasswordEmail(String nome, String to, String password) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("seu-email-configurado@gmail.com");
             message.setTo(to);
             message.setSubject("Bem-vindo ao GestorManutenção - Sua Senha");
             
@@ -25,10 +24,11 @@ public class EmailService {
                 nome, password
             );
             message.setText(text);
-            
+            System.out.println(emailSender.toString());
+            System.out.println(message);
             emailSender.send(message);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao enviar e-mail.", e);
+            throw new RuntimeException("Erro ao enviar e-mail." + e.getMessage());
         }
     }
 }
