@@ -8,12 +8,14 @@ public class CategoriaMapper {
     public static CategoriaResponse toResponse(Categoria categoria) {
         return new CategoriaResponse(
                 categoria.getId(),
-                categoria.getNome());
+                categoria.getNome(),
+                categoria.getValorBase());
     }
 
     public static Categoria toEntity(CategoriaRequest categoria) {
         return Categoria.builder()
-                .nome(categoria.nome())
-                .build();
+            .nome(categoria.nome())
+            .valorBase(categoria.valorBase())
+            .build();
     }
 }

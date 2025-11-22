@@ -2,7 +2,6 @@ package com.tads4.webdois.infra.mapper;
 
 import com.tads4.webdois.domain.Cliente;
 import com.tads4.webdois.web.dto.ClienteResponse;
-import com.tads4.webdois.web.dto.EnderecoResponse;
 
 public class ClienteMapper {
     public static ClienteResponse toResponse(Cliente cliente) {
