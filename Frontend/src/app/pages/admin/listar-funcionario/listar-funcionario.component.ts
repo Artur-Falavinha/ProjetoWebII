@@ -18,7 +18,10 @@ import { EditarFuncionarioComponent } from '../editar-funcionario/editar-funcion
   styleUrl: './listar-funcionario.component.scss'
 })
 export class ListarFuncionarioComponent implements OnInit {
+  
   funcionarios: FuncionarioRequest[] = [];
+  mensagem: string = "";
+  mensagem_detalhes: string = "";
 
   constructor(
     private funcionarioService: FuncionarioService,
@@ -27,49 +30,42 @@ export class ListarFuncionarioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.funcionarios = this.listarTodas();
+    this.listarTodas();
   }
 
-  listarTodas(): FuncionarioRequest[] {
-    return this.funcionarioService.listarTodas();
+  listarTodas(): void {
+    this.funcionarioService.listarTodas().subscribe({
+      next: (data: FuncionarioRequest[]) => {
+        this.funcionarios = data ?? [];
+      },
+      error: (err) => {
+        this.mensagem = "Erro ao buscar lista de funcionários";
+        this.mensagem_detalhes = `[${err.status}] ${err.message}`;
+      }
+    });
   }
 
-  /**Formata telefone para exibição (DDD + 8 ou 9 dígitos)**/
   formatarTelefone(telefone: string): string {
     if (!telefone) return '';
-    
-    // Se já está formatado, retorna como está
-    if (telefone.includes('(') && telefone.includes(')')) {
-      return telefone;
-    }
-    
-    // Remove todos os caracteres não numéricos
+
     const numeros = telefone.replace(/\D/g, '');
-    
-    // Se tem 11 dígitos (DDD + 9 dígitos - celular), formata
+
     if (numeros.length === 11) {
       return `(${numeros.substring(0, 2)}) ${numeros.substring(2, 7)}-${numeros.substring(7)}`;
     }
-    
-    // Se tem 10 dígitos (DDD + 8 dígitos - fixo), formata
+
     if (numeros.length === 10) {
       return `(${numeros.substring(0, 2)}) ${numeros.substring(2, 6)}-${numeros.substring(6)}`;
     }
-    
-    // Se não tem formato válido, retorna como está
+
     return telefone;
   }
 
   abrirModalInserir(): void {
-    const dialogRef = this.dialog.open(InserirFuncionarioComponent, {
-      width: '600px'
-    });
+    const dialogRef = this.dialog.open(InserirFuncionarioComponent, { width: '600px' });
 
     dialogRef.componentInstance.close.subscribe(() => dialogRef.close());
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.funcionarios = this.listarTodas();
-    });
+    dialogRef.afterClosed().subscribe(() => this.listarTodas());
   }
 
   abrirModalEditar(funcionario: FuncionarioRequest): void {
@@ -79,24 +75,23 @@ export class ListarFuncionarioComponent implements OnInit {
     });
 
     dialogRef.componentInstance.close.subscribe(() => dialogRef.close());
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.funcionarios = this.listarTodas();
-    });
+    dialogRef.afterClosed().subscribe(() => this.listarTodas());
   }
 
   remover($event: any, funcionario: FuncionarioRequest): void {
+    $event.preventDefault();
+    this.mensagem = "";
+    this.mensagem_detalhes = "";
+
     if (confirm(`Deseja remover o funcionário ${funcionario.nome}?`)) {
-      const usuarioLogado = this.authService.getCurrentUser();
-      const usuarioLogadoId = usuarioLogado ? parseInt(usuarioLogado.id) : undefined;
       
-      const resultado = this.funcionarioService.remover(funcionario.id, usuarioLogadoId);
-      
-      if (resultado.sucesso) {
-        this.funcionarios = this.listarTodas();
-      } else {
-        alert(resultado.erro);
-      }
+      this.funcionarioService.remover(funcionario.id).subscribe({
+        complete: () => this.listarTodas(),
+        error: (err) => {
+          this.mensagem = `Erro removendo usuário ${funcionario.id} – ${funcionario.nome}`;
+          this.mensagem_detalhes = `[${err.status}] ${err.message}`;
+        }
+      });
     }
   }
 }

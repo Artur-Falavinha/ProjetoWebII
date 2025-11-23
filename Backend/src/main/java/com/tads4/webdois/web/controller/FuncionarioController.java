@@ -39,17 +39,15 @@ public class FuncionarioController {
     private FuncionarioService service;
 
     @GetMapping("/funcionario")
-    @PreAuthorize("hasAuthority('FUNCIONARIO')")
     @Operation(summary = "Listar todos os funcionários", description = "Retorna uma lista de funcionários ativos.")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<List<FuncionarioResponse>> listarTodosFuncionarios(){
-        List<FuncionarioResponse> funcionarios = service.getAllFuncionariosAtivos();
-        return ResponseEntity.ok(funcionarios);
+        List<FuncionarioResponse> lista = service.getAllFuncionariosAtivos();
+        return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/funcionario/{id}")
-    @PreAuthorize("hasAuthority('FUNCIONARIO')")
     @Operation(summary = "Buscar funcionário por ID", description = "Retorna um funcionário pelo seu ID.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Funcionário encontrado"),
@@ -62,7 +60,6 @@ public class FuncionarioController {
     }
 
     @PostMapping("/funcionario")
-    @PreAuthorize("hasAuthority('FUNCIONARIO')")
     @Operation(summary = "Inserir funcionário", description = "Adiciona um novo funcionário.")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Funcionário criado com sucesso"),
@@ -75,7 +72,6 @@ public class FuncionarioController {
     }
 
     @PutMapping("/funcionario/{id}")
-    @PreAuthorize("hasAuthority('FUNCIONARIO')")
     @Operation(summary = "Atualizar funcionário", description = "Atualiza os dados de uma funcionário existente.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Funcionário atualizado com sucesso"),
@@ -90,7 +86,6 @@ public class FuncionarioController {
     }
     
     @DeleteMapping("/funcionario/{id}")
-    @PreAuthorize("hasAuthority('FUNCIONARIO')")
     @Operation(summary = "Excluir funcionário", description = "Remove um funcionário pelo ID.")
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "Funcionário excluído com sucesso"),
