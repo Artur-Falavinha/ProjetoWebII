@@ -14,6 +14,7 @@ import com.tads4.webdois.web.dto.LoginRequest;
 import com.tads4.webdois.web.dto.LoginResponse;
 import com.tads4.webdois.web.dto.ClienteRequest;
 import com.tads4.webdois.web.dto.ClienteResponse;
+import com.tads4.webdois.web.dto.FuncionarioRequest;
 import com.tads4.webdois.web.dto.FuncionarioResponse;
 import com.tads4.webdois.domain.Cliente;
 import com.tads4.webdois.domain.Funcionario;
@@ -35,7 +36,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 @Tag(name = "Autenticação", description = "Operações de login, registro e perfil do usuário.")
 public class AuthController {
 
@@ -51,6 +52,16 @@ public class AuthController {
     @Autowired
     private FuncionarioService funcionarioService;
 
+    @PostMapping("/register/funcionario")
+    @Operation(summary = "Registrar novo funcionário", description = "Realiza o cadastro de um novo funcionário.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Funcionário cadastrado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
+    public ResponseEntity<FuncionarioResponse> registerFuncionario(@Valid @RequestBody FuncionarioRequest funcionario){
+        FuncionarioResponse cadastrado = funcionarioService.addNewFuncionario(funcionario);
+        return new ResponseEntity<>(cadastrado, HttpStatus.CREATED);
+    }
 
     @PostMapping("/login")
     @Operation(summary = "Login do usuário", description = "Autentica o usuário e retorna um token JWT.")

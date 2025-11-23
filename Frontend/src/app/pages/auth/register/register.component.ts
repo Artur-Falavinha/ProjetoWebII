@@ -64,16 +64,15 @@ export class RegisterComponent implements OnInit {
         complemento: [''],
         bairro: ['', [Validators.required]],
         cidade: ['', [Validators.required]],
-        estado: ['', [Validators.required]],
+        uf: ['', [Validators.required]],
       }),
     });
   }
 
   setTipoCadastro(tipo: 'CLIENT' | 'EMPLOYEE'): void {
     this.tipoCadastro = tipo;
-    // Reset form when changing type to clear previous validations
     this.registerForm.reset();
-    this.ngOnInit(); // Reinitialize form with correct validators
+    this.ngOnInit();
   }
 
   consultarCep(): void {
@@ -89,7 +88,7 @@ export class RegisterComponent implements OnInit {
               logradouro: dados.logradouro,
               bairro: dados.bairro,
               cidade: dados.localidade,
-              estado: dados.uf,
+              uf: dados.uf,
               complemento: dados.complemento
             });
           }
@@ -112,16 +111,16 @@ export class RegisterComponent implements OnInit {
 
     const dadosNovoUsuario = {
       ...formValue.dadosPessoais,
-      ...(this.tipoCadastro === 'CLIENT' ? { endereco: formValue.endereco } : {}),
-      perfil: this.tipoCadastro,
+      endereco: this.tipoCadastro === 'CLIENT' ? formValue.endereco : null,
     };
 
     this.authService.register(dadosNovoUsuario).subscribe({
       next: (response) => {
         this.isLoading = false;
+        const emailParaAviso = this.emailControl?.value || 'seu e-mail';
         
           this.snackBar.open(
-          `Cadastro realizado com sucesso! Verifique seu e-mail (${this.emailControl.value}).`,
+          `Cadastro realizado com sucesso! Verifique seu e-mail (${emailParaAviso}).`,
           'Fechar',
           { duration: 5000 } 
         );
@@ -130,8 +129,8 @@ export class RegisterComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
+        const errorMessage = err.error?.message || err.statusText || 'Não foi possível concluir o cadastro.';
         
-        const errorMessage = err.error?.message || 'Não foi possível concluir o cadastro.';
         this.snackBar.open(
           `Erro no cadastro: ${errorMessage}`,
           'Fechar',
