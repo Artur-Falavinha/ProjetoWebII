@@ -21,7 +21,6 @@ public class SolicitacaoMapper {
             s.getDescricaoEquipamento(),
             s.getDescricaoFalha(),
             s.getPrecoBase(),
-            s.getComentario(),
             s.getStatus() != null ? s.getStatus().name() : null,
             s.getDataCriacao(),
             s.getDataResposta(),

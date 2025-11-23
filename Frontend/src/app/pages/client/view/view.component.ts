@@ -42,17 +42,17 @@ export class ViewComponent {
           this.router.navigate(['/client']);
         }
 
-        if (
-          order &&
-          ![
-            SituationEnum.ABERTA,
-            SituationEnum.PAGA,
-            SituationEnum.REDIRECIONADA,
-            SituationEnum.FINALIZADA,
-          ].includes(order.situation)
-        ) {
-          this.router.navigate(['/client']);
-        }
+        // if (
+        //   order &&
+        //   ![
+        //     SituationEnum.ABERTA,
+        //     SituationEnum.PAGA,
+        //     SituationEnum.REDIRECIONADA,
+        //     SituationEnum.FINALIZADA,
+        //   ].includes(order.situation)
+        // ) {
+        //   this.router.navigate(['/client']);
+        // }
       })
     );
   }

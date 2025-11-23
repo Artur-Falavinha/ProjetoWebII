@@ -80,9 +80,6 @@ public class Solicitacao {
     @Column(name = "valor_orcamento", precision = 12, scale = 2)
     private BigDecimal valor;
 
-    @Column(name = "comentario_orcamento", length = 255)
-    private String comentario;
-
     @Column(name = "descricao_manutencao", nullable = true, length = 255)
     private String descricaoManutencao;
 

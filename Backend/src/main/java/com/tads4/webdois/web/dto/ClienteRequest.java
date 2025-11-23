@@ -18,7 +18,7 @@ public record ClienteRequest(
     String email,
 
     @NotBlank(message = "CPF é obrigatório")
-    @Pattern(regexp = "^(\\d{11}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})$", message = "CPF inválido")
+    @Pattern(regexp = "^\\d{11}$", message = "CPF deve conter 11 dígitos")
     String cpf,
 
     @NotBlank(message = "Telefone é obrigatório")

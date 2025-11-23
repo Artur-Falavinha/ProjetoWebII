@@ -15,11 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import com.tads4.webdois.web.dto.LogHistoricoResponse;
+import com.tads4.webdois.web.dto.ManutencaoRequest;
 import com.tads4.webdois.web.dto.SolicitacaoRequest;
 import com.tads4.webdois.web.dto.SolicitacaoResponse;
 // import com.tads4.webdois.web.dto.EtapaCreateDTO;
 // import com.tads4.webdois.web.dto.LogHistoricoDTO;
 import com.tads4.webdois.web.dto.OrcamentoRequest;
+import com.tads4.webdois.web.dto.SolicitacaoPatch;
 import com.tads4.webdois.exception.*;
 import com.tads4.webdois.domain.Categoria;
 import com.tads4.webdois.domain.Solicitacao;
@@ -126,7 +128,8 @@ public class SolicitacaoService {
         ch.setCategoriaEquipamento(categoria);
         ch.setDescricaoEquipamento(dto.descricaoEquipamento());
         ch.setDescricaoFalha(dto.descricaoFalha());
-        // Só permite update para status ABERTA, ORCADA, ARRUMADA, FINALIZADA, PAGA, APROVADA
+        // Só permite update para status ABERTA, ORCADA, ARRUMADA, FINALIZADA, PAGA,
+        // APROVADA
         if (dto.statusConserto() != null) {
             switch (dto.statusConserto()) {
                 case REDIRECIONADA:
@@ -142,7 +145,32 @@ public class SolicitacaoService {
         LogHistorico log = new LogHistorico();
         log.setSolicitacao(saved);
         log.setStatus(saved.getStatus());
-        log.setComentario(saved.getComentario());
+        log.setFuncionario(null);
+        log.setFuncionarioAnterior(null);
+        logHistoricoRepository.save(log);
+
+        return SolicitacaoMapper.toResponse(saved);
+    }
+
+
+    @Transactional
+    public SolicitacaoResponse efetuarManutencao(Integer id, ManutencaoRequest dto, UserDetails activeUser) {
+        Solicitacao ch = solicitacaoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Solicitacao não encontrado"));
+
+
+        ch.setDescricaoManutencao(dto.descricaoManutencao());
+        ch.setOrientacoesManutencao(dto.orientacaoCliente());
+        ch.setStatus(StatusSolicitacao.ARRUMADA);
+        // Só permite update para status ABERTA, ORCADA, ARRUMADA, FINALIZADA, PAGA,
+        // APROVADA
+
+
+        var saved = solicitacaoRepository.save(ch);
+
+        LogHistorico log = new LogHistorico();
+        log.setSolicitacao(saved);
+        log.setStatus(saved.getStatus());
         log.setFuncionario(null);
         log.setFuncionarioAnterior(null);
         logHistoricoRepository.save(log);
@@ -151,7 +179,58 @@ public class SolicitacaoService {
     }
 
     @Transactional
-    public SolicitacaoResponse redirecionarSolicitacao(Integer id, Integer funcionarioDestinoId, UserDetails activeUser) {
+    public SolicitacaoResponse patchSolicitacao(Integer id, SolicitacaoPatch dto, UserDetails activeUser) {
+        Solicitacao ch = solicitacaoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Solicitacao não encontrado"));
+
+        // Só permite update para status ABERTA, ORCADA, ARRUMADA, FINALIZADA, PAGA,
+        // APROVADA
+
+        if (dto.status() != null && List.of(
+                StatusSolicitacao.ORCADA,
+                StatusSolicitacao.REDIRECIONADA,
+                StatusSolicitacao.REJEITADA).contains(dto.status())) {
+            throw new BadRequestException("Use os métodos específicos para redirecionar, rejeitar e orçar.");
+        }
+
+        var saved = solicitacaoRepository.save(ch);
+
+        LogHistorico log = new LogHistorico();
+        log.setSolicitacao(saved);
+        log.setStatus(saved.getStatus());
+        log.setFuncionario(saved.getFuncionario() != null ? saved.getFuncionario() : null);
+        String comentario;
+        switch (saved.getStatus()) {
+            case ABERTA:
+                comentario = "Solicitação aberta";
+                break;
+            case ORCADA:
+                comentario = "Solicitação orçada";
+                break;
+            case REDIRECIONADA:
+                comentario = "Solicitação redirecionada";
+                break;
+            case REJEITADA:
+                comentario = "Solicitação rejeitada";
+                break;
+            default:
+                comentario = "Status atualizado: " + saved.getStatus().name().toLowerCase();
+                break;
+        }
+        log.setComentario(comentario);
+        log.setFuncionarioAnterior(null);
+        log.setDataCriacao(null);
+        logHistoricoRepository.save(log);
+        
+
+        return SolicitacaoMapper.toResponse(saved);
+    }
+
+   
+
+    @Transactional
+    public SolicitacaoResponse redirecionarSolicitacao(Integer id, Integer funcionarioDestinoId,
+            UserDetails activeUser) {
         Solicitacao ch = solicitacaoRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Solicitacao não encontrada"));
         Funcionario atual = ch.getFuncionario();
@@ -166,8 +245,8 @@ public class SolicitacaoService {
 
         LogHistorico log = new LogHistorico();
         log.setSolicitacao(saved);
-        log.setStatus(StatusSolicitacao.REDIRECIONADA);
-        log.setComentario("Solicitação redirecionada para funcionário id=" + destino.getUserId());
+        log.setStatus(saved.getStatus());
+        log.setComentario("Solicitação redirecionada para funcionário " + destino.getNome());
         log.setFuncionario(destino);
         log.setFuncionarioAnterior(atual);
         log.setMotivoRejeicao(null);
@@ -217,7 +296,6 @@ public class SolicitacaoService {
         ZoneId zone = ZoneId.of("America/Sao_Paulo");
 
         ch.setValor(dto.valor());
-        ch.setComentario(dto.comentario());
         ch.setDataResposta(ZonedDateTime.now(zone).toInstant());
         ch.setStatus(StatusSolicitacao.ORCADA);
         ch.setFuncionario(funcionario);
@@ -227,7 +305,6 @@ public class SolicitacaoService {
         LogHistorico log = new LogHistorico();
         log.setSolicitacao(ch);
         log.setStatus(savedSolicitacao.getStatus());
-        log.setComentario(savedSolicitacao.getComentario());
         log.setFuncionario(savedSolicitacao.getFuncionario());
         log.setFuncionarioAnterior(null);
         log.setMotivoRejeicao(null);
@@ -236,7 +313,6 @@ public class SolicitacaoService {
         return SolicitacaoMapper.toResponse(savedSolicitacao);
     }
 
-    
     public List<LogHistoricoResponse> listarHistoricoPorSolicitacao(Integer solicitacaoId) {
         List<LogHistorico> logs = logHistoricoRepository.findBySolicitacaoIdOrderByDataCriacaoAsc(solicitacaoId);
         List<LogHistoricoResponse> dtos = new ArrayList<>();
@@ -255,170 +331,5 @@ public class SolicitacaoService {
         }
         return dtos;
     }
-
-
-    // @Transactional
-    // public SolicitacaoResponse novaEtapa(Integer SolicitacaoId, EtapaCreateDTO
-    // dto) {
-    // Solicitacao Solicitacao = solicitacaoRepository.findById(SolicitacaoId)
-    // .orElseThrow(() -> new ResourceNotFoundException("Solicitacao não
-    // encontrado"));
-
-    // Funcionario atual = Solicitacao.getFuncionario();
-    // switch (dto.status()) {
-    // case REJEITADA -> require(notBlank(dto.motivoRejeicao()), "motivoRejeicao
-    // obrigatório");
-    // case REDIRECIONADA -> {
-    // require(Objects.nonNull(dto.funcionarioDestinoId()), "funcionarioDestinoId
-    // obrigatório");
-    // if (Solicitacao.getFuncionario().getIdUsuario() ==
-    // dto.funcionarioDestinoId()) {
-    // throw new BadRequestApiException("Não é permitido redirecionar um Solicitacao
-    // para si mesmo.");
-    // }
-
-    // }
-    // case ARRUMADA -> require(notBlank(dto.descricaoManutencao()),
-    // "descricaoManutencao obrigatória");
-    // case PAGA, FINALIZADA, ABERTA, APROVADA -> {
-    // }
-    // default -> {
-    // }
-    // }
-    // LogHistorico etapa = gerarEtapa(Solicitacao, dto.status());
-    // etapa.setMotivoRejeicao(dto.motivoRejeicao());
-    // Solicitacao.getEtapas().add(etapa);
-
-    // // efeitos colaterais no Solicitacao
-    // switch (dto.status()) {
-    // case REDIRECIONADA -> {
-    // Funcionario destino =
-    // funcionarioRepository.findById(dto.funcionarioDestinoId())
-    // .orElseThrow(() -> new ResourceNotFoundException("Funcionário de destino não
-    // encontrado"));
-    // Solicitacao.setFuncionario(destino);
-    // etapa.setFuncionario(destino);
-    // etapa.setFuncionarioAnterior(atual);
-    // }
-    // case ARRUMADA -> {
-    // Solicitacao.setDescricaoManutencao(dto.descricaoManutencao());
-    // String orientacoes = dto.orientacoesCliente() != null ?
-    // dto.orientacoesCliente() : null;
-    // Solicitacao.setOrientacoesManutencao(orientacoes);
-    // }
-    // case PAGA, FINALIZADA -> Solicitacao.setDataResposta(Instant.now());
-    // default -> {
-    // }
-    // }
-
-    // Solicitacao.setStatus(dto.status());
-    // Solicitacao salvo = solicitacaoRepository.save(Solicitacao);
-    // return toDTO(salvo);
-    // }
-
-    // private LogHistorico gerarEtapa(Solicitacao Solicitacao, StatusSolicitacao
-    // status) {
-
-    // LogHistorico etapa = new LogHistorico();
-    // etapa.setSolicitacao(Solicitacao);
-    // etapa.setStatus(status);
-    // etapa.setFuncionario(Solicitacao.getFuncionario());
-    // return etapa;
-    // }
-
-    // public List<LogHistoricoDTO> listarEtapas(Integer SolicitacaoId, UserDetails
-    // activeUser) {
-    // Solicitacao Solicitacao = solicitacaoRepository.findById(SolicitacaoId)
-    // .orElseThrow(() -> new ResourceNotFoundException("Solicitacao não
-    // encontrado"));
-
-    // if (activeUser instanceof Cliente cliente) {
-    // if (!Objects.equals(Solicitacao.getCliente().getIdUsuario(),
-    // cliente.getIdUsuario())) {
-    // throw new ResourceNotFoundException();
-    // }
-    // }
-
-    // return toEtapasDTO(Solicitacao.getEtapas());
-    // }
-
-    // private static SolicitacaoResponse toDTO(Solicitacao c) {
-    // return new SolicitacaoResponse(
-    // c.getId(),
-    // c.getCliente().getNome(),
-    // c.getCliente().getEmail(),
-    // c.getFuncionario() != null ? c.getFuncionario().getNome() : null,
-    // c.getFuncionario() != null ? c.getFuncionario().getEmail() : null,
-    // c.getCategoria() != null ? c.getCategoria().getName() : null,
-    // c.getDescricaoEquipamento(),
-    // c.getDescricaoFalha(),
-    // c.getPrecoBase(),
-    // c.getOrcamento() != null ? c.getOrcamento().getComentario() : null,
-    // c.getStatus() != null ? c.getStatus().name() : null,
-    // c.getDataCriacao(),
-    // c.getDataResposta(),
-    // c.getOrcamento() != null ? c.getOrcamento().getValor() : null,
-    // c.getSlug(),
-    // c.getDescricaoManutencao() != null ? c.getDescricaoManutencao() : null,
-    // c.getOrientacoesManutencao() != null ? c.getOrientacoesManutencao() : null);
-    // }
-
-    // private static FuncionarioDTO toFuncionarioDTO(Funcionario f) {
-    // if (f == null)
-    // return null;
-    // return new FuncionarioDTO(
-    // f.getIdUsuario(),
-    // f.getNome(),
-    // f.getEmail(),
-    // f.getDataNascimento());
-    // }
-
-    // private static List<SolicitacaoResponse> toDTO(List<Solicitacao>
-    // listaSolicitacoes) {
-    // List<SolicitacaoResponse> lista = new ArrayList<>();
-    // for (Solicitacao Solicitacao : listaSolicitacoes) {
-    // lista.add(toDTO(Solicitacao));
-    // }
-    // return lista;
-    // }
-
-    // private static LogHistoricoDTO toEtapaDTO(LogHistorico e) {
-    // if (e == null)
-    // return null;
-    // return new LogHistoricoDTO(
-    // e.getId(),
-    // e.getStatus() != null ? e.getStatus().name() : null,
-    // e.getComentario(),
-    // e.getDataCriacao(),
-    // toFuncionarioDTO(e.getFuncionario()),
-    // toFuncionarioDTO(e.getFuncionarioAnterior()),
-    // e.getMotivoRejeicao(),
-    // e.getSolicitacao().getOrcamento() != null ?
-    // e.getSolicitacao().getOrcamento().getValor()
-    // : BigDecimal.ZERO);
-    // }
-
-    // private static List<LogHistoricoDTO> toEtapasDTO(List<LogHistorico> etapas) {
-    // if (etapas == null || etapas.isEmpty())
-    // return java.util.Collections.emptyList();
-    // return etapas.stream()
-    // .filter(Objects::nonNull)
-    // .map(SolicitacaoService::toEtapaDTO)
-    // .collect(Collectors.toList());
-    // }
-
-    // private static void require(boolean condicao, String msg) {
-    // if (!condicao) {
-    // throw new BadRequestApiException(msg);
-    // }
-    // }
-
-    // private static boolean notBlank(String s) {
-    // return s != null && !s.isBlank();
-    // }
-
-    // private static String slugify(String s) {
-    // return s == null ? null : s.trim().toLowerCase().replaceAll("\\s+", "-");
-    // }
 
 }

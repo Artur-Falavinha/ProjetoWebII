@@ -8,16 +8,11 @@ import jakarta.validation.constraints.Size;
 public record SolicitacaoRequest(
     @NotNull(message = "Categoria é obrigatória")
     Integer categoriaId,
-
     @NotBlank(message = "Descrição do equipamento é obrigatória")
     @Size(max = 255, message = "Descrição do equipamento deve ter no máximo 255 caracteres")
     String descricaoEquipamento,
-
     @NotBlank(message = "Descrição da falha é obrigatória")
     @Size(max = 255, message = "Descrição da falha deve ter no máximo 255 caracteres")
     String descricaoFalha,
-
-    StatusSolicitacao statusConserto,
-
-    Integer novoFuncionarioId
+    StatusSolicitacao statusConserto
 ) {}
