@@ -88,23 +88,23 @@ public class SolicitacaoController {
         return service.getSolicitacaoById(id);
     }
 
-    @PutMapping("solicitacao/{id}")
-    @Operation(summary = "Atualizar solicitação", description = "Atualiza os dados de uma solicitação existente.",
-        security = @SecurityRequirement(name = "bearerAuth"))
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Solicitação atualizada com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Solicitação não encontrada")
-    })
-    public ResponseEntity<SolicitacaoResponse> updateChamado(
-            @PathVariable Integer id,
-            @Valid @RequestBody SolicitacaoPatch updatedChamado,
-            @AuthenticationPrincipal UserDetails activeUser) {
-        SolicitacaoResponse dto = service.patchSolicitacao(id, updatedChamado, activeUser);
-        return ResponseEntity.ok(dto);
-    }   
+    // @PutMapping("solicitacao/{id}")
+    // @Operation(summary = "Atualizar solicitação", description = "Atualiza os dados de uma solicitação existente.",
+    //     security = @SecurityRequirement(name = "bearerAuth"))
+    // @ApiResponses({
+    //     @ApiResponse(responseCode = "200", description = "Solicitação atualizada com sucesso"),
+    //     @ApiResponse(responseCode = "404", description = "Solicitação não encontrada")
+    // })
+    // public ResponseEntity<SolicitacaoResponse> updateChamado(
+    //         @PathVariable Integer id,
+    //         @Valid @RequestBody SolicitacaoPatch updatedChamado,
+    //         @AuthenticationPrincipal UserDetails activeUser) {
+    //     SolicitacaoResponse dto = service.patchSolicitacao(id, updatedChamado, activeUser);
+    //     return ResponseEntity.ok(dto);
+    // }   
 
     @PatchMapping("solicitacao/{id}")
-    @Operation(summary = "Atualizar solicitação", description = "Atualiza o status da solicitação.",
+    @Operation(summary = "Atualizar solicitação para os status ABERTA, FINALIZADA, PAGA, APROVADA", description = "Atualiza o status da solicitação.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Solicitação atualizada com sucesso"),
@@ -112,13 +112,13 @@ public class SolicitacaoController {
     })
     public ResponseEntity<SolicitacaoResponse> patchSolicitacao(
             @PathVariable Integer id,
-            @Valid @RequestBody SolicitacaoRequest updatedChamado,
+            @Valid @RequestBody SolicitacaoPatch updatedChamado,
             @AuthenticationPrincipal UserDetails activeUser) {
-        SolicitacaoResponse dto = service.updateSolicitacao(id, updatedChamado, activeUser);
+        SolicitacaoResponse dto = service.patchSolicitacao(id, updatedChamado, activeUser);
         return ResponseEntity.ok(dto);
     }   
 
-    @PostMapping("solicitacao/{id}/orcamento")
+    @PutMapping("solicitacao/{id}/orcamento")
     @Operation(summary = "Efetuar orçamento", description = "Permite que um funcionário registre o orçamento de uma solicitação.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
@@ -134,7 +134,7 @@ public class SolicitacaoController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
-    @PostMapping("solicitacao/{id}/redirect")
+    @PutMapping("solicitacao/{id}/redirect")
     @Operation(summary = "Efetuar redirect", description = "Permite que um funcionário registre o orçamento de uma solicitação.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
@@ -150,7 +150,7 @@ public class SolicitacaoController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
     
-    @PostMapping("solicitacao/{id}/reject")
+    @PutMapping("solicitacao/{id}/reject")
     @Operation(summary = "Efetuar orçamento", description = "Permite que um funcionário registre o orçamento de uma solicitação.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({

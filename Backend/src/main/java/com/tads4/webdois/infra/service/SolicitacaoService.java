@@ -1,5 +1,6 @@
 package com.tads4.webdois.infra.service;
 
+import java.io.ObjectInputFilter.Status;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -71,6 +72,7 @@ public class SolicitacaoService {
         log.setFuncionario(null);
         log.setFuncionarioAnterior(null);
         log.setMotivoRejeicao(null);
+        log.setDataCriacao(Instant.now());
         logHistoricoRepository.save(log);
 
         return SolicitacaoMapper.toResponse(saved);
@@ -118,46 +120,9 @@ public class SolicitacaoService {
     }
 
     @Transactional
-    public SolicitacaoResponse updateSolicitacao(Integer id, SolicitacaoRequest dto, UserDetails activeUser) {
-        Solicitacao ch = solicitacaoRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Solicitacao não encontrado"));
-
-        Categoria categoria = categoriaRepo.findById(dto.categoriaId())
-                .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
-
-        ch.setCategoriaEquipamento(categoria);
-        ch.setDescricaoEquipamento(dto.descricaoEquipamento());
-        ch.setDescricaoFalha(dto.descricaoFalha());
-        // Só permite update para status ABERTA, ORCADA, ARRUMADA, FINALIZADA, PAGA,
-        // APROVADA
-        if (dto.statusConserto() != null) {
-            switch (dto.statusConserto()) {
-                case REDIRECIONADA:
-                case REJEITADA:
-                    throw new BadRequestException("Use os métodos específicos para redirecionar ou rejeitar.");
-                default:
-                    ch.setStatus(dto.statusConserto());
-            }
-        }
-
-        var saved = solicitacaoRepository.save(ch);
-
-        LogHistorico log = new LogHistorico();
-        log.setSolicitacao(saved);
-        log.setStatus(saved.getStatus());
-        log.setFuncionario(null);
-        log.setFuncionarioAnterior(null);
-        logHistoricoRepository.save(log);
-
-        return SolicitacaoMapper.toResponse(saved);
-    }
-
-
-    @Transactional
     public SolicitacaoResponse efetuarManutencao(Integer id, ManutencaoRequest dto, UserDetails activeUser) {
         Solicitacao ch = solicitacaoRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Solicitacao não encontrado"));
-
 
         ch.setDescricaoManutencao(dto.descricaoManutencao());
         ch.setOrientacoesManutencao(dto.orientacaoCliente());
@@ -165,7 +130,6 @@ public class SolicitacaoService {
         // Só permite update para status ABERTA, ORCADA, ARRUMADA, FINALIZADA, PAGA,
         // APROVADA
 
-
         var saved = solicitacaoRepository.save(ch);
 
         LogHistorico log = new LogHistorico();
@@ -173,6 +137,7 @@ public class SolicitacaoService {
         log.setStatus(saved.getStatus());
         log.setFuncionario(null);
         log.setFuncionarioAnterior(null);
+        log.setDataCriacao(Instant.now());
         logHistoricoRepository.save(log);
 
         return SolicitacaoMapper.toResponse(saved);
@@ -189,9 +154,14 @@ public class SolicitacaoService {
         if (dto.status() != null && List.of(
                 StatusSolicitacao.ORCADA,
                 StatusSolicitacao.REDIRECIONADA,
-                StatusSolicitacao.REJEITADA).contains(dto.status())) {
+                StatusSolicitacao.REJEITADA,
+                StatusSolicitacao.ARRUMADA).contains(dto.status())) {
             throw new BadRequestException("Use os métodos específicos para redirecionar, rejeitar e orçar.");
         }
+
+        StatusSolicitacao status_old = ch.getStatus();
+
+        ch.setStatus(dto.status());
 
         var saved = solicitacaoRepository.save(ch);
 
@@ -204,29 +174,31 @@ public class SolicitacaoService {
             case ABERTA:
                 comentario = "Solicitação aberta";
                 break;
-            case ORCADA:
-                comentario = "Solicitação orçada";
+            case FINALIZADA:
+                comentario = "Solicitação finalizada";
                 break;
-            case REDIRECIONADA:
-                comentario = "Solicitação redirecionada";
+            case PAGA:
+                comentario = "Solicitação paga";
                 break;
-            case REJEITADA:
-                comentario = "Solicitação rejeitada";
+            case APROVADA:
+                comentario = "Solicitação aprovada";
                 break;
             default:
+                // Para ORCADA, REJEITADA, REDIRECIONADA, ARRUMADA e OUTROS
                 comentario = "Status atualizado: " + saved.getStatus().name().toLowerCase();
                 break;
         }
         log.setComentario(comentario);
-        log.setFuncionarioAnterior(null);
-        log.setDataCriacao(null);
+
+        if (status_old == StatusSolicitacao.REJEITADA && ch.getStatus() == StatusSolicitacao.APROVADA) {
+            log.setComentario("Solicitação resgatada");
+        }
+
+        log.setDataCriacao(Instant.now());
         logHistoricoRepository.save(log);
-        
 
         return SolicitacaoMapper.toResponse(saved);
     }
-
-   
 
     @Transactional
     public SolicitacaoResponse redirecionarSolicitacao(Integer id, Integer funcionarioDestinoId,
@@ -250,6 +222,7 @@ public class SolicitacaoService {
         log.setFuncionario(destino);
         log.setFuncionarioAnterior(atual);
         log.setMotivoRejeicao(null);
+        log.setDataCriacao(Instant.now());
         logHistoricoRepository.save(log);
 
         return SolicitacaoMapper.toResponse(saved);
@@ -269,6 +242,7 @@ public class SolicitacaoService {
         log.setFuncionario(saved.getFuncionario());
         log.setFuncionarioAnterior(null);
         log.setMotivoRejeicao(motivoRejeicao);
+        log.setDataCriacao(Instant.now());
         logHistoricoRepository.save(log);
 
         return SolicitacaoMapper.toResponse(saved);
@@ -308,6 +282,7 @@ public class SolicitacaoService {
         log.setFuncionario(savedSolicitacao.getFuncionario());
         log.setFuncionarioAnterior(null);
         log.setMotivoRejeicao(null);
+        log.setDataCriacao(Instant.now());
         logHistoricoRepository.save(log);
 
         return SolicitacaoMapper.toResponse(savedSolicitacao);
