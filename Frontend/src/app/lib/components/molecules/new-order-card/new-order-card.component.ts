@@ -1,27 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent } from '@/app/lib/components';
 import { InputComponent } from '../input/input.component';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  MatFormFieldControl,
-  MatFormFieldModule,
-} from '@angular/material/form-field';
+import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
@@ -30,7 +14,7 @@ import { SelectInputComponent } from '../select-input/select-input.component';
 import { TextAreaInputComponent } from '../text-area-input/text-area-input.component';
 import { AuthService, CategoriaService } from '@/app/lib/services';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
-import { SituationEnum } from '@/app/@types';
+import { CategoriaRequest, SituationEnum } from '@/app/@types';
 import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
 
 @Component({
@@ -55,9 +39,11 @@ import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
   styleUrls: ['./new-order-card.component.scss'],
 })
 export class NewOrderCardComponent implements OnInit {
+
   newOrderForm!: FormGroup;
 
-  public categories: any[] = [];
+  public categories: CategoriaRequest[] = [];
+  public carregandoCategorias = false;
 
   constructor(
     private fb: FormBuilder,
@@ -66,15 +52,31 @@ export class NewOrderCardComponent implements OnInit {
     private solicitacaoService: SolicitacaoService,
     private categoriaService: CategoriaService,
     private snackBar: MatSnackBar
-  ) {
-    this.categories = this.categoriaService.listarTodas();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.newOrderForm = this.fb.group({
       product: ['', [Validators.required, Validators.maxLength(100)]],
       category: ['', [Validators.required]],
       issue_description: ['', [Validators.required]],
+    });
+
+    this.buscarCategorias();
+  }
+
+  private buscarCategorias() {
+    this.carregandoCategorias = true;
+
+    this.categoriaService.listarTodas().subscribe({
+      next: (resp) => {
+        this.categories = resp;
+        this.carregandoCategorias = false;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar categorias:', err);
+        this.snackBar.open('Erro ao carregar categorias.', 'Fechar', { duration: 4000 });
+        this.carregandoCategorias = false;
+      }
     });
   }
 
@@ -91,6 +93,7 @@ export class NewOrderCardComponent implements OnInit {
   }
 
   onSubmit(): void {
+
     if (this.newOrderForm.invalid) {
       this.newOrderForm.markAllAsTouched();
       return;
@@ -99,13 +102,9 @@ export class NewOrderCardComponent implements OnInit {
     const user = this.authService.getCurrentUser();
 
     this.solicitacaoService.inserir({
-      client: user!.name,
-      clientEmail: user!.email,
-      order_date: getFormattedDate(),
-      category: this.categoriaService.buscaPorId(this.categoryControl.value)!.label,
-      product: this.productControl.value,
-      issue_description: this.issue_descriptionControl.value,
-      situation: SituationEnum.ABERTA,
+      categoriaId: this.categoryControl.value,
+      descricaoEquipamento: this.productControl.value,
+      descricaoFalha: this.issue_descriptionControl.value,
     });
 
     this.snackBar.open('Solicitação enviada com sucesso!', 'Fechar', {
