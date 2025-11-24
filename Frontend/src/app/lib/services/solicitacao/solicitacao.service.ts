@@ -1,140 +1,99 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
-import { OrderRequest } from '@/app/@types';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '@/app/lib/services/auth/auth.service';
+import { Observable, catchError, of } from 'rxjs';
+import { OrderRequest, SituationEnum } from '@/app/@types';
 import { SOLICITACOES_ENDPOINT } from '@/app/lib/api';
+import { OrderPatchRequest } from '@/app/@types/api/OrderPatchRequest';
 
-const LS_CHAVE = "solicitacoes";
+// ...existing code...
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SolicitacaoService {
-
-  private readonly solicitacoesSubject = new BehaviorSubject<OrderRequest[]>([]);
-  readonly solicitacoes$ = this.solicitacoesSubject.asObservable();
   private readonly apiUrl = SOLICITACOES_ENDPOINT;
 
-  constructor(private http: HttpClient) {
-    const cache = this.lerDoCache();
-    if (cache.length) {
-      this.solicitacoesSubject.next(cache);
-    }
-  }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  observeSolicitacoes(): Observable<OrderRequest[]> {
-    return this.solicitacoes$;
-  }
+  // Remove observeSolicitacoes, pois não há mais estado local
 
-  sincronizar(): Observable<OrderRequest[]> {
-    return this.http.get<OrderRequest[]>(this.apiUrl).pipe(
-      tap((lista) => this.substituirEstado(lista)),
+  listarTodas(): Observable<OrderRequest[]> {
+    const token = this.authService.getToken();
+    const bearer: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<OrderRequest[]>(this.apiUrl, { headers: bearer }).pipe(
       catchError((erro) => {
-        console.error('Não foi possível sincronizar as solicitações com o back-end.', erro);
-        const fallback = this.lerDoCache();
-        this.solicitacoesSubject.next(fallback);
-        return of(fallback);
+        console.error('Não foi possível listar as solicitações.', erro);
+        return of([]);
       })
     );
   }
 
-  listarTodas(): OrderRequest[] {
-    const atuais = this.solicitacoesSubject.getValue();
-    if (atuais.length) {
-      return atuais;
+  inserir(solicitacao: Omit<OrderRequest, 'id'>): Observable<OrderRequest | null> {
+    const token = this.authService.getToken();
+    const bearer: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<OrderRequest>(this.apiUrl, solicitacao, { headers: bearer }).pipe(
+      catchError((erro) => {
+        console.error('Falha ao cadastrar solicitação no back-end.', erro);
+        return of(null);
+      })
+    );
+  }
+
+  buscaPorId(id: number): Observable<OrderRequest | undefined> {
+    const token = this.authService.getToken();
+    const bearer: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<OrderRequest>(`${this.apiUrl}/${id}`, { headers: bearer }).pipe(
+      catchError((erro) => {
+        console.error('Falha ao buscar solicitação por id.', erro);
+        return of(undefined);
+      })
+    );
+  }
+
+  // PARA STATUS: -FINALIZADA, PAGA ou APROVADA.
+  patch(patchRequest: OrderPatchRequest): Observable<OrderRequest | null> {
+    if (![
+      SituationEnum.PAGA,
+      SituationEnum.FINALIZADA,
+      SituationEnum.APROVADA,
+    ].includes(patchRequest.status)) {
+      throw new Error('Num pode esses enum carai');
     }
-    const fallback = this.lerDoCache();
-    this.solicitacoesSubject.next(fallback);
-    return fallback;
-  } 
-
-  inserir(solicitacao: Omit<OrderRequest, 'id'>): void {
-    this.http.post<OrderRequest>(this.apiUrl, solicitacao).pipe(
-      tap((novaSolicitacao) => {
-        const atualizadas = [...this.solicitacoesSubject.getValue(), novaSolicitacao];
-        this.substituirEstado(atualizadas);
-      }),
+    const token = this.authService.getToken();
+    const bearer: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.patch<OrderRequest>(`${this.apiUrl}/${patchRequest.id}/patch`, {
+      status: patchRequest.status,
+    }, { headers: bearer }).pipe(
       catchError((erro) => {
-        console.error('Falha ao cadastrar solicitação no back-end. Utilizando armazenamento local.', erro);
-        const atualizadas = this.inserirLocal(solicitacao);
-        this.substituirEstado(atualizadas);
+        console.error('Falha ao atualizar solicitação no back-end.', erro);
         return of(null);
       })
-    ).subscribe();
+    );
   }
 
-  buscaPorId(id: number): OrderRequest | undefined {
-    const solicitacoes = this.solicitacoesSubject.getValue().length
-      ? this.solicitacoesSubject.getValue()
-      : this.lerDoCache();
-    return solicitacoes.find(solicitacao => solicitacao.id === id);
-  }
-  
-  atualizar(solicitacao: OrderRequest): void {       
-    this.http.put<OrderRequest>(`${this.apiUrl}/${solicitacao.id}`, solicitacao).pipe(
-      tap((solicitacaoAtualizada) => {
-        const atualizadas = this.solicitacoesSubject.getValue().map(item =>
-          item.id === solicitacaoAtualizada.id ? solicitacaoAtualizada : item
-        );
-        this.substituirEstado(atualizadas);
-      }),
+  remover(id: number): Observable<boolean> {
+    const token = this.authService.getToken();
+    const bearer: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.delete<boolean>(`${this.apiUrl}/${id}`, { headers: bearer }).pipe(
       catchError((erro) => {
-        console.error('Falha ao atualizar solicitação no back-end. Persistindo alteração localmente.', erro);
-        const atualizadas = this.atualizarLocal(solicitacao);
-        this.substituirEstado(atualizadas);
-        return of(null);
-      })
-    ).subscribe();
-  }
-
-  remover(id: number): void {
-    this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      tap(() => {
-        const atualizadas = this.solicitacoesSubject.getValue().filter(solicitacao => solicitacao.id !== id);
-        this.substituirEstado(atualizadas);
+        console.error('Falha ao remover solicitação no back-end.', erro);
+        return of(false);
       }),
-      catchError((erro) => {
-        console.error('Falha ao remover solicitação no back-end. Removendo no cache local.', erro);
-        const atualizadas = this.removerLocal(id);
-        this.substituirEstado(atualizadas);
-        return of(null);
-      })
-    ).subscribe();
+      // Se não deu erro, retorna true
+      // O operador map pode ser adicionado se quiser garantir o retorno booleano
+    );
   }
 
-  private lerDoCache(): OrderRequest[] {
-    const solicitacoes = localStorage[LS_CHAVE];
-    return solicitacoes ? JSON.parse(solicitacoes) : [];
-  }
-
-  private inserirLocal(solicitacao: Omit<OrderRequest, 'id'>): OrderRequest[] {
-    const solicitacoes = this.solicitacoesSubject.getValue().length
-      ? [...this.solicitacoesSubject.getValue()]
-      : this.lerDoCache();
-    const novoId = solicitacoes.length === 0
-      ? 1
-      : Math.max(...solicitacoes.map(c => c.id)) + 1;
-    const novaSolicitacao: OrderRequest = { ...solicitacao, id: novoId };
-    solicitacoes.push(novaSolicitacao);
-    return solicitacoes;
-  }
-
-  private atualizarLocal(solicitacao: OrderRequest): OrderRequest[] {
-    const solicitacoes = this.solicitacoesSubject.getValue().length
-      ? [...this.solicitacoesSubject.getValue()]
-      : this.lerDoCache();
-    return solicitacoes.map(obj => obj.id === solicitacao.id ? solicitacao : obj);
-  }
-
-  private removerLocal(id: number): OrderRequest[] {
-    const solicitacoes = this.solicitacoesSubject.getValue().length
-      ? [...this.solicitacoesSubject.getValue()]
-      : this.lerDoCache();
-    return solicitacoes.filter(solicitacao => solicitacao.id !== id);
-  }
-
-  private substituirEstado(solicitacoes: OrderRequest[]): void {
-    this.solicitacoesSubject.next(solicitacoes);
-    localStorage.setItem(LS_CHAVE, JSON.stringify(solicitacoes));
-  }
+  // Métodos de cache removidos
 }
