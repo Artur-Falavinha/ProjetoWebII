@@ -19,6 +19,5 @@ export type OrderRequest = {
   approval_date?: string; //data de aprovação do orçamento, pelo usuário
   payment_date?: string; //data de pagamento, pelo usuário
   completion_date?: string; //data em que a solicitação foi finalizada
-  observacoes?: string; 
   reject_reason?: string; //motivo da rejeição do orçamento 
 }

@@ -23,8 +23,3 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
         ON DELETE CASCADE
 );
 
-
-CREATE TABLE categorias (
-    id serial PRIMARY KEY,
-    name varchar(50)
-);

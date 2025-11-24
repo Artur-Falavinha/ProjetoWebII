@@ -87,10 +87,6 @@ export class RedirecionarManutencaoComponent implements OnInit {
     return this.redirecionarForm.get('funcionario') as FormControl;
   }
 
-  get observacaoControl() {
-    return this.redirecionarForm.get('observacao') as FormControl;
-  }
-
   onSubmit(): void {
     if (this.redirecionarForm.invalid) {
       this.redirecionarForm.markAllAsTouched();
@@ -104,7 +100,6 @@ export class RedirecionarManutencaoComponent implements OnInit {
 
     this.solicitacao!.atributed_employee = funcionarioDestino;
     this.solicitacao!.situation = SituationEnum.REDIRECIONADA;
-    this.solicitacao!.observacoes = this.observacaoControl.value;
 
     if (!this.solicitacao!.history) {
       this.solicitacao!.history = [];
@@ -114,7 +109,7 @@ export class RedirecionarManutencaoComponent implements OnInit {
       action: SituationEnum.REDIRECIONADA,
       date: getFormattedDateOnly(),
       time: getFormattedTimeOnly(),
-      description: `Redirecionado de ${funcionarioOrigem} para ${funcionarioDestino}${this.observacaoControl.value ? '. Motivo: ' + this.observacaoControl.value : ''}`,
+      description: `Redirecionado de ${funcionarioOrigem} para ${funcionarioDestino}`,
       employee: funcionarioOrigem
     });
 
