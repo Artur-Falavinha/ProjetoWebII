@@ -163,6 +163,10 @@ public class SolicitacaoService {
 
         ch.setStatus(dto.status());
 
+        if (List.of(StatusSolicitacao.PAGA, StatusSolicitacao.FINALIZADA).contains(dto.status())) {
+            ch.setDataResposta(Instant.now());
+        }
+
         var saved = solicitacaoRepository.save(ch);
 
         LogHistorico log = new LogHistorico();
