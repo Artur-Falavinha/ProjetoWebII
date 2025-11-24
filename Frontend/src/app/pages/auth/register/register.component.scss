@@ -47,7 +47,6 @@
   }
 }
 
-
 .step-content {
   padding: 18px 10px 20px; 
   display: flex;
@@ -63,16 +62,6 @@
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-
-  button[mat-raised-button] {
-    background-color: #00458f;
-    color: white;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: #0059b8; 
-    }
-  }
 }
 
 .card-footer {
@@ -101,7 +90,6 @@
   z-index: 10;
 }
 
-// Responsividade
 @media (max-width: 480px) {
   .auth-container {
     padding: 10px;

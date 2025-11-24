@@ -31,7 +31,6 @@ import { ButtonComponent } from '../../../lib/components/atoms/button/button.com
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   isLoading = false;
-  tipoCadastro: 'CLIENT' | 'EMPLOYEE' = 'CLIENT';
   submitted = false;
 
   constructor(
@@ -69,12 +68,6 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  setTipoCadastro(tipo: 'CLIENT' | 'EMPLOYEE'): void {
-    this.tipoCadastro = tipo;
-    this.registerForm.reset();
-    this.ngOnInit();
-  }
-
   consultarCep(): void {
     const cep = this.cepControl.value;
     if (cep && cep.replace(/\D/g, '').length === 8) {
@@ -100,8 +93,7 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
 
-    if ((this.tipoCadastro === 'CLIENT' && this.registerForm.invalid) ||
-        (this.tipoCadastro === 'EMPLOYEE' && this.registerForm.get('dadosPessoais')?.invalid)) {
+    if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
     }
@@ -111,30 +103,32 @@ export class RegisterComponent implements OnInit {
 
     const dadosNovoUsuario = {
       ...formValue.dadosPessoais,
-      endereco: this.tipoCadastro === 'CLIENT' ? formValue.endereco : null,
+      endereco: formValue.endereco,
     };
 
     this.authService.register(dadosNovoUsuario).subscribe({
-      next: (response) => {
+      next: () => {
         this.isLoading = false;
-        const emailParaAviso = this.emailControl?.value || 'seu e-mail';
-        
-          this.snackBar.open(
+        const emailParaAviso = this.emailControl.value || 'seu e-mail';
+
+        this.snackBar.open(
           `Cadastro realizado com sucesso! Verifique seu e-mail (${emailParaAviso}).`,
           'Fechar',
-          { duration: 5000 } 
+          { duration: 5000 }
         );
 
         this.router.navigate(['/login']);
       },
       error: (err) => {
         this.isLoading = false;
-        const errorMessage = err.error?.message || err.statusText || 'Não foi possível concluir o cadastro.';
-        
+
+        const errorMessage =
+          err.error?.message || err.statusText || 'Não foi possível concluir o cadastro.';
+
         this.snackBar.open(
           `Erro no cadastro: ${errorMessage}`,
           'Fechar',
-          { duration: 4000 } 
+          { duration: 4000 }
         );
 
         console.error(err);

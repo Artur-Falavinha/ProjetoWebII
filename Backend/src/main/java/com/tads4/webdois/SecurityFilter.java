@@ -29,8 +29,7 @@
         throws ServletException {
             String path = request.getRequestURI();
             return "/auth/login".equals(path) ||
-                   "/auth/register".equals(path) ||
-                   "/auth/register/funcionario".equals(path);
+                   "/auth/register".equals(path);
         }
 
         @Override

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap, map, catchError, switchMap } from 'rxjs/operators';
 
 export interface UserProfile {
@@ -97,11 +97,8 @@ export class AuthService {
 
   // --- REGISTER ---
   register(userData: any): Observable<any> {
-    if (userData.endereco) {
+    // Mantém apenas cadastro normal (cliente)
     return this.http.post(`${this.BASE_URL}/register`, userData, this.httpOptions);
-    } else {
-      return this.http.post(`${this.BASE_URL}/register/funcionario`, userData, this.httpOptions);
-    }
   }
 
   // --- LOGOUT ---
@@ -115,7 +112,6 @@ export class AuthService {
   }
 
   // --- MÉTODOS AUXILIARES ---
-
   private mapRole(role: string): 'CLIENT' | 'EMPLOYEE' | 'ADMIN' {
     if (role === 'FUNCIONARIO' || role === 'GERENTE') return 'EMPLOYEE';
     if (role === 'ADMIN') return 'ADMIN';
@@ -138,6 +134,7 @@ export class AuthService {
       });
     }
   }
+
   getCurrentUser(): UserProfile | null {
     return this.authStateSubject.value.user;
   }

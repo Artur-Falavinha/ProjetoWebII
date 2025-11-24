@@ -46,16 +46,6 @@
                 required: 'Selecione um funcionário'
               }"
             />
-
-            <app-text-area-input
-              [control]="observacaoControl"
-              label="Motivo do Redirecionamento (Opcional)"
-              placeholder="Descreva o motivo do redirecionamento..."
-              [errorMessages]="{
-                maxLength: 'Máximo de 300 caracteres'
-              }"
-              [hint]="observacaoControl.value?.length + '/300 caracteres'"
-            />
           </form>
         </mat-card-content>
 
