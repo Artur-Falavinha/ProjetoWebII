@@ -38,6 +38,15 @@ public class FuncionarioService {
     }
 
     @Transactional(readOnly = true)
+        public List<FuncionarioResponse> getAllFuncionariosAtivosMenosEu(Integer id) {
+            return funcionarioRepository.findByStatus(true)
+                .stream()
+                .filter(f -> !f.getUserId().equals(id))
+                .map(FuncionarioMapper::toResponse)
+                .toList();
+    }
+    
+    @Transactional(readOnly = true)
         public FuncionarioResponse buscarPorId(Integer id) {
             Funcionario funcionario = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
