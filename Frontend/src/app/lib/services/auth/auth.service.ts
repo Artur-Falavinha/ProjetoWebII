@@ -1,11 +1,13 @@
-import { Injectable, signal } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
+import { tap, map, catchError, switchMap } from 'rxjs/operators';
 
 export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  role: 'CLIENT' | 'EMPLOYEE';
+  role: 'CLIENT' | 'EMPLOYEE' | 'ADMIN';
 }
 
 export interface AuthState {
@@ -18,101 +20,133 @@ export interface AuthState {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly authState = signal<AuthState>({
+  private readonly BASE_URL = 'http://localhost:8080/auth';
+
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+  private authStateSubject = new BehaviorSubject<AuthState>({
     isAuthenticated: false,
     user: null,
     token: null
   });
 
-  readonly isAuthenticated = this.authState.asReadonly();
+  public authState$ = this.authStateSubject.asObservable();
 
-  login(credentials: { email: string; password: string }): Observable<AuthState> {
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-
-    const usuarioEncontrado = usuarios.find(
-      (user: any) => user.email === credentials.email && user.senha === credentials.password
-    );
-
-    if (usuarioEncontrado) {
-      const userProfile: UserProfile = {
-        id: usuarioEncontrado.id || '1',
-        name: usuarioEncontrado.nome,
-        email: usuarioEncontrado.email,
-        role: usuarioEncontrado.perfil || usuarioEncontrado.role || 'CLIENT'
-      };
-
-      const newState: AuthState = {
-        isAuthenticated: true,
-        user: userProfile,
-        token: 'mock-jwt-token-from-localstorage'
-      };
-
-      this.authState.set(newState);
-      return of(newState);
-    }
-
-    return new Observable(observer => observer.error({ message: 'Credenciais inválidas' }));
+  constructor(private http: HttpClient) {
+    this.checkTokenRecovery();
   }
 
+  // --- LOGIN INTEGRADO ---
+  // 1. Pega o Token
+  // 2. Busca os dados do usuário (/me)
+  // 3. Retorna o objeto AuthState completo (corrige seu erro de compilação)
+  login(credentials: { email: string; password: string }): Observable<AuthState> {
+    return this.http.post<any>(`${this.BASE_URL}/login`, credentials, this.httpOptions)
+      .pipe(
+        // switchMap permite encadear uma nova requisição usando o resultado da anterior
+        switchMap(response => {
+          if (response && response.token) {
+            this.saveToken(response.token);
+            
+            // Prepara o cabeçalho com o Token para bater no endpoint /me
+            const authHeader = new HttpHeaders({
+              'Authorization': `Bearer ${response.token}`
+            });
+
+            return this.http.get<any>(`${this.BASE_URL}/me`, { headers: authHeader })
+              .pipe(
+                map(userData => {
+                  return { 
+                    token: response.token, 
+                    user: userData 
+                  };
+                })
+              );
+          } else {
+            return throwError(() => new Error('Token não fornecido pelo servidor.'));
+          }
+        }),
+        map(combinedData => {
+          const userBackend = combinedData.user;
+          
+          const userProfile: UserProfile = {
+            id: userBackend.id,
+            name: userBackend.nome,
+            email: userBackend.email,
+            role: this.mapRole(userBackend.role || userBackend.perfil) 
+          };
+
+          const newState: AuthState = {
+            isAuthenticated: true,
+            user: userProfile,
+            token: combinedData.token
+          };
+
+          // Atualiza o BehaviorSubject (notifica toda a app que logou)
+          this.authStateSubject.next(newState);
+          
+          return newState;
+        }),
+        catchError(error => {
+          console.error('Erro no login:', error);
+          throw error; 
+        })
+      );
+  }
+
+  // --- REGISTER ---
+  register(userData: any): Observable<any> {
+    if (userData.endereco) {
+    return this.http.post(`${this.BASE_URL}/register`, userData, this.httpOptions);
+    } else {
+      return this.http.post(`${this.BASE_URL}/register/funcionario`, userData, this.httpOptions);
+    }
+  }
+
+  // --- LOGOUT ---
   logout(): void {
-    this.authState.set({
+    localStorage.removeItem('auth-token');
+    this.authStateSubject.next({
       isAuthenticated: false,
       user: null,
       token: null
     });
-    localStorage.removeItem('auth-token'); 
   }
 
-  register(userData: any): Observable<{ user: any; password: string }> {
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+  // --- MÉTODOS AUXILIARES ---
 
-    if (usuarios.some((user: any) => user.email === userData.email)) {
-      return new Observable(observer => observer.error({ message: 'Este email já está cadastrado!' }));
-    }
-
-    if (usuarios.some((user: any) => user.cpf === userData.cpf)) {
-      return new Observable(observer => observer.error({ message: 'Este CPF já está cadastrado!' }));
-    }
-
-    const senhaAleatoria = Math.floor(1000 + Math.random() * 9000).toString();
-    const novoUsuario = { ...userData, senha: senhaAleatoria };
-
-    usuarios.push(novoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-    // Se for funcionário, também salva na chave de funcionários para aparecer na aba de funcionários
-    if (userData.perfil === 'EMPLOYEE') {
-      const funcionarios = JSON.parse(localStorage.getItem('funcionarios') || '[]');
-      
-      // Converte os dados do usuário para o formato esperado pelo FuncionarioService
-      const funcionarioData = {
-        id: novoUsuario.id || new Date().getTime(),
-        nome: novoUsuario.nome,
-        email: novoUsuario.email,
-        cpf: novoUsuario.cpf,
-        telefone: novoUsuario.telefone,
-        dataNascimento: novoUsuario.dataNascimento || '',
-        cargo: 'Administrador', // Primeiro funcionário sempre é administrador
-        dataAdmissao: new Date().toLocaleDateString('pt-BR'),
-        ativo: true
-      };
-
-      funcionarios.push(funcionarioData);
-      localStorage.setItem('funcionarios', JSON.stringify(funcionarios));
-    }
-
-    return of({ user: novoUsuario, password: senhaAleatoria });
+  private mapRole(role: string): 'CLIENT' | 'EMPLOYEE' | 'ADMIN' {
+    if (role === 'FUNCIONARIO' || role === 'GERENTE') return 'EMPLOYEE';
+    if (role === 'ADMIN') return 'ADMIN';
+    return 'CLIENT';
   }
 
+  private saveToken(token: string): void {
+    localStorage.setItem('auth-token', token);
+  }
+
+  private checkTokenRecovery(): void {
+    const token = localStorage.getItem('auth-token');
+    if (token) {
+      // Aqui idealmente chamaríamos o /me novamente para validar o token
+      // Por enquanto, vamos apenas restaurar o estado básico
+      this.authStateSubject.next({
+        isAuthenticated: true,
+        user: { id: '0', name: 'Usuário (Recuperado)', email: '', role: 'CLIENT' },
+        token: token
+      });
+    }
+  }
   getCurrentUser(): UserProfile | null {
-    return this.authState().user;
+    return this.authStateSubject.value.user;
   }
 
   getToken(): string | null {
-    return this.authState().token;
+    return this.authStateSubject.value.token;
   }
 
   checkAuthStatus(): boolean {
-    return this.authState().isAuthenticated;
+    return this.authStateSubject.value.isAuthenticated;
   }
 }

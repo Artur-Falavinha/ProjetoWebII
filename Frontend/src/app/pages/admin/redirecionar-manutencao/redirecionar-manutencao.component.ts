@@ -61,8 +61,16 @@ export class RedirecionarManutencaoComponent implements OnInit {
       return;
     }
 
-    this.funcionarios = this.funcionarioService.listarTodas()
-      .filter(f => f.nome !== this.solicitacao?.atributed_employee);
+    this.funcionarioService.listarTodas().subscribe({
+      next: (lista) => {
+        if (lista) {
+          this.funcionarios = lista.filter(
+            f => f.nome !== this.solicitacao?.atributed_employee
+          );
+        }
+      },
+      error: (err) => console.error(err)
+    });
 
     this.funcionariosOptions = this.funcionarios.map(f => ({
       value: f.nome,

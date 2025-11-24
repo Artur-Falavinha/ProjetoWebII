@@ -1,133 +1,147 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { FuncionarioRequest } from '@/app/@types';
-
-const LS_CHAVE = "funcionarios";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FuncionarioService {
 
-  constructor() { }
+  private readonly BASE_URL = 'http://localhost:8080/funcionario';
 
-  listarTodas() : FuncionarioRequest[] {
-    const funcionarios = localStorage[LS_CHAVE];
-    return funcionarios ? JSON.parse(funcionarios) : [];     
-  } 
+  httpOptions = {
+    observe: 'response' as 'response',
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
-  /**Valida se o email já existe no sistema**/
-  private emailExiste(email: string, idExcluir?: number): boolean {
-    const funcionarios = this.listarTodas();
-    return funcionarios.some(f => f.email === email && f.id !== idExcluir);
+  constructor(private http: HttpClient) {}
+
+  listarTodas(): Observable<FuncionarioRequest[]> {
+    return this.http.get<FuncionarioRequest[]>(
+      this.BASE_URL, 
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<FuncionarioRequest[]>) => {
+        if (resp.status === 200) {
+          return resp.body ?? [];
+        } else {
+          return [];
+        }
+      }),
+      catchError((err, caught) => {
+        if (err.status === 404) {
+          return of([]);
+        } else {
+          return throwError(() => err);
+        }
+      })
+    );
   }
 
-  /**Valida se pode remover o funcionário**/
-  private podeRemover(id: number, usuarioLogadoId?: number): { pode: boolean; motivo?: string } {
-    const funcionarios = this.listarTodas();
-    
-    // Verifica se é o último funcionário
-    if (funcionarios.length <= 1) {
-      return { pode: false, motivo: 'Não é possível remover o último funcionário do sistema' };
-    }
-    
-    // Verifica se está tentando remover a si mesmo
-    if (usuarioLogadoId && id === usuarioLogadoId) {
-      return { pode: false, motivo: 'Você não pode remover a si mesmo' };
-    }
-    
-    return { pode: true };
+  buscaPorId(id: number): Observable<FuncionarioRequest | null> {
+    return this.http.get<FuncionarioRequest>(
+      `${this.BASE_URL}/${id}`,
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<FuncionarioRequest>) => {
+        if (resp.status === 200) {
+          return resp.body ?? null;
+        } else {
+          return null;
+        }
+      }),
+      catchError((err, caught) => {
+        if (err.status === 404) {
+          return of(null);
+        } else {
+          return throwError(() => err);
+        }
+      })
+    );
   }
 
-  inserir(funcionario: FuncionarioRequest): { sucesso: boolean; erro?: string } {
-    // Valida email único
-    if (this.emailExiste(funcionario.email)) {
-      return { sucesso: false, erro: 'Este email já está cadastrado no sistema' };
+  inserir(funcionario: FuncionarioRequest): Observable<FuncionarioRequest | null> {
+
+    if (!funcionario.nome || !funcionario.email || !funcionario.senha) {
+      return throwError(() => ({
+        status: 400,
+        message: "Nome, email e senha são obrigatórios."
+      }));
     }
 
-    const funcionarios = this.listarTodas();
-    const isPrimeiroFuncionario = funcionarios.length === 0;
-
-    // Validações diferentes para o primeiro funcionário
-    if (isPrimeiroFuncionario) {
-      // Para o primeiro funcionário, apenas nome, email e senha são obrigatórios
-      if (!funcionario.nome || !funcionario.email || !funcionario.senha) {
-        return { sucesso: false, erro: 'Nome, email e senha são obrigatórios para o primeiro funcionário' };
-      }
-      
-      // Define data de admissão como data atual para o primeiro funcionário
-      const hoje = new Date();
-      const dia = hoje.getDate().toString().padStart(2, '0');
-      const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');
-      const ano = hoje.getFullYear();
-      funcionario.dataAdmissao = `${dia}/${mes}/${ano}`;
-      
-      // Define cargo padrão para o primeiro funcionário (Administrador)
-      funcionario.cargo = 'Administrador';
-      
-    } else {
-      // Para funcionários subsequentes, todos os campos são obrigatórios
-      if (!funcionario.nome || !funcionario.email || !funcionario.dataNascimento || !funcionario.senha || !funcionario.cargo || !funcionario.dataAdmissao) {
-        return { sucesso: false, erro: 'Todos os campos obrigatórios devem ser preenchidos' };
-      }
-    }
-
-    // Gera ID para o funcionário
-    if (isPrimeiroFuncionario) {
-      funcionario.id = 1; 
-    } else {
-      const maxId = Math.max(...funcionarios.map(f => f.id));
-      funcionario.id = maxId + 1;
-    }
-    
-    funcionarios.push(funcionario);
-    localStorage.setItem(LS_CHAVE, JSON.stringify(funcionarios));
-    return { sucesso: true };
+    return this.http.post<FuncionarioRequest>(
+      this.BASE_URL,
+      funcionario,
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<FuncionarioRequest>) => {
+        if (resp.status === 201 || resp.status === 200) {
+          return resp.body ?? null;
+        } else {
+          return null;
+        }
+      }),
+      catchError((err, caught) => throwError(() => err))
+    );
   }
 
-  buscaPorId(id: number): FuncionarioRequest | undefined {
-    const funcionarios = this.listarTodas();
-     return funcionarios.find(funcionario => funcionario.id === id);
-  }
-  
-  atualizar(funcionario: FuncionarioRequest): { sucesso: boolean; erro?: string } {
-    // Valida email único (excluindo o próprio funcionário)
-    if (this.emailExiste(funcionario.email, funcionario.id)) {
-      return { sucesso: false, erro: 'Este email já está cadastrado no sistema' };
+  atualizar(funcionario: FuncionarioRequest): Observable<FuncionarioRequest | null> {
+    if (!funcionario.id) {
+      return throwError(() => ({
+        status: 400,
+        message: "ID inválido para atualização."
+      }));
     }
-
-    // Valida campos obrigatórios
-    if (!funcionario.nome || !funcionario.email || !funcionario.dataNascimento || !funcionario.senha) {
-      return { sucesso: false, erro: 'Todos os campos obrigatórios devem ser preenchidos' };
-    }
-       
-    const funcionarios = this.listarTodas();
-    funcionarios.forEach((obj, index, objs) => {
-      if (funcionario.id === obj.id) {
-         objs[index] = funcionario
-      }
-    });
-
-    localStorage[LS_CHAVE] = JSON.stringify(funcionarios);
-    return { sucesso: true };
+    return this.http.put<FuncionarioRequest>(
+      `${this.BASE_URL}/${funcionario.id}`,
+      funcionario,
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<FuncionarioRequest>) => {
+        if (resp.status == 200) {
+          return resp.body ?? null;
+        } else {
+          return null;
+        }
+      }),
+      catchError((err, caught) => throwError(() => err))
+    );
   }
 
-  remover(id: number, usuarioLogadoId?: number): { sucesso: boolean; erro?: string } {
-    // Valida se pode remover
-    const validacao = this.podeRemover(id, usuarioLogadoId);
-    if (!validacao.pode) {
-      return { sucesso: false, erro: validacao.motivo };
+  remover(id: number, usuarioLogadoId?: number): Observable<void> {
+    // validação original: não remover a si mesmo
+    if (usuarioLogadoId && usuarioLogadoId === id) {
+      return throwError(() => ({
+        status: 400,
+        message: "Você não pode remover a si mesmo."
+      }));
     }
-
-    let funcionarios = this.listarTodas();
-    funcionarios = funcionarios.filter(funcionario => funcionario.id !== id);
-    localStorage[LS_CHAVE] = JSON.stringify(funcionarios);
-    return { sucesso: true };
+    return this.http.delete(
+      `${this.BASE_URL}/${id}`,
+      this.httpOptions
+    ).pipe(
+      map(() => { }), 
+      catchError((err, caught) => throwError(() => err))
+    );
   }
 
-  /**Busca funcionário por email para login**/
-  buscaPorEmail(email: string): FuncionarioRequest | undefined {
-    const funcionarios = this.listarTodas();
-    return funcionarios.find(funcionario => funcionario.email === email);
+  buscaPorEmail(email: string): Observable<FuncionarioRequest | null> {
+    return this.http.get<FuncionarioRequest>(
+      `${this.BASE_URL}/email/${email}`,
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<FuncionarioRequest>) => {
+        if (resp.status === 200) {
+          return resp.body ?? null;
+        } else {
+          return null;
+        }
+      }),
+      catchError((err, caught) => throwError(() => err))
+    );
   }
 
 }
