@@ -29,7 +29,17 @@ export class ListarCategoriaComponent implements OnInit {
   }
 
   listarTodas(): CategoriaRequest[] {
-    return this.categoriaService.listarTodas();
+    this.categoriaService.listarTodas().subscribe({
+      next: (data: CategoriaRequest[] | null) => {
+        if (data == null) {
+          this.categorias = [];
+        }
+        else {
+          this.categorias = data;
+        }
+      }
+    });
+    return this.categorias;
   }
 
   abrirModalInserir(): void {
@@ -57,11 +67,25 @@ export class ListarCategoriaComponent implements OnInit {
     });
   }
 
-  remover($event: any, categoria: CategoriaRequest): void {
-    $event.preventDefault();
-    if(confirm(`Deseja remover a categoria ${categoria.label}?`)){
-      this.categoriaService.remover(categoria.value!);
-      this.categorias = this.listarTodas();
+  remover(event: any, categoria: CategoriaRequest): void {
+    event.preventDefault();
+
+    if (!confirm(`Deseja remover a categoria ${categoria.label}?`)) {
+      return;
     }
+
+    this.categoriaService.remover(categoria.value!).subscribe({
+      next: () => {
+        // Atualiza lista após remover
+        this.categoriaService.listarTodas().subscribe({
+          next: (data) => {
+            this.categorias = data ?? [];
+          }
+        });
+      },
+      error: () => {
+        alert('Erro ao remover categoria');
+      }
+    });
   }
 }

@@ -22,23 +22,19 @@ export class FuncionarioItemComponent {
   @Output() editClick = new EventEmitter<FuncionarioRequest>();
   @Output() deleteClick = new EventEmitter<FuncionarioRequest>();
 
-  /**Emite evento de clique em editar**/
   onEditClick(): void {
     this.editClick.emit(this.funcionario);
   }
 
-  /**Emite evento de clique em excluir**/
   onDeleteClick(): void {
     this.deleteClick.emit(this.funcionario);
   }
 
 
-  /**Retorna classe CSS do status**/
   getStatusClass(ativo: boolean): string {
     return ativo ? 'status-ativo' : 'status-inativo';
   }
 
-  /**Retorna texto do status**/
   getStatusText(ativo: boolean): string {
     return ativo ? 'Ativo' : 'Inativo';
   }
