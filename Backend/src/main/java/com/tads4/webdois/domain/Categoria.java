@@ -14,7 +14,4 @@ public class Categoria {
 
     @Column(nullable = false)
     private String nome;
-
-    @Column(name = "valor_base", nullable = false, precision = 12, scale = 2)
-    private java.math.BigDecimal valorBase;
 }

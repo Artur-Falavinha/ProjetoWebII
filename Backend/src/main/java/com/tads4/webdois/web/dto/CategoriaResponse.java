@@ -4,6 +4,5 @@ import java.math.BigDecimal;
 
 public record CategoriaResponse(
         Integer value,
-        String label,
-        BigDecimal valorBase) {
+        String label) {
 }

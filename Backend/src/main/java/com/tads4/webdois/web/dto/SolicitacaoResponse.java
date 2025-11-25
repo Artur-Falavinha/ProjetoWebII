@@ -3,6 +3,8 @@ package com.tads4.webdois.web.dto;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+import com.tads4.webdois.domain.enums.StatusSolicitacao;
+
 public record SolicitacaoResponse(
     Integer id,
     String cliente,
@@ -14,7 +16,7 @@ public record SolicitacaoResponse(
     String descricaoEquipamento,
     String descricaoFalha,
     BigDecimal precoBase,
-    String status,
+    StatusSolicitacao situation,
     Instant dataCriacao,
     Instant dataResposta,
     BigDecimal orcamentoValor,

@@ -60,7 +60,6 @@ public class SolicitacaoService {
         ch.setCategoriaEquipamento(categoria);
         ch.setDescricaoEquipamento(dto.descricaoEquipamento());
         ch.setDescricaoFalha(dto.descricaoFalha());
-        ch.setPrecoBase(categoria.getValorBase());
         ch.setStatus(StatusSolicitacao.ABERTA);
         var saved = solicitacaoRepository.save(ch);
 

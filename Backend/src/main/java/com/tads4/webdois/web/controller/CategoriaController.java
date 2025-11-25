@@ -39,20 +39,21 @@ public class CategoriaController {
     @GetMapping("/{id}")
     @Operation(summary = "Buscar categoria por ID", description = "Retorna uma categoria específica pelo seu ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Categoria encontrada"),
-        @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
+            @ApiResponse(responseCode = "200", description = "Categoria encontrada"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
-    public CategoriaResponse findById(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
+    public CategoriaResponse findById(
+            @Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
         Categoria Categoria = repo.findById(id)
-            .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
+                .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
         return CategoriaMapper.toResponse(Categoria);
     }
 
     @PostMapping
     @Operation(summary = "Criar nova categoria", description = "Cria uma nova categoria a partir dos dados enviados.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos ou categoria já existente")
+            @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos ou categoria já existente")
     })
     public ResponseEntity<CategoriaResponse> create(@Valid @RequestBody CategoriaRequest request) {
         if (repo.existsByNome(request.nome())) {
@@ -65,12 +66,13 @@ public class CategoriaController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar categoria", description = "Atualiza os dados de uma categoria existente.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
+            @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
-    public CategoriaResponse update(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id, @Valid @RequestBody CategoriaRequest request) {
+    public CategoriaResponse update(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id,
+            @Valid @RequestBody CategoriaRequest request) {
         Categoria foundCategoria = repo.findById(id)
-            .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
+                .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
         foundCategoria.setNome(request.nome());
         Categoria Categoria = repo.save(foundCategoria);
         return CategoriaMapper.toResponse(Categoria);
@@ -79,10 +81,11 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir categoria", description = "Remove uma categoria pelo ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Categoria excluída com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
+            @ApiResponse(responseCode = "204", description = "Categoria excluída com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
-    public ResponseEntity<Void> delete(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
+    public ResponseEntity<Void> delete(
+            @Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
         repo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
