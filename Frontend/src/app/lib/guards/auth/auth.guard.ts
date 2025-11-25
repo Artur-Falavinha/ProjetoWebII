@@ -18,7 +18,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     return router.createUrlTree(['/admin']);
   }
 
-  // Se é cliente (CLIENT) tentando acessar rotas admin, redireciona para /client
+  // Se é client (CLIENT) tentando acessar rotas admin, redireciona para /client
   if (currentUser?.role === 'CLIENT' && state.url.startsWith('/admin')) {
     return router.createUrlTree(['/client']);
   }

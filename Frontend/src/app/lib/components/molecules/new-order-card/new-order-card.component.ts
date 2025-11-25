@@ -71,24 +71,24 @@ export class NewOrderCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.newOrderForm = this.fb.group({
-      product: ['', [Validators.required, Validators.maxLength(100)]],
-      category: ['', [Validators.required]],
-      issue_description: ['', [Validators.required]],
+      descricaoEquipamento: ['', [Validators.required, Validators.maxLength(100)]],
+      categoriaNome: ['', [Validators.required]],
+      descricaoFalha: ['', [Validators.required]],
     });
 
     this.categories$ = this.categoriaService.listarTodas();
   }
 
-  public get productControl() {
-    return this.newOrderForm.get('product') as FormControl;
+  public get descricaoEquipamentoControl() {
+    return this.newOrderForm.get('descricaoEquipamento') as FormControl;
   }
 
-  public get categoryControl() {
-    return this.newOrderForm.get('category') as FormControl;
+  public get categoriaNomeControl() {
+    return this.newOrderForm.get('categoriaNome') as FormControl;
   }
 
-  public get issue_descriptionControl() {
-    return this.newOrderForm.get('issue_description') as FormControl;
+  public get descricaoFalhaControl() {
+    return this.newOrderForm.get('descricaoFalha') as FormControl;
   }
 
   onSubmit(): void {
@@ -99,9 +99,9 @@ export class NewOrderCardComponent implements OnInit {
 
     this.solicitacaoService
       .inserir({
-        categoriaId: this.categoryControl.value,
-        descricaoEquipamento: this.productControl.value,
-        descricaoDefeito: this.issue_descriptionControl.value,
+        categoriaId: this.categoriaNomeControl.value,
+        descricaoEquipamento: this.descricaoEquipamentoControl.value,
+        descricaoDefeito: this.descricaoFalhaControl.value,
       })
       .subscribe({
         next: (result) => {

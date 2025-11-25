@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <mat-card *ngIf="solicitacao" appearance="outlined">
+      <mat-card *ngIf="solicitacao$ | async as solicitacao" appearance="outlined">
         <mat-card-header>
           <mat-card-title>Dados da Solicitação</mat-card-title>
         </mat-card-header>
@@ -24,7 +24,7 @@
           <div class="info-section">
             <div class="info-item">
               <strong>Equipamento:</strong>
-              <span>{{ solicitacao.product }}</span>
+              <span>{{ solicitacao.descricaoEquipamento }}</span>
             </div>
             <div class="info-item">
               <strong>Cliente:</strong>
@@ -32,7 +32,7 @@
             </div>
             <div class="info-item">
               <strong>Responsável Atual:</strong>
-              <span>{{ solicitacao.atributed_employee }}</span>
+              <span>{{ solicitacao.funcionario }}</span>
             </div>
           </div>
 
@@ -41,7 +41,7 @@
               [control]="funcionarioControl"
               label="Novo Responsável"
               placeholder="Selecione o funcionário"
-              [options]="funcionariosOptions"
+              [options]="(funcionariosOptions$ | async) || []"
               [errorMessages]="{
                 required: 'Selecione um funcionário'
               }"

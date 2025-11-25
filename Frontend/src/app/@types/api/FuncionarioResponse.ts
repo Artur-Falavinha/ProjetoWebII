@@ -1,5 +1,4 @@
-export type FuncionarioRequest = {
-    id: number;
+export type FuncionarioResponse = {
     nome: string;
     email: string;
     dataNascimento: string;

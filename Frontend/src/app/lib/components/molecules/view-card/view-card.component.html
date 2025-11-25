@@ -2,7 +2,7 @@
   <ng-container *ngIf="order; else noOrder">
     <mat-card-header>
       <mat-card-title-group>
-        <mat-card-title>{{ order.product }}</mat-card-title>
+        <mat-card-title>{{ order.descricaoEquipamento }}</mat-card-title>
         <mat-card-subtitle>
           {{ "Solicitação #" + order.id }}
         </mat-card-subtitle>
@@ -24,16 +24,16 @@
           <mat-icon>category</mat-icon>
           <div class="detail-item" class="text-wrap">
             <p>Categoria</p>
-            <span>{{ order.category }}</span>
+            <span>{{ order.categoriaNome }}</span>
           </div>
         </div>
 
-        @if (order.atributed_employee) {
+        @if (order.funcionario) {
         <div class="detail-item">
           <mat-icon>build</mat-icon>
           <div class="detail-item" class="text-wrap">
             <p>Técnico responsável</p>
-            <span>{{ order.atributed_employee }}</span>
+            <span>{{ order.funcionario }}</span>
           </div>
         </div>
         }
@@ -51,22 +51,22 @@
 
       <div class="issue-related-wrapper">
         <p>Descrição do defeito</p>
-        <span>{{ order.issue_description }}</span>
+        <span>{{ order.descricaoFalha }}</span>
       </div>
 
-      @if (order.fix_description) {
+      @if (order.descricaoManutencao) {
       <div class="separator"></div>
 
       <div class="issue-related-wrapper">
         <p>Descrição da manutenção</p>
-        <span>{{ order.fix_description }}</span>
+        <span>{{ order.descricaoManutencao }}</span>
       </div>
-      } @if (order.orientation) {
+      } @if (order.orientacoesManutencao) {
       <div class="separator"></div>
 
       <div class="issue-related-wrapper">
         <p>Orientações</p>
-        <span>{{ order.orientation }}</span>
+        <span>{{ order.orientacoesManutencao }}</span>
       </div>
       } @if (order.orcamentoValor) {
       <div class="separator"></div>

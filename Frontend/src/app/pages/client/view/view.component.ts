@@ -9,6 +9,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ViewCardComponent } from '@/app/lib/components/molecules/view-card/view-card.component';
 import { HistoryCardComponent } from '@/app/lib/components/molecules/history-card/history-card.component';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
+import { HistoryType } from '@/app/@types/misc/HistoryType';
 
 @Component({
   selector: 'app-view',
@@ -25,34 +26,31 @@ import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.s
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewComponent {
-  public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
-
-  public id!: number;
-
   order$!: Observable<OrderRequest | undefined>;
+  history$!: Observable<HistoryType[] | undefined>
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private solicitacaoService: SolicitacaoService
+  ) {
     this.order$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
-      switchMap((id) =>
-        of(this.items.find((v) => v.id === id)).pipe(delay(500))
-      ),
+      switchMap((id) => this.solicitacaoService.buscaPorId(id)),
       tap((order) => {
         if (!order) {
           this.router.navigate(['/client']);
         }
+      })
+    );
 
-        // if (
-        //   order &&
-        //   ![
-        //     SituationEnum.ABERTA,
-        //     SituationEnum.PAGA,
-        //     SituationEnum.REDIRECIONADA,
-        //     SituationEnum.FINALIZADA,
-        //   ].includes(order.situation)
-        // ) {
-        //   this.router.navigate(['/client']);
-        // }
+    this.history$ = this.route.paramMap.pipe(
+      map((params) => Number(params.get('id'))),
+      switchMap((id) => this.solicitacaoService.buscarHistoricosPorId(id)),
+      tap((order) => {
+        if (!order) {
+          this.router.navigate(['/client']);
+        }
       })
     );
   }

@@ -16,7 +16,7 @@
           <mat-icon>shopping_cart_checkout</mat-icon>
           <div class="text-wrap">
             <p>Equipamento</p>
-            <span>{{ order.product }}</span>
+            <span>{{ order.descricaoEquipamento }}</span>
           </div>
         </div>
 
@@ -46,7 +46,7 @@
           <mat-icon>build</mat-icon>
           <div class="text-wrap">
             <p>Responsável</p>
-            <span>{{ order.atributed_employee }}</span>
+            <span>{{ order.funcionario }}</span>
           </div>
         </div>
         <div class="detail-item">
@@ -63,7 +63,7 @@
       <div class="issue-related-wrapper">
         <p>Problema relatado</p>
         <div class="issue-related-box">
-          {{ order.issue_description }}
+          {{ order.descricaoFalha }}
         </div>
       </div>
 
@@ -86,13 +86,13 @@
         />
 
         <app-text-area-input
-          [control]="orientationControl"
-          label="Orientações para o cliente"
+          [control]="orientacoesManutencaoControl"
+          label="Orientações para o client"
           placeholder="Orientações sobre uso, cuidados, prevenção..."
           [errorMessages]="{
             maxLength: 'Campo com mais de 300 caracteres'
           }"
-          [hint]="orientationControl.value?.length + '/300 caracteres'"
+          [hint]="orientacoesManutencaoControl.value?.length + '/300 caracteres'"
         />
       </form>
 

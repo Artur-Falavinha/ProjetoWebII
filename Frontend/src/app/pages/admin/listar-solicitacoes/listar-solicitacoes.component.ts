@@ -87,7 +87,7 @@ export class ListarSolicitacoesComponent implements OnInit, OnDestroy {
     return solicitacoes
       .filter(s => {
         if (s.situation === SituationEnum.REDIRECIONADA) {
-          return s.atributed_employee === user?.name;
+          return s.funcionario === user?.name;
         }
         return true;
       })

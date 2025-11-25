@@ -126,7 +126,7 @@ export class EfetuarOrcamentoComponent implements OnInit {
     // Atualiza os dados da solicitação
     this.solicitacaoSelecionada.orcamentoValor = valor;
     this.solicitacaoSelecionada.situation = SituationEnum.ORCADA;
-    this.solicitacaoSelecionada.atributed_employee = employee?.name;
+    this.solicitacaoSelecionada.funcionario = employee?.name;
 
     // Persiste as alterações no localStorage
     this.solicitacaoService.atualizar(this.solicitacaoSelecionada);

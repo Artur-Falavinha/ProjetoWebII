@@ -14,16 +14,16 @@
       <div class="details-box">
         <div class="details-wrap">
           <p>Equipamento</p>
-          <span>{{ order.product }}</span>
+          <span>{{ order.descricaoEquipamento }}</span>
         </div>
                 <div class="details-wrap">
           <p>Horário orçamento</p>
           <span>{{ order.dataResposta }}</span>
         </div>
-        @if (order.atributed_employee) {
+        @if (order.funcionario) {
         <div class="details-wrap">
           <p>Técnico responsável</p>
-          <span>{{ order.atributed_employee }}</span>
+          <span>{{ order.funcionario }}</span>
         </div>
         }
 

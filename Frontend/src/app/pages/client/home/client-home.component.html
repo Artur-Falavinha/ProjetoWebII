@@ -1,6 +1,6 @@
-<div class="cliente-layout">
+<div class="client-layout">
   <app-sidebar></app-sidebar>
-  <main class="cliente-content">
+  <main class="client-content">
     <div class="text-wrap">
       <div>
         <h1 class="page-title">Minhas Solicitações</h1>
@@ -16,9 +16,12 @@
     </div>
 
     <div class="order-card-wrap">
-      @for (item of items(); track item.id) {
-      <app-order-card [order]="item" />
-      }
+      <ng-container *ngIf="items$ | async as items">
+        <app-order-card
+          *ngFor="let item of items"
+          [order]="item"
+        ></app-order-card>
+      </ng-container>
     </div>
   </main>
 </div>

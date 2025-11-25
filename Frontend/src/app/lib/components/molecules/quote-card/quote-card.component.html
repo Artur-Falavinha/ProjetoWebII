@@ -2,7 +2,7 @@
   <ng-container *ngIf="order; else noOrder">
     <mat-card-header>
       <mat-card-title-group>
-        <mat-card-title>{{ order.product }}</mat-card-title>
+        <mat-card-title>{{ order.descricaoEquipamento }}</mat-card-title>
         <mat-card-subtitle>
           {{ "Orçamento #" + order.id }}
         </mat-card-subtitle>
@@ -32,7 +32,7 @@
           <mat-icon>category</mat-icon>
           <div class="text-wrap">
             <p>Categoria</p>
-            <span>{{ order.category }}</span>
+            <span>{{ order.categoriaNome }}</span>
           </div>
         </div>
 
@@ -40,7 +40,7 @@
           <mat-icon>engineering</mat-icon>
           <div class="text-wrap">
             <p>Técnico responsável</p>
-            <span>{{ order.atributed_employee }}</span>
+            <span>{{ order.funcionario }}</span>
           </div>
         </div>
 
@@ -60,7 +60,7 @@
       <div class="issue-related-wrapper">
         <p>Problema relatado</p>
         <div class="issue-related-box">
-          {{ order.issue_description }}
+          {{ order.descricaoFalha }}
         </div>
       </div>
 

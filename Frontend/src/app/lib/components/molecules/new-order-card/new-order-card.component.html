@@ -12,20 +12,20 @@
     <form [formGroup]="newOrderForm" (ngSubmit)="onSubmit()" class="form-wrap">
       <div class="form-wrap">
         <app-input
-          [control]="productControl"
+          [control]="descricaoEquipamentoControl"
           label="Descrição do equipamento"
           placeholder="Ex: Notebook Dell Inspiron 15, TV Samsung 50 polegadas..."
-          [hint]="productControl.value?.length + '/100 caracteres'"
+          [hint]="descricaoEquipamentoControl.value?.length + '/100 caracteres'"
           [errorMessages]="{ required: 'Campo obrigatório' }"
         />
         <app-select-input
-          [control]="categoryControl"
+          [control]="categoriaNomeControl"
           label="Categoria"
           placeholder="Selecione a categoria do equipamento"
           [options]="categories$ | async"
         />
         <app-text-area-input
-          [control]="issue_descriptionControl"
+          [control]="descricaoFalhaControl"
           label="Descrição do defeito"
           placeholder="Descreva detalhadamente o problema encontrado no equipamento..."
         />

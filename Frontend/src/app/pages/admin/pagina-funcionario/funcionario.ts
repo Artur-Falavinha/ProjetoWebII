@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '@/app/lib/components/organisms/sidebar/sidebar.component';
 import { StatCardComponent } from '@/app/lib/components/molecules/stat-card/stat-card.component';
@@ -36,10 +37,9 @@ export class FuncionarioComponent implements OnInit {
   private readonly router = inject(Router);
 
   /**Array de dados para o dashboard vindo do service**/
-  public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
+  public items$: Observable<OrderRequest[]>;
 
   /**Solicitações abertas filtradas do array mock**/
-  solicitacoesAbertas: OrderRequest[] = [];
   estatisticas = {
     abertas: 0,
     orcadas: 0,
@@ -54,14 +54,11 @@ export class FuncionarioComponent implements OnInit {
   private readonly solicitacaoService = inject(SolicitacaoService);
 
   constructor() {
-    this.authService
-      .login({ email: 'funcionario@email.com', password: 'senha' })
-      .subscribe();
-    this.items = inject(SolicitacaoService).listarTodas();
+    this.items$ = this.solicitacaoService.listarTodas();
   }
 
   ngOnInit(): void {
-    this.carregarDadosDashboard();
+    // Estatísticas podem ser calculadas no template usando pipes ou via async pipe + métodos
   }
 
   /**
@@ -69,25 +66,18 @@ export class FuncionarioComponent implements OnInit {
    * Filtra solicitações abertas e calcula estatísticas
    * Conforme RF011 - Página Inicial de Funcionário
    */
-  carregarDadosDashboard(): void {
-    // Filtra apenas solicitações ABERTAS conforme RF011
-    this.solicitacoesAbertas = this.items.filter(
-      (item) => item.situation === SituationEnum.ABERTA
-    );
+  // Métodos utilitários para usar no template com async pipe
+  getSolicitacoesAbertas(items: OrderRequest[]): OrderRequest[] {
+    return items.filter((item) => item.situation === SituationEnum.ABERTA);
+  }
 
-    // Calcula estatísticas baseadas no array mock
-    this.estatisticas.abertas = this.items.filter(
-      (item) => item.situation === SituationEnum.ABERTA
-    ).length;
-    this.estatisticas.orcadas = this.items.filter(
-      (item) => item.situation === SituationEnum.ORCADA
-    ).length;
-    this.estatisticas.aprovadas = this.items.filter(
-      (item) => item.situation === SituationEnum.PAGA
-    ).length;
-    this.estatisticas.finalizadas = this.items.filter(
-      (item) => item.situation === SituationEnum.FINALIZADA
-    ).length;
+  getEstatisticas(items: OrderRequest[]) {
+    return {
+      abertas: items.filter((item) => item.situation === SituationEnum.ABERTA).length,
+      orcadas: items.filter((item) => item.situation === SituationEnum.ORCADA).length,
+      aprovadas: items.filter((item) => item.situation === SituationEnum.PAGA).length,
+      finalizadas: items.filter((item) => item.situation === SituationEnum.FINALIZADA).length,
+    };
   }
 
   getStatusClass(status: SituationEnum): string {

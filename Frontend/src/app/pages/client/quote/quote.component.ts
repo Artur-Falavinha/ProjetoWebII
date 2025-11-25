@@ -34,7 +34,7 @@ export class QuoteComponent {
       switchMap((id) => this.solicitacaoService.buscaPorId(id)),
       tap((order) => {
         if (!order || order.situation !== SituationEnum.ORCADA) {
-          this.router.navigate(['/cliente']);
+          this.router.navigate(['/client']);
         }
       })
     );

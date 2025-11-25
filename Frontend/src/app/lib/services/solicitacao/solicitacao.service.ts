@@ -10,6 +10,7 @@ import {
 } from '@/app/@types';
 import { SOLICITACOES_ENDPOINT } from '@/app/lib/api';
 import { OrderPatchRequest } from '@/app/@types/api/OrderPatchRequest';
+import { HistoryType } from '@/app/@types/misc/HistoryType';
 
 // ...existing code...
 
@@ -21,12 +22,22 @@ export class SolicitacaoService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  listarTodas(): Observable<OrderRequest[]> {
+  listarTodas(filtros?: {
+    dataInicio?: string;
+    dataFim?: string;
+    status?: SituationEnum;
+  }): Observable<OrderRequest[]> {
     const token = this.authService.getToken();
     const bearer: HttpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<OrderRequest[]>(this.apiUrl, { headers: bearer }).pipe(
+    let params: any = {};
+    if (filtros) {
+      if (filtros.dataInicio) params.dataInicio = filtros.dataInicio;
+      if (filtros.dataFim) params.dataFim = filtros.dataFim;
+      if (filtros.status !== undefined && filtros.status !== null) params.status = filtros.status;
+    }
+    return this.http.get<OrderRequest[]>(this.apiUrl, { headers: bearer, params }).pipe(
       catchError((erro) => {
         console.error('Não foi possível listar as solicitações.', erro);
         return of([]);
@@ -61,6 +72,21 @@ export class SolicitacaoService {
       .pipe(
         catchError((erro) => {
           console.error('Falha ao buscar solicitação por id.', erro);
+          return of(undefined);
+        })
+      );
+  }
+
+  buscarHistoricosPorId(id: number): Observable<HistoryType[] | undefined> {
+    const token = this.authService.getToken();
+    const bearer: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .get<HistoryType[]>(`${this.apiUrl}/${id}/historico`, { headers: bearer })
+      .pipe(
+        catchError((erro) => {
+          console.error('Falha ao buscar historico por id.', erro);
           return of(undefined);
         })
       );
@@ -133,6 +159,30 @@ export class SolicitacaoService {
         {
           descricaoManutencao: patchRequest.descricaoManutencao,
           orientacaoCliente: patchRequest.orientacaoCliente,
+        },
+        { headers: bearer }
+      )
+      .pipe(
+        catchError((erro) => {
+          console.error('Falha ao atualizar solicitação no back-end.', erro);
+          return of(null);
+        })
+      );
+  }
+
+  redirecionar(patchRequest: {
+    id: number;
+    funcionarioDestinoId: number;
+  }): Observable<OrderRequest | null> {
+    const token = this.authService.getToken();
+    const bearer: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .put<OrderRequest>(
+        `${this.apiUrl}/${patchRequest.id}/redirect`,
+        {
+          funcionarioDestinoId: patchRequest.funcionarioDestinoId,
         },
         { headers: bearer }
       )

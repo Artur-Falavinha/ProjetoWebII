@@ -63,17 +63,17 @@ export class EfetuarManutencaoCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.efetuarManutencaoForm = this.fb.group({
-      fix_description: ['', [Validators.required, Validators.maxLength(300)]],
-      orientation: ['', [Validators.maxLength(300)]],
+      descricaoManutencao: ['', [Validators.required, Validators.maxLength(300)]],
+      orientacoesManutencao: ['', [Validators.maxLength(300)]],
     });
   }
 
   public get fixDescriptionControl() {
-    return this.efetuarManutencaoForm.get('fix_description') as FormControl;
+    return this.efetuarManutencaoForm.get('descricaoManutencao') as FormControl;
   }
 
-  public get orientationControl() {
-    return this.efetuarManutencaoForm.get('orientation') as FormControl;
+  public get orientacoesManutencaoControl() {
+    return this.efetuarManutencaoForm.get('orientacoesManutencao') as FormControl;
   }
 
   onSubmit(): void {
@@ -86,7 +86,7 @@ export class EfetuarManutencaoCardComponent implements OnInit {
       .arrumar({
         id: this.order!.id,
         descricaoManutencao: this.fixDescriptionControl.value,
-        orientacaoCliente: this.orientationControl.value,
+        orientacaoCliente: this.orientacoesManutencaoControl.value,
       })
       .subscribe({
         next: (result) => {

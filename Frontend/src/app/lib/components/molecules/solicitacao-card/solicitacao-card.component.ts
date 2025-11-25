@@ -107,8 +107,8 @@ export class SolicitacaoCardComponent {
     }
   }
 
-  getShortProduct(product: string): string {
-    if (!product) return '';
-    return product.length > 30 ? product.substring(0, 30) + '...' : product;
+  getShortProduct(descricaoEquipamento: string): string {
+    if (!descricaoEquipamento) return '';
+    return descricaoEquipamento.length > 30 ? descricaoEquipamento.substring(0, 30) + '...' : descricaoEquipamento;
   }
 }

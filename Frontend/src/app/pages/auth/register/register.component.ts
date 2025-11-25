@@ -21,8 +21,7 @@ import { ButtonComponent } from '../../../lib/components/atoms/button/button.com
   imports: [
     CommonModule, ReactiveFormsModule, RouterModule, HttpClientModule,
     MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,
-    MatStepperModule, MatProgressSpinnerModule, NgxMaskDirective,
-    ButtonComponent
+    MatStepperModule, MatProgressSpinnerModule, NgxMaskDirective
   ],
   providers: [provideNgxMask()],
   templateUrl: './register.component.html',

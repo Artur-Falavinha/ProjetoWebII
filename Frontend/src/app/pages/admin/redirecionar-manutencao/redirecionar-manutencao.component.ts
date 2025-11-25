@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,9 +16,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrderRequest, SituationEnum, FuncionarioRequest } from '@/app/@types';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { FuncionarioService } from '@/app/lib/services/funcionario/funcionario.service';
-import { ButtonComponent, SidebarComponent, TextAreaInputComponent, SelectInputComponent } from '@/app/lib/components';
+import {
+  ButtonComponent,
+  SidebarComponent,
+  TextAreaInputComponent,
+  SelectInputComponent,
+} from '@/app/lib/components';
 import { AuthService } from '@/app/lib/services';
-import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
+import {
+  getFormattedDate,
+  getFormattedDateOnly,
+  getFormattedTimeOnly,
+} from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-redirecionar-manutencao',
@@ -24,16 +40,14 @@ import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/
     MatSelectModule,
     SidebarComponent,
     ButtonComponent,
-    TextAreaInputComponent,
-    SelectInputComponent
+    SelectInputComponent,
   ],
   templateUrl: './redirecionar-manutencao.component.html',
-  styleUrl: './redirecionar-manutencao.component.scss'
+  styleUrl: './redirecionar-manutencao.component.scss',
 })
 export class RedirecionarManutencaoComponent implements OnInit {
-  solicitacao?: OrderRequest;
-  funcionarios: FuncionarioRequest[] = [];
-  funcionariosOptions: { value: string; label: string }[] = [];
+  solicitacao$!: Observable<OrderRequest | undefined>;
+  funcionariosOptions$!: Observable<{ value: number; label: string }[]>;
   redirecionarForm!: FormGroup;
 
   constructor(
@@ -48,38 +62,22 @@ export class RedirecionarManutencaoComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.solicitacao = this.solicitacaoService.buscaPorId(id);
-
-    if (!this.solicitacao) {
-      this.router.navigate(['admin/solicitacoes']);
-      return;
-    }
-
-    if (this.solicitacao.situation !== SituationEnum.APROVADA && 
-        this.solicitacao.situation !== SituationEnum.REDIRECIONADA) {
-      this.router.navigate(['admin/solicitacoes']);
-      return;
-    }
-
-    this.funcionarioService.listarTodas().subscribe({
-      next: (lista) => {
-        if (lista) {
-          this.funcionarios = lista.filter(
-            f => f.nome !== this.solicitacao?.atributed_employee
-          );
-        }
-      },
-      error: (err) => console.error(err)
+    this.solicitacao$ = this.solicitacaoService.buscaPorId(id);
+    this.solicitacaoService.buscaPorId(id).subscribe((solicitacao) => {
+      if (
+        !solicitacao ||
+        (solicitacao.situation !== SituationEnum.APROVADA &&
+          solicitacao.situation !== SituationEnum.REDIRECIONADA)
+      ) {
+        this.router.navigate(['/admin/solicitacoes']);
+      }
     });
 
-    this.funcionariosOptions = this.funcionarios.map(f => ({
-      value: f.nome,
-      label: f.nome
-    }));
+    this.funcionariosOptions$ = this.funcionarioService.listarAsFormOptions();
 
     this.redirecionarForm = this.fb.group({
       funcionario: ['', Validators.required],
-      observacao: ['', Validators.maxLength(300)]
+      observacao: ['', Validators.maxLength(300)],
     });
   }
 
@@ -93,34 +91,35 @@ export class RedirecionarManutencaoComponent implements OnInit {
       return;
     }
 
-    const user = this.authService.getCurrentUser();
-    const dataHora = getFormattedDate();
-    const funcionarioOrigem = this.solicitacao!.atributed_employee;
-    const funcionarioDestino = this.funcionarioControl.value;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.solicitacao!.atributed_employee = funcionarioDestino;
-    this.solicitacao!.situation = SituationEnum.REDIRECIONADA;
-
-    if (!this.solicitacao!.history) {
-      this.solicitacao!.history = [];
-    }
-
-    this.solicitacao!.history.push({
-      action: SituationEnum.REDIRECIONADA,
-      date: getFormattedDateOnly(),
-      time: getFormattedTimeOnly(),
-      description: `Redirecionado de ${funcionarioOrigem} para ${funcionarioDestino}`,
-      employee: funcionarioOrigem
-    });
-
-    this.solicitacaoService.atualizar(this.solicitacao!);
-
-    this.snackBar.open('Manutenção Redirecionada com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success']
-    });
-
-    this.router.navigate(['/admin/solicitacoes']);
+    this.solicitacaoService
+      .redirecionar({
+        id,
+        funcionarioDestinoId: this.funcionarioControl.value,
+      })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open('Orçamento redirecionado com Sucesso', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-success'],
+            });
+            this.router.navigate(['/admin/solicitacoes']);
+          } else {
+            this.snackBar.open('Erro ao redirecionar', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-error'],
+            });
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(err ? err : 'Erro ao redirecionar', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        },
+      });
   }
 
   cancelar(): void {

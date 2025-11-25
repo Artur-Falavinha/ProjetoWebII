@@ -9,7 +9,7 @@
     <mat-card-content>
       <div class="title-text-wrap">
         <p>Serviço Pago e Concluído</p>
-        <span>O cliente já efetuou o pagamento. Confira os detalhes abaixo</span>
+        <span>O client já efetuou o pagamento. Confira os detalhes abaixo</span>
       </div>
 
       <!--Detalhes da solicitação-->
@@ -22,7 +22,7 @@
             <mat-icon>inbox</mat-icon>
             <div class="details-text">
               <p>Equipamento</p>
-              <span>{{ order.product }}</span>
+              <span>{{ order.descricaoEquipamento }}</span>
             </div>
           </div>
 
@@ -43,7 +43,7 @@
             <mat-icon>build</mat-icon>
             <div class="details-text">
               <p>Técnico</p>
-              <span>{{ order.atributed_employee }}</span>
+              <span>{{ order.funcionario }}</span>
             </div>
           </div>
 
@@ -76,7 +76,7 @@
         <div class="section-card">
           <h4>Problema original</h4>
           <div class="problem-box">
-            <p>{{ order.issue_description }}</p>
+            <p>{{ order.descricaoFalha }}</p>
           </div>
         </div>
 
@@ -84,7 +84,7 @@
         <div class="section-card">
           <h4>Manutenção realizada</h4>
           <div class="problem-box">
-            <p>{{ order.fix_description }}</p>
+            <p>{{ order.descricaoManutencao }}</p>
           </div>
         </div>
 
@@ -92,7 +92,7 @@
         <div class="section-card">
           <h4>Orientações fornecidas</h4>
           <div class="problem-box">
-            <p>{{ order.orientation }}</p>
+            <p>{{ order.orientacoesManutencao }}</p>
           </div>
         </div>
         
@@ -101,7 +101,7 @@
       <div class="information-box">
         <p>Finalização do serviço</p>
         <ul>
-          <li>• O cliente já efetuou o pagamento do serviço</li>
+          <li>• O client já efetuou o pagamento do serviço</li>
           <li>• A manutenção foi realizada com sucesso</li>
           <li>• Esta ação marcará a solicitação como definitivamente concluída</li>
           <li>• Não será possível reverter esta operação</li>

@@ -97,7 +97,7 @@ export class AuthService {
 
   // --- REGISTER ---
   register(userData: any): Observable<any> {
-    // Mantém apenas cadastro normal (cliente)
+    // Mantém apenas cadastro normal (client)
     return this.http.post(`${this.BASE_URL}/register`, userData, this.httpOptions);
   }
 

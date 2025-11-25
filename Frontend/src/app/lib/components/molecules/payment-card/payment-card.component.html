@@ -14,11 +14,11 @@
       <div class="details-box">
         <div class="details-wrap">
           <p>Equipamento</p>
-          <span>{{ order.product }}</span>
+          <span>{{ order.descricaoEquipamento }}</span>
         </div>
         <div class="details-wrap">
           <p>Técnico responsável</p>
-          <span>{{ order.atributed_employee }}</span>
+          <span>{{ order.funcionario }}</span>
         </div>
         <div class="details-wrap">
           <p>Data da solicitação</p>
@@ -31,14 +31,14 @@
       <div>
         <p>Serviço realizado</p>
         <div class="details-box">
-          <p>{{ order.fix_description }}</p>
+          <p>{{ order.descricaoManutencao }}</p>
         </div>
       </div>
 
       <div>
         <p>Orientações</p>
         <div class="information-box">
-          <p>{{ order.orientation }}</p>
+          <p>{{ order.orientacoesManutencao }}</p>
         </div>
       </div>
 

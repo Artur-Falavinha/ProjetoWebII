@@ -15,8 +15,8 @@
         >
       </div>
       <div class="details-box">
-        <p>Equipamento: {{ order.product }}</p>
-        <span>Técnico: {{ order.atributed_employee }}</span>
+        <p>Equipamento: {{ order.descricaoEquipamento }}</p>
+        <span>Técnico: {{ order.funcionario }}</span>
         <span>Valor: R$ {{ order.orcamentoValor }}</span>
       </div>
       <form [formGroup]="rejectForm" (ngSubmit)="onSubmit()" class="form-wrap">

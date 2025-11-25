@@ -1,7 +1,7 @@
 <mat-card class="app-request-card" appearance="outlined">
   <div class="card-header">
     <div>
-      <h3>{{ getShortProduct(solicitacao.product) }}</h3>
+      <h3>{{ getShortProduct(solicitacao.descricaoEquipamento) }}</h3>
       <small>#{{ solicitacao.id }} • Cliente: {{ solicitacao.client }}</small>
     </div>
     <!--Status da solicitação-->
@@ -13,16 +13,16 @@
     <div class="info-grid">
       <div>
         <h4>Categoria</h4>
-        <p>{{ solicitacao.category }}</p>
+        <p>{{ solicitacao.categoriaNome }}</p>
       </div>
       <div>
         <h4>Data</h4>
         <p>{{ solicitacao.dataCriacao }}</p>
       </div>
-      @if (solicitacao.atributed_employee) {
+      @if (solicitacao.funcionario) {
       <div>
         <h4>Técnico responsável</h4>
-        <p>{{ solicitacao.atributed_employee }}</p>
+        <p>{{ solicitacao.funcionario }}</p>
       </div>
       }
       @if (solicitacao.orcamentoValor) {
@@ -36,7 +36,7 @@
     <div class="problem-section">
       <h4>Problema</h4>
       <div class="problem-box">
-        {{ solicitacao.issue_description }}
+        {{ solicitacao.descricaoFalha }}
       </div>
     </div>
   </div>
@@ -70,13 +70,13 @@
         <!-- Equipamento -->
         <div class="detail-item">
           <label>Equipamento:</label>
-          <span>{{ solicitacao.product }}</span>
+          <span>{{ solicitacao.descricaoEquipamento }}</span>
         </div>
 
         <!-- Categoria -->
         <div class="detail-item">
           <label>Categoria:</label>
-          <span>{{ solicitacao.category }}</span>
+          <span>{{ solicitacao.categoriaNome }}</span>
         </div>
 
         <!-- Cliente -->
@@ -99,9 +99,9 @@
 
         <!-- Técnico responsável -->
         <div class="detail-item"
-          *ngIf="solicitacao.atributed_employee">
+          *ngIf="solicitacao.funcionario">
           <label>Técnico:</label>
-          <span>{{ solicitacao.atributed_employee }}</span>
+          <span>{{ solicitacao.funcionario }}</span>
         </div>
 
         <!-- Status -->
@@ -111,7 +111,7 @@
         <div class="detail-item full-width">
           <label>Problema Relatado:</label>
           <div class="description-box">
-            {{ solicitacao.issue_description }}
+            {{ solicitacao.descricaoFalha }}
           </div>
         </div>
 
@@ -127,22 +127,22 @@
 
         <!-- Descrição da manutenção -->
         <div class="detail-item full-width"
-          *ngIf="solicitacao.fix_description"
+          *ngIf="solicitacao.descricaoManutencao"
         >
           <label>Descrição da correção:</label>
           <div class="description-box">
-            {{ solicitacao.fix_description }}
+            {{ solicitacao.descricaoManutencao }}
           </div>
         </div>
 
         <!-- Observações (se houver) -->
         <div
           class="detail-item full-width"
-          *ngIf="solicitacao.orientation"
+          *ngIf="solicitacao.orientacoesManutencao"
         >
           <label>Observações:</label>
           <div class="description-box">
-            {{ solicitacao.orientation }}
+            {{ solicitacao.orientacoesManutencao }}
           </div>
         </div>
       </div>
