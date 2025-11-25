@@ -16,7 +16,7 @@
           <mat-icon>calendar_today</mat-icon>
           <div class="text-wrap">
             <p>Data da Solicitação</p>
-            <span>{{ order.order_date }}</span>
+            <span>{{ order.dataCriacao }}</span>
           </div>
         </div>
 
@@ -68,12 +68,12 @@
         <p>Orientações</p>
         <span>{{ order.orientation }}</span>
       </div>
-      } @if (order.price) {
+      } @if (order.orcamentoValor) {
       <div class="separator"></div>
 
       <div class="box-padding">
         <p>Valor aprovado</p>
-        <span>R$ {{ order.price }}</span>
+        <span>R$ {{ order.orcamentoValor }}</span>
       </div>
       }
     </mat-card-content>

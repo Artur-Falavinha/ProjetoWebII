@@ -72,7 +72,7 @@ export class EfetuarOrcamentoComponent implements OnInit {
         // Inicializa o formulário com o valor atual (se existir)
         this.orcamentoForm = this.fb.group({
           valor: [
-            this.solicitacaoSelecionada.price ?? '', 
+            this.solicitacaoSelecionada.orcamentoValor ?? '', 
             [Validators.required, Validators.min(0.01)]
           ]
         });
@@ -124,7 +124,7 @@ export class EfetuarOrcamentoComponent implements OnInit {
     const employee = this.authService.getCurrentUser();
 
     // Atualiza os dados da solicitação
-    this.solicitacaoSelecionada.price = valor;
+    this.solicitacaoSelecionada.orcamentoValor = valor;
     this.solicitacaoSelecionada.situation = SituationEnum.ORCADA;
     this.solicitacaoSelecionada.atributed_employee = employee?.name;
 

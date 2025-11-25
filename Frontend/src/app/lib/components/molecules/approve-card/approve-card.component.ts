@@ -41,20 +41,38 @@ export class ApproveCardComponent {
     private solicitacaoService: SolicitacaoService
   ) {}
 
-  public approve() {
-    this.order!.situation = SituationEnum.APROVADA;
+  onSubmit() {
+    this.solicitacaoService
+      .patch({
+        id: this.order!.id,
+        status: SituationEnum.APROVADA,
+      })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open(
+              `Serviço aprovado no valor de R$ ${this.order?.orcamentoValor}`,
+              'OK',
+              {
+                duration: 5000,
+                panelClass: ['snackbar-success'],
+              }
+            );
+            this.router.navigate(['/client']);
+          } else {
+            this.snackBar.open('Erro ao aprovar', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-error'],
+            });
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(err ? err : 'Erro ao aprovar', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        },
+      });
 
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open(
-      `Serviço aprovado no valor de R$ ${this.order?.price}`, // mensagem
-      'Fechar', 
-      {
-        duration: 5000,
-        panelClass: ['snackbar-success'],
-      }
-    );
-
-    this.router.navigate(['/client']);
   }
 }

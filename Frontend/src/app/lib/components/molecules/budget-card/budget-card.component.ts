@@ -3,18 +3,28 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent } from '@/app/lib/components';
-import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIcon } from '@angular/material/icon';
 import { InputComponent } from '../input/input.component';
 import { OrderRequest, SituationEnum } from '@/app/@types';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { AuthService } from '@/app/lib/services';
-import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
+import {
+  getFormattedDate,
+  getFormattedDateOnly,
+  getFormattedTimeOnly,
+} from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-budget-card',
@@ -34,7 +44,7 @@ import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/
     InputComponent,
   ],
   templateUrl: './budget-card.component.html',
-  styleUrls: ['./budget-card.component.scss']
+  styleUrls: ['./budget-card.component.scss'],
 })
 export class BudgetCardComponent implements OnInit {
   @Input() order?: OrderRequest;
@@ -45,8 +55,7 @@ export class BudgetCardComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private snackBar: MatSnackBar,
-    private solicitacaoService: SolicitacaoService,
-    private authService: AuthService
+    private solicitacaoService: SolicitacaoService
   ) {}
 
   ngOnInit(): void {
@@ -65,35 +74,32 @@ export class BudgetCardComponent implements OnInit {
       return;
     }
 
-    const user = this.authService.getCurrentUser();
-    const dataHora = getFormattedDate();
-
-    if (this.order) {
-      this.order.situation = SituationEnum.ORCADA;
-      this.order.price = this.valorControl.value;
-      this.order.atributed_employee = user?.name;
-      this.order.budge_date = dataHora;
-
-      if (!this.order.history) {
-        this.order.history = [];
-      }
-
-      this.order.history.push({
-        action: SituationEnum.ORCADA,
-        date: getFormattedDateOnly(),
-        time: getFormattedTimeOnly(),
-        description: `Orçamento realizado no valor de R$ ${this.valorControl.value}`,
-        employee: user?.name
+    this.solicitacaoService
+      .orcar({
+        id: this.order!.id,
+        valor: this.valorControl.value,
+      })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open('Orçamento Efetuado com Sucesso', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-success'],
+            });
+            this.router.navigate(['/admin/solicitacoes']);
+          } else {
+            this.snackBar.open('Erro ao efetuar orçamento', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-error'],
+            });
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(err ? err : 'Erro ao efetuar orçamento', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        },
       });
-
-      this.solicitacaoService.atualizar(this.order);
-    }
-
-    this.snackBar.open('Orçamento Efetuado com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
-
-    this.router.navigate(['/admin/solicitacoes']);
   }
 }

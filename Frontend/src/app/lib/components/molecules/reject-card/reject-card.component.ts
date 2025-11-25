@@ -67,16 +67,32 @@ export class RejectCardComponent implements OnInit {
       return;
     }
 
-    this.order!.situation = SituationEnum.REJEITADA;
-    this.order!.reject_reason = this.reject_reasonControl.value;
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open('Serviço Rejeitado', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-destructive'],
-    });
-
-    this.router.navigate(['/client']);
+    this.solicitacaoService
+      .rejeitar({
+        id: this.order!.id,
+        motivoRejeicao: this.reject_reasonControl.value,
+      })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open('Orçamento rejeitado com sucesso', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-success'],
+            });
+            this.router.navigate(['/admin/solicitacoes']);
+          } else {
+            this.snackBar.open('Erro ao rejeitar orçamento', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-error'],
+            });
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(err ? err : 'Erro ao rejeitar orçamento', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        },
+      });
   }
 }

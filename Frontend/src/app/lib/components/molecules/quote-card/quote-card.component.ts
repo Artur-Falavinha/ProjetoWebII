@@ -39,26 +39,4 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class QuoteCardComponent {
   @Input() order?: OrderRequest;
-
-  constructor(
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private solicitacaoService: SolicitacaoService
-  ) {}
-
-  public approveService() {
-    this.order!.situation = SituationEnum.APROVADA;
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open(
-      `Serviço Aprovado no Valor R$ ${this.order?.price}`,
-      'OK',
-      {
-        duration: 5000,
-        panelClass: ['snackbar-success'],
-      }
-    ).afterDismissed().subscribe(() => {
-      this.router.navigate(['/client']);
-    });
-  }
 }

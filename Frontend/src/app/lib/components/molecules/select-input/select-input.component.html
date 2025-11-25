@@ -3,8 +3,8 @@
 
   <mat-select [formControl]="control" required>
     <mat-option [value]="null">{{ placeholder }}</mat-option>
-    <mat-option *ngFor="let option of options" [value]="option[optionValue]">
-      {{ option[optionLabel] }}
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      {{ option.label }}
     </mat-option>
   </mat-select>
 

@@ -21,24 +21,18 @@ import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.s
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentComponent {
-  public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
-
-  public id!: number;
-
   order$!: Observable<OrderRequest | undefined>;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private solicitacaoService: SolicitacaoService
+  ) {
     this.order$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
-      switchMap((id) =>
-        of(this.items.find((v) => v.id === id)).pipe(delay(500))
-      ),
+      switchMap((id) => this.solicitacaoService.buscaPorId(id)),
       tap((order) => {
-        if (!order) {
-          this.router.navigate(['/client']);
-        }
-
-        if (order && order.situation !== SituationEnum.ARRUMADA) {
+        if (!order || order.situation !== SituationEnum.ARRUMADA) {
           this.router.navigate(['/client']);
         }
       })

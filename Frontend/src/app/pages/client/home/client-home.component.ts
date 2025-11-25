@@ -23,8 +23,8 @@ export class ClientHomeComponent implements OnInit {
       const solicitacoesDoCliente = todasSolicitacoes
         .filter(s => s.clientEmail === currentUser.email)
         .sort((a, b) => {
-          const dateA = a.order_date ? new Date(a.order_date).getTime() : 0;
-          const dateB = b.order_date ? new Date(b.order_date).getTime() : 0;
+          const dateA = a.dataCriacao ? new Date(a.dataCriacao).getTime() : 0;
+          const dateB = b.dataCriacao ? new Date(b.dataCriacao).getTime() : 0;
           return dateA - dateB;
         });
       this.items.set(solicitacoesDoCliente);

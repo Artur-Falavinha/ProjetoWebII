@@ -23,7 +23,7 @@
 
     <div class="card-body">
       <div class="categoria-list">
-        <div class="categoria-item" *ngFor="let categoria of categorias">
+        <div class="categoria-item" *ngFor="let categoria of categorias$ | async">
 
           <div class="categoria-info">
             <div class="icon-box">

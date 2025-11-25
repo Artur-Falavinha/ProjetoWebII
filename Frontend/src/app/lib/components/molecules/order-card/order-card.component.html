@@ -4,7 +4,7 @@
       <mat-card-title>{{ order.product }}</mat-card-title>
 
 
-      <mat-card-subtitle>{{ order.order_date }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ order.dataCriacao }}</mat-card-subtitle>
     </mat-card-title-group>
 
     <app-tag [variant]="order.situation" />
@@ -13,8 +13,8 @@
   <mat-card-footer>
     <div class="text-wrap">
       <p>Categoria: {{ order.category }}</p>
-      @if (order.price) {
-      <span>Valor: R$ {{ order.price }} </span>
+      @if (order.orcamentoValor) {
+      <span>Valor: R$ {{ order.orcamentoValor }} </span>
       }
     </div>
 

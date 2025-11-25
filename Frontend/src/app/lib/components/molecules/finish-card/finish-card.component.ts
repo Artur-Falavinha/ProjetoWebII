@@ -12,9 +12,12 @@ import { OrderRequest, SituationEnum } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
+import {
+  getFormattedDate,
+  getFormattedDateOnly,
+  getFormattedTimeOnly,
+} from '@/app/lib/utils/getDateFormatted';
 import { AuthService } from '@/app/lib/services';
-
 
 @Component({
   selector: 'app-finish-card',
@@ -41,36 +44,36 @@ export class FinishCardComponent {
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,
-    private solicitacaoService: SolicitacaoService,
-    private authService: AuthService
+    private solicitacaoService: SolicitacaoService
   ) {}
 
-  public finish() {
-    const user = this.authService.getCurrentUser();
-    const dataHora = getFormattedDate();
-    
-    this.order!.situation = SituationEnum.FINALIZADA;
-    this.order!.completion_date = dataHora;
-
-    if (!this.order!.history) {
-      this.order!.history = [];
-    }
-
-    this.order!.history.push({
-      action: SituationEnum.FINALIZADA,
-      date: getFormattedDateOnly(),
-      time: getFormattedTimeOnly(),
-      description: 'Solicitação finalizada',
-      employee: user?.name
-    });
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open('Solicitação Finalizada com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
-
-    this.router.navigate(['/admin/solicitacoes']);
+  onSubmit() {
+    this.solicitacaoService
+      .patch({
+        id: this.order!.id,
+        status: SituationEnum.FINALIZADA,
+      })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open('Orçamento finalizado com sucesso', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-success'],
+            });
+            this.router.navigate(['/admin/solicitacoes']);
+          } else {
+            this.snackBar.open('Erro ao finalizar solicitação', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-error'],
+            });
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(err ? err : 'Erro ao finalizar situação', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        },
+      });
   }
 }

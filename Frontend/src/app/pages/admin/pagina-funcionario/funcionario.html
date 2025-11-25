@@ -74,7 +74,7 @@
                 <div class="details-grid">
                   <div class="detail-column">
                     <p>Cliente: {{ solicitacao.client }}</p>
-                    <p>Data: {{ solicitacao.order_date }}</p>
+                    <p>Data: {{ solicitacao.dataCriacao }}</p>
                   </div>
                   <div class="detail-column">
                     <p>Categoria: {{ solicitacao.category }}</p>
@@ -82,8 +82,8 @@
                   </div>
                   <div class="detail-column">
                     <p>ID: {{ solicitacao.id }}</p>
-                    @if(solicitacao.price) {
-                    <p>Preço: R$ {{ solicitacao.price | number:'1.2-2' }}</p>
+                    @if(solicitacao.orcamentoValor) {
+                    <p>Preço: R$ {{ solicitacao.orcamentoValor | number:'1.2-2' }}</p>
                     }
                   </div>
                 </div>
@@ -133,7 +133,7 @@
       <!-- Data do Pedido -->
       <div class="detail-item">
         <label>Data do Pedido:</label>
-        <span>{{ solicitacaoSelecionada.order_date }}</span>
+        <span>{{ solicitacaoSelecionada.dataCriacao }}</span>
       </div>
 
       <!-- Status -->
@@ -150,7 +150,7 @@
       <!-- Preço -->
       <div class="detail-item">
         <label>Preço:</label>
-        <span>R$ {{ solicitacaoSelecionada.price | number:'1.2-2' }}</span>
+        <span>R$ {{ solicitacaoSelecionada.orcamentoValor | number:'1.2-2' }}</span>
       </div>
 
       <!-- ID -->

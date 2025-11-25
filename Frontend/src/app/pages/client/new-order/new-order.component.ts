@@ -14,6 +14,4 @@ import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.s
   styleUrl: './new-order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewOrderComponent {
-  public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
-}
+export class NewOrderComponent { }

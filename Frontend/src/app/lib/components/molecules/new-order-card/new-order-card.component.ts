@@ -32,6 +32,8 @@ import { AuthService, CategoriaService } from '@/app/lib/services';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { SituationEnum } from '@/app/@types';
 import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
+import { map, Observable } from 'rxjs';
+import { CategoriaResponse } from '@/app/@types/api/CategoriaResponse';
 
 @Component({
   selector: 'app-new-order-card',
@@ -49,15 +51,14 @@ import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
     MatInputModule,
     SelectInputComponent,
     TextAreaInputComponent,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   templateUrl: './new-order-card.component.html',
   styleUrls: ['./new-order-card.component.scss'],
 })
 export class NewOrderCardComponent implements OnInit {
   newOrderForm!: FormGroup;
-
-  public categories: any[] = [];
+  public categories$!: Observable<CategoriaResponse[] | any>;
 
   constructor(
     private fb: FormBuilder,
@@ -66,9 +67,7 @@ export class NewOrderCardComponent implements OnInit {
     private solicitacaoService: SolicitacaoService,
     private categoriaService: CategoriaService,
     private snackBar: MatSnackBar
-  ) {
-    this.categories = this.categoriaService.listarTodas();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.newOrderForm = this.fb.group({
@@ -76,6 +75,8 @@ export class NewOrderCardComponent implements OnInit {
       category: ['', [Validators.required]],
       issue_description: ['', [Validators.required]],
     });
+
+    this.categories$ = this.categoriaService.listarTodas();
   }
 
   public get productControl() {
@@ -96,23 +97,33 @@ export class NewOrderCardComponent implements OnInit {
       return;
     }
 
-    const user = this.authService.getCurrentUser();
-
-    this.solicitacaoService.inserir({
-      client: user!.name,
-      clientEmail: user!.email,
-      order_date: getFormattedDate(),
-      category: this.categoriaService.buscaPorId(this.categoryControl.value)!.label,
-      product: this.productControl.value,
-      issue_description: this.issue_descriptionControl.value,
-      situation: SituationEnum.ABERTA,
-    });
-
-    this.snackBar.open('Solicitação enviada com sucesso!', 'Fechar', {
-      duration: 5000,
-      panelClass: ['snackbar-success']
-    });
-
-    this.router.navigate(['/client']);
+    this.solicitacaoService
+      .inserir({
+        categoriaId: this.categoryControl.value,
+        descricaoEquipamento: this.productControl.value,
+        descricaoDefeito: this.issue_descriptionControl.value,
+      })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open('Solicitação enviada com sucesso', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-success'],
+            });
+            this.router.navigate(['/client']);
+          } else {
+            this.snackBar.open('Erro ao enviar solicitação', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-error'],
+            });
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(err ? err : 'Erro ao enviar solicitação', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        },
+      });
   }
 }

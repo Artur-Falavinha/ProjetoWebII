@@ -7,7 +7,13 @@ import {
   TagComponent,
   TextAreaInputComponent,
 } from '@/app/lib/components';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
@@ -17,7 +23,11 @@ import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@/app/lib/services';
-import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
+import {
+  getFormattedDate,
+  getFormattedDateOnly,
+  getFormattedTimeOnly,
+} from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-efetuar-manutencao-card',
@@ -34,7 +44,7 @@ import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/
     MatInputModule,
     TagComponent,
     MatIcon,
-    TextAreaInputComponent
+    TextAreaInputComponent,
   ],
   templateUrl: './efetuar-manutencao-card.component.html',
   styleUrls: ['./efetuar-manutencao-card.component.scss'],
@@ -48,8 +58,7 @@ export class EfetuarManutencaoCardComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private solicitacaoService: SolicitacaoService,
-    private snackBar: MatSnackBar,
-    private authService: AuthService
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -73,33 +82,33 @@ export class EfetuarManutencaoCardComponent implements OnInit {
       return;
     }
 
-    const user = this.authService.getCurrentUser();
-    const dataHora = getFormattedDate();
-
-    this.order!.situation = SituationEnum.ARRUMADA;
-    this.order!.fix_description = this.fixDescriptionControl!.value;
-    this.order!.orientation = this.orientationControl!.value;
-    this.order!.completion_date = dataHora;
-
-    if (!this.order!.history) {
-      this.order!.history = [];
-    }
-
-    this.order!.history.push({
-      action: SituationEnum.ARRUMADA,
-      date: getFormattedDateOnly(),
-      time: getFormattedTimeOnly(),
-      description: 'Manutenção concluída',
-      employee: user?.name
-    });
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open('Manutenção Concluída com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
-
-    this.router.navigate(['/admin/solicitacoes']);
+    this.solicitacaoService
+      .arrumar({
+        id: this.order!.id,
+        descricaoManutencao: this.fixDescriptionControl.value,
+        orientacaoCliente: this.orientationControl.value,
+      })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open('Manutenção efetuada com sucesso', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-success'],
+            });
+            this.router.navigate(['/admin/solicitacoes']);
+          } else {
+            this.snackBar.open('Erro ao efetuar Manutenção', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-error'],
+            });
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(err ? err : 'Erro ao efetuar Manutenção', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        },
+      });
   }
 }

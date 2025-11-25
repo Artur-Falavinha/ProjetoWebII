@@ -23,7 +23,7 @@ export class SelectInputComponent {
   @Input() label: string = '';
   @Input() placeholder: string = '--';
   @Input() appearance: 'fill' | 'outline' = 'outline';
-  @Input() options: any[] = [];
+  @Input() options: {value: number; label: string;}[] = [];
   @Input() optionLabel: string = 'label';
   @Input() optionValue: string = 'value';
   @Input() errorMessages: { [key: string]: string } = {};

@@ -8,16 +8,18 @@ import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { InserirCategoriaComponent } from '../inserir-categoria/inserir-categoria.component';
 import { EditarCategoriaComponent } from '../editar-categoria/editar-categoria.component';
+import { CategoriaResponse } from '@/app/@types/api/CategoriaResponse';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-listar-categoria',
   standalone: true,
   imports: [MatIconModule, SidebarComponent, CommonModule, RouterModule],
   templateUrl: './listar-categoria.component.html',
-  styleUrl: './listar-categoria.component.scss'
+  styleUrl: './listar-categoria.component.scss',
 })
 export class ListarCategoriaComponent implements OnInit {
-  categorias: CategoriaRequest[] = [];
+  categorias$!: Observable<CategoriaResponse[]>;
 
   constructor(
     private categoriaService: CategoriaService,
@@ -25,43 +27,53 @@ export class ListarCategoriaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.categorias = this.listarTodas();
+    this.atualizarCategorias();
   }
 
-  listarTodas(): CategoriaRequest[] {
-    return this.categoriaService.listarTodas();
+  atualizarCategorias(): void {
+    this.categorias$ = this.categoriaService.listarTodas();
   }
 
   abrirModalInserir(): void {
     const dialogRef = this.dialog.open(InserirCategoriaComponent, {
-      width: '400px'
+      width: '400px',
     });
 
     dialogRef.componentInstance.close.subscribe(() => dialogRef.close());
 
     dialogRef.afterClosed().subscribe(() => {
-      this.categorias = this.listarTodas();
+      this.atualizarCategorias();
     });
   }
 
-  abrirModalEditar(categoria: CategoriaRequest): void {
+  abrirModalEditar(categoria: CategoriaResponse): void {
     const dialogRef = this.dialog.open(EditarCategoriaComponent, {
       width: '400px',
-      data: categoria
+      data: categoria,
     });
 
     dialogRef.componentInstance.close.subscribe(() => dialogRef.close());
 
     dialogRef.afterClosed().subscribe(() => {
-      this.categorias = this.listarTodas();
+      this.atualizarCategorias();
     });
   }
 
-  remover($event: any, categoria: CategoriaRequest): void {
-    $event.preventDefault();
-    if(confirm(`Deseja remover a categoria ${categoria.label}?`)){
-      this.categoriaService.remover(categoria.value!);
-      this.categorias = this.listarTodas();
+  remover(event: any, categoria: CategoriaResponse): void {
+    event.preventDefault();
+
+    if (!confirm(`Deseja remover a categoria ${categoria.label}?`)) {
+      return;
     }
+
+    this.categoriaService.remover(categoria.value!).subscribe({
+      next: () => {
+        // Atualiza lista após remover
+        this.atualizarCategorias();
+      },
+      error: () => {
+        alert('Erro ao remover categoria');
+      },
+    });
   }
 }

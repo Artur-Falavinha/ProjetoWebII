@@ -52,7 +52,7 @@
             <mat-icon>attach_money</mat-icon>
             <div class="details-text">
               <p>Valor pago</p>
-              <span>R$ {{ order.price }}</span>
+              <span>R$ {{ order.orcamentoValor }}</span>
             </div>
           </div>
         </div>  
@@ -64,7 +64,7 @@
           <mat-icon>today</mat-icon>
           <div class="details-text">
             <p>Pagamento realizado em: </p>
-            <span>{{ order.payment_date }}</span>
+            <span>{{ order.dataResposta }}</span>
           </div>
         </div>
 
@@ -121,7 +121,7 @@
           title="Finalizar solicitação"
           icon="check"
           variant="success"
-          (click)="finish()"
+          (click)="onSubmit()"
         />
       </div>
     </mat-card-footer>

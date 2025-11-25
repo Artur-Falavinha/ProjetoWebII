@@ -17,7 +17,7 @@
       </div>
       <div>
         <h4>Data</h4>
-        <p>{{ solicitacao.order_date }}</p>
+        <p>{{ solicitacao.dataCriacao }}</p>
       </div>
       @if (solicitacao.atributed_employee) {
       <div>
@@ -25,10 +25,10 @@
         <p>{{ solicitacao.atributed_employee }}</p>
       </div>
       }
-      @if (solicitacao.price) {
+      @if (solicitacao.orcamentoValor) {
       <div>
         <h4>Valor</h4>
-        <div class="price">R$ {{ solicitacao.price }}</div>
+        <div class="orcamentoValor">R$ {{ solicitacao.orcamentoValor }}</div>
       </div>
       }
     </div>
@@ -94,7 +94,7 @@
         <!-- Data/Hora -->
         <div class="detail-item">
           <label>Data/Hora:</label>
-          <span>{{ solicitacao.order_date }}</span>
+          <span>{{ solicitacao.dataCriacao }}</span>
         </div>
 
         <!-- Técnico responsável -->

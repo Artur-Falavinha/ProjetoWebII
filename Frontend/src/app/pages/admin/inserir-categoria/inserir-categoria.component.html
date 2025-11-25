@@ -1,27 +1,39 @@
 <div class="modal">
   <div class="modal-content">
-
     <h2>Adicionar Nova Categoria</h2>
     <p>Crie uma nova categoria para classificar equipamentos</p>
 
-    <form #formCategoria="ngForm" (ngSubmit)="inserir()">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="app-field">
         <mat-label>Nome da Categoria</mat-label>
         <input
           matInput
-          name="nome"
-          [(ngModel)]="categoria.label"
+          formControlName="nome"
           required
           placeholder="Ex: Eletrônicos, Eletrodomésticos..."
         />
-        <mat-error *ngIf="formCategoria.submitted && !categoria.label">
+        <mat-error *ngIf="nomeControl.hasError('required') && nomeControl.touched">
           O nome da categoria é obrigatório.
+        </mat-error>
+        <mat-error *ngIf="nomeControl.hasError('maxLength') && nomeControl.touched">
+          O nome deve ter no máximo 50 caracteres.
         </mat-error>
       </mat-form-field>
 
+      <div *ngIf="erroGeral" class="error-message">{{ erroGeral }}</div>
+
       <div class="actions">
-        <button mat-button type="button" (click)="closeModal()">Cancelar</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="formCategoria.invalid">Adicionar</button>
+        <button mat-button type="button" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid"
+        >
+          Adicionar
+        </button>
       </div>
     </form>
   </div>

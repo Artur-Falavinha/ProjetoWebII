@@ -22,7 +22,7 @@
           [control]="categoryControl"
           label="Categoria"
           placeholder="Selecione a categoria do equipamento"
-          [options]="categories"
+          [options]="categories$ | async"
         />
         <app-text-area-input
           [control]="issue_descriptionControl"

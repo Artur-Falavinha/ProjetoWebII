@@ -11,13 +11,13 @@
         <p>Rejeitar Orçamento</p>
         <span
           >Você está prestes a rejeitar o orçamento de R$
-          {{ order.price }}</span
+          {{ order.orcamentoValor }}</span
         >
       </div>
       <div class="details-box">
         <p>Equipamento: {{ order.product }}</p>
         <span>Técnico: {{ order.atributed_employee }}</span>
-        <span>Valor: R$ {{ order.price }}</span>
+        <span>Valor: R$ {{ order.orcamentoValor }}</span>
       </div>
       <form [formGroup]="rejectForm" (ngSubmit)="onSubmit()" class="form-wrap">
         <app-text-area-input

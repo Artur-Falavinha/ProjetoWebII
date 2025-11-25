@@ -69,15 +69,12 @@ export class ListarSolicitacoesComponent implements OnInit, OnDestroy {
       dataFim: [null]
     });
     
-    this.solicitacaoService.observeSolicitacoes()
+    this.solicitacaoService.listarTodas()
       .pipe(takeUntil(this.destroy$))
       .subscribe((solicitacoes) => {
         this.todasSolicitacoes = this.prepararSolicitacoes(solicitacoes);
         this.aplicarFiltro(this.filtroAtivo);
       });
-
-    this.solicitacaoService.sincronizar().subscribe();
-    this.aplicarFiltro('TODAS');
   }
 
   ngOnDestroy(): void {
@@ -95,8 +92,8 @@ export class ListarSolicitacoesComponent implements OnInit, OnDestroy {
         return true;
       })
       .sort((a, b) => {
-        const dateA = a.order_date ? new Date(a.order_date).getTime() : 0;
-        const dateB = b.order_date ? new Date(b.order_date).getTime() : 0;
+        const dateA = a.dataCriacao ? new Date(a.dataCriacao).getTime() : 0;
+        const dateB = b.dataCriacao ? new Date(b.dataCriacao).getTime() : 0;
         return dateA - dateB;
       });
   }
@@ -109,8 +106,8 @@ export class ListarSolicitacoesComponent implements OnInit, OnDestroy {
     switch (tipo) {
       case 'HOJE':
         this.solicitacoes = this.todasSolicitacoes.filter(s => {
-          if (!s.order_date) return false;
-          const dataSolicitacao = this.parseDate(s.order_date);
+          if (!s.dataCriacao) return false;
+          const dataSolicitacao = this.parseDate(s.dataCriacao);
           dataSolicitacao.setHours(0, 0, 0, 0);
           return dataSolicitacao.getTime() === hoje.getTime();
         });
@@ -132,8 +129,8 @@ export class ListarSolicitacoesComponent implements OnInit, OnDestroy {
 
     this.filtroAtivo = 'PERIODO';
     this.solicitacoes = this.todasSolicitacoes.filter(s => {
-      if (!s.order_date) return false;
-      const dataSolicitacao = this.parseDate(s.order_date);
+      if (!s.dataCriacao) return false;
+      const dataSolicitacao = this.parseDate(s.dataCriacao);
       return dataSolicitacao >= dataInicio && dataSolicitacao <= dataFim;
     });
   }

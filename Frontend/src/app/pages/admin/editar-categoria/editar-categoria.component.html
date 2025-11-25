@@ -4,21 +4,25 @@
     <h2>Editar Categoria</h2>
     <p>Altere o nome da categoria</p>
 
-    <form #formCategoria="ngForm" (ngSubmit)="atualizar()">
-      <mat-form-field appearance="outline" class="app-field">
-        <mat-label>Nome da Categoria</mat-label>
-        <input
-          matInput
-          name="nome"
-          [(ngModel)]="categoria.label"
-          #nome="ngModel"
-          required
-        />
-      </mat-form-field>
+    <form [formGroup]="form" (ngSubmit)="atualizar()">
+
+      <app-input
+        [control]="nomeControl"
+        label="Nome da Categoria"
+        placeholder="Digite o nome da categoria"
+        [errorMessages]="{
+          required: 'O nome da categoria é obrigatório.',
+          maxLength: 'O nome deve ter no máximo 50 caracteres.'
+        }"
+        [hint]="'Informe o nome da categoria'"
+        appearance="outline"
+      ></app-input>
+
+      <div *ngIf="erroGeral" class="error-message">{{ erroGeral }}</div>
 
       <div class="actions">
         <button mat-button type="button" (click)="closeModal()">Cancelar</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="formCategoria.invalid">Salvar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Salvar</button>
       </div>
     </form>
   </div>

@@ -14,31 +14,25 @@ import { BudgetCardComponent } from '@/app/lib/components/molecules/budget-card/
     NgIf,
     SidebarComponent,
     ButtonComponent,
-    BudgetCardComponent
+    BudgetCardComponent,
   ],
   templateUrl: './efetuar-orcamento.component.html',
   styleUrl: './efetuar-orcamento.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EfetuarOrcamentoComponent {
-  public items: OrderRequest[] = inject(SolicitacaoService).listarTodas();
-
-  public id!: number;
-
   order$!: Observable<OrderRequest | undefined>;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private solicitacaoService: SolicitacaoService
+  ) {
     this.order$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
-      switchMap((id) =>
-        of(this.items.find((v) => v.id === id)).pipe(delay(500))
-      ),
+      switchMap((id) => this.solicitacaoService.buscaPorId(id)),
       tap((order) => {
-        if (!order) {
-          this.router.navigate(['/admin/solicitacoes']);
-        }
-
-        if (order && order.situation !== SituationEnum.ABERTA) {
+        if (!order || order.situation !== SituationEnum.ABERTA) {
           this.router.navigate(['/admin/solicitacoes']);
         }
       })

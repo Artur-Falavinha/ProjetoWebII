@@ -1,5 +1,5 @@
 export type SolicitacaoRequest = {
-  produto: string;
+  descricaoEquipamento: string;
   categoriaId: number;
   descricaoDefeito: string;
 }

@@ -18,7 +18,11 @@ import { OrderRequest, SituationEnum } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/app/lib/utils/getDateFormatted';
+import {
+  getFormattedDate,
+  getFormattedDateOnly,
+  getFormattedTimeOnly,
+} from '@/app/lib/utils/getDateFormatted';
 
 @Component({
   selector: 'app-payment-card',
@@ -42,34 +46,38 @@ export class PaymentCardComponent {
   @Input() order?: OrderRequest;
 
   constructor(
-    private fb: FormBuilder,
     private router: Router,
     private solicitacaoService: SolicitacaoService,
     private snackBar: MatSnackBar
   ) {}
 
-  onSubmit() {
-    this.order!.situation = SituationEnum.PAGA;
-    this.order!.payment_date = getFormattedDate();
-
-    if (!this.order!.history) {
-      this.order!.history = [];
-    }
-
-    this.order!.history.push({
-      action: SituationEnum.PAGA,
-      date: getFormattedDateOnly(),
-      time: getFormattedTimeOnly(),
-      description: 'Pagamento confirmado'
-    });
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open('Pagamento Confirmado com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
-
-    this.router.navigate(['/client']);
+  onSubmit(): void {
+    this.solicitacaoService
+      .patch({
+        id: this.order!.id,
+        status: SituationEnum.PAGA,
+      })
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open('Solicitação paga com Sucesso', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-success'],
+            });
+            this.router.navigate(['/admin/solicitacoes']);
+          } else {
+            this.snackBar.open('Erro ao pagar solicitação', 'OK', {
+              duration: 5000,
+              panelClass: ['snackbar-error'],
+            });
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(err ? err : 'Erro ao pagar solicitação', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        },
+      });
   }
 }

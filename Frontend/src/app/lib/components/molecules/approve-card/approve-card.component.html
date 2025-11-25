@@ -18,7 +18,7 @@
         </div>
                 <div class="details-wrap">
           <p>Horário orçamento</p>
-          <span>{{ order.budge_date }}</span>
+          <span>{{ order.dataResposta }}</span>
         </div>
         @if (order.atributed_employee) {
         <div class="details-wrap">
@@ -33,7 +33,7 @@
           <mat-icon>attach_money</mat-icon>
           <div class="quote-text">
             <p>Valor aprovado</p>
-            <span>R$ {{ order.price }}</span>
+            <span>R$ {{ order.orcamentoValor }}</span>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@
           title="Aprovar solicitação"
           icon="check"
           variant="success"
-          (click)="approve()"
+          (click)="onSubmit()"
         />
       </div>
     </mat-card-footer>
