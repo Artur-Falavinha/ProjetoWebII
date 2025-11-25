@@ -9,7 +9,11 @@ public class FuncionarioMapper {
             funcionario.getUserId(),
             funcionario.getNome(),
             funcionario.getEmail(),
-            funcionario.getDataNascimento()
+            funcionario.getDataNascimento(),
+            funcionario.getDataAdmissao(),
+            funcionario.getCargo(),
+            funcionario.getTelefone(),
+            funcionario.isStatus()
         );
     }
 
@@ -17,8 +21,10 @@ public class FuncionarioMapper {
         com.tads4.webdois.domain.Funcionario funcionario = new com.tads4.webdois.domain.Funcionario();
         funcionario.setNome(request.nome());
         funcionario.setEmail(request.email());
-        funcionario.setSenha(request.senha());
         funcionario.setDataNascimento(request.dataNascimento());
+        funcionario.setDataAdmissao(request.dataAdmissao());
+        funcionario.setCargo(request.cargo());
+        funcionario.setTelefone(request.telefone());
         return funcionario;
     }
 }

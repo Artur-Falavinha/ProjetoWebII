@@ -1,6 +1,7 @@
 package com.tads4.webdois.infra.service;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,41 +28,44 @@ public class FuncionarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-        public List<FuncionarioResponse> getAllFuncionariosAtivos() {
-            return funcionarioRepository.findByStatus(true)
-                .stream()
-                .map(FuncionarioMapper::toResponse)
-                .toList();
+    public List<FuncionarioResponse> getAllFuncionariosAtivos() {
+        return funcionarioRepository.findByStatus(true)
+            .stream()
+            .map(FuncionarioMapper::toResponse)
+            .toList();
     }
 
     @Transactional(readOnly = true)
-        public List<FuncionarioResponse> getAllFuncionariosAtivosMenosEu(Integer id) {
-            return funcionarioRepository.findByStatus(true)
-                .stream()
-                .filter(f -> !f.getUserId().equals(id))
-                .map(FuncionarioMapper::toResponse)
-                .toList();
+    public List<FuncionarioResponse> getAllFuncionariosAtivosMenosEu(Integer id) {
+        return funcionarioRepository.findByStatus(true)
+            .stream()
+            .filter(f -> !f.getUserId().equals(id))
+            .map(FuncionarioMapper::toResponse)
+            .toList();
     }
     
     @Transactional(readOnly = true)
-        public FuncionarioResponse buscarPorId(Integer id) {
-            Funcionario funcionario = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
-            return FuncionarioMapper.toResponse(funcionario);
+    public FuncionarioResponse buscarPorId(Integer id) {
+        Funcionario funcionario = funcionarioRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
+        return FuncionarioMapper.toResponse(funcionario);
     }
 
     @Transactional
     public FuncionarioResponse addNewFuncionario(FuncionarioRequest funcionario) {
-
         if (usuarioRepository.existsByEmail(funcionario.email())){
             throw new ConflictException("Funcionário já existe");
-        } 
-
+        }
         Funcionario newFuncionario = FuncionarioMapper.fromRequest(funcionario);
-        newFuncionario.setSenha(passwordEncoder.encode(newFuncionario.getSenha()));
+        String senha = String.format("%04d", new Random().nextInt(10000));
+
+        emailService.sendPasswordEmail(newFuncionario.getNome(), newFuncionario.getEmail(), senha);
         newFuncionario.setStatus(true);
         funcionarioRepository.save(newFuncionario);
         return FuncionarioMapper.toResponse(newFuncionario);
@@ -79,8 +83,10 @@ public class FuncionarioService {
 
         funcionarioExistente.setNome(funcionarioAtualizado.nome());
         funcionarioExistente.setEmail(funcionarioAtualizado.email());
-        funcionarioExistente.setSenha(passwordEncoder.encode(funcionarioAtualizado.senha()));
         funcionarioExistente.setDataNascimento(funcionarioAtualizado.dataNascimento());
+        funcionarioExistente.setDataAdmissao(funcionarioAtualizado.dataAdmissao());
+        funcionarioExistente.setCargo(funcionarioAtualizado.cargo());
+        funcionarioExistente.setTelefone(funcionarioAtualizado.telefone());
         Funcionario saved = funcionarioRepository.save(funcionarioExistente);
         return FuncionarioMapper.toResponse(saved);
     }

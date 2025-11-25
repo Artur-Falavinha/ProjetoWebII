@@ -19,10 +19,16 @@ public record FuncionarioRequest(
     @Email(message = "Email inválido")
     String email,
 
-    @NotBlank(message = "Senha é obrigatória")
-    @Size(min = 6, max = 100, message = "Senha deve ter entre 6 e 100 caracteres")
-    String senha,
-
     @NotNull(message = "Data de nascimento é obrigatória")
-    LocalDate dataNascimento
+    LocalDate dataNascimento,
+
+    @NotNull(message = "Data de admissão é obrigatória")
+    LocalDate dataAdmissao,
+
+    @NotBlank(message = "Cargo é obrigatório")
+    String cargo,
+
+    @NotBlank(message = "Telefone é obrigatório")
+    @Size(max = 15, message = "Telefone deve ter no máximo 15 caracteres")
+    String telefone
 ) {}

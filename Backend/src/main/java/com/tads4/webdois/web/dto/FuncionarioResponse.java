@@ -6,5 +6,9 @@ public record FuncionarioResponse(
     Integer id,
     String nome,
     String email,
-    LocalDate dataNascimento
+    LocalDate dataNascimento,
+    LocalDate dataAdmissao,
+    String cargo,
+    String telefone,
+    Boolean status
 ) {}

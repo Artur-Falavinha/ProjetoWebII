@@ -19,6 +19,15 @@ public class Funcionario extends Usuario {
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
+    @Column(name = "data_admissao", nullable = false)
+    private LocalDate dataAdmissao;
+
+    @Column(name = "cargo", nullable = false)
+    private String cargo;
+
+    @Column(name = "telefone", length = 15, nullable = false)
+    private String telefone;
+
     public Funcionario(){
         this.setRole(RoleUsuario.FUNCIONARIO);
     }

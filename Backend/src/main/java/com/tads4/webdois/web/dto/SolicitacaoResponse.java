@@ -7,8 +7,8 @@ import com.tads4.webdois.domain.enums.StatusSolicitacao;
 
 public record SolicitacaoResponse(
     Integer id,
-    String cliente,
-    String clienteEmail,
+    String client,
+    String clientEmail,
     String funcionario,
     String funcionarioEmail,
     Integer categoriaId,

@@ -16,7 +16,6 @@ import com.tads4.webdois.infra.repository.ClienteRepository;
 import com.tads4.webdois.infra.repository.FuncionarioRepository;
 import com.tads4.webdois.infra.repository.UsuarioRepository;
 
-
 @Service
 public class SeedService {
 
@@ -38,14 +37,13 @@ public class SeedService {
     @Autowired
     ClienteRepository clienteRepository;
 
-
-
-
     public Funcionario createAdminUser() {
-        if (!usuarioRepository.existsByEmail("a@a.c"))
-        {
+        if (!usuarioRepository.existsByEmail("a@a.c")) {
             Funcionario f = new Funcionario();
             f.setDataNascimento(LocalDate.now());
+            f.setDataAdmissao(LocalDate.now());
+            f.setCargo("te");
+            f.setTelefone("41999425943");
             f.setRole(RoleUsuario.FUNCIONARIO);
             f.setEmail("a@a.c");
             f.setNome("adm");
@@ -57,13 +55,15 @@ public class SeedService {
         return null;
     }
 
-
     public void createDefaultFuncionarios() {
         if (!usuarioRepository.existsByEmail("maria@empresa.com")) {
             Funcionario maria = new Funcionario();
             maria.setNome("Maria");
             maria.setEmail("maria@empresa.com");
             maria.setSenha(passwordEncoder.encode("1234"));
+            maria.setDataAdmissao(LocalDate.now());
+            maria.setCargo("te");
+            maria.setTelefone("41999425943");
             maria.setDataNascimento(LocalDate.of(1990, 1, 15));
             maria.setRole(RoleUsuario.FUNCIONARIO);
             maria.setStatus(true);
@@ -74,6 +74,9 @@ public class SeedService {
             Funcionario mario = new Funcionario();
             mario.setNome("Mário");
             mario.setEmail("mario@empresa.com");
+            mario.setDataAdmissao(LocalDate.now());
+            mario.setCargo("te");
+            mario.setTelefone("41999425943");
             mario.setSenha(passwordEncoder.encode("4567"));
             mario.setDataNascimento(LocalDate.of(1985, 5, 20));
             mario.setRole(RoleUsuario.FUNCIONARIO);
@@ -82,7 +85,6 @@ public class SeedService {
         }
     }
 
-    
     public void createDefaultClientes() {
         if (!usuarioRepository.existsByEmail("joao@cliente.com")) {
             Cliente joao = new Cliente();
