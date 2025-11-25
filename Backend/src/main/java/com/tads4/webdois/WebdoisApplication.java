@@ -23,6 +23,8 @@ public class WebdoisApplication {
 
 			seedService.createDefaultClientes();
 
+			seedService.createDefaultCategorias();
+
 			// seedService.createDefaultEquipments();
 
 			seedService.createAdminUser();

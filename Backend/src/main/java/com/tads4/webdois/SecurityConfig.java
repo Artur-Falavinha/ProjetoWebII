@@ -40,7 +40,7 @@
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .requestMatchers("/funcionario/**").permitAll()
                     // .requestMatchers("/cliente/**").permitAll()
-                    // .requestMatchers("/categoria/**").permitAll()
+                     .requestMatchers("/categoria/**").permitAll()
                     //.requestMatchers("/funcionario/**").hasAnyAuthority("FUNCIONARIO")
                     //.requestMatchers("/cliente/**").hasAnyAuthority("FUNCIONARIO", "CLIENTE")
                     .requestMatchers(HttpMethod.GET, "/auth/me").hasAnyAuthority("CLIENTE", "FUNCIONARIO")

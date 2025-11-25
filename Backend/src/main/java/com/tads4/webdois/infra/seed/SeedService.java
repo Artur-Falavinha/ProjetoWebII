@@ -10,10 +10,15 @@ import org.springframework.stereotype.Service;
 import com.tads4.webdois.domain.Cliente;
 import com.tads4.webdois.domain.Endereco;
 import com.tads4.webdois.domain.Funcionario;
+import com.tads4.webdois.domain.Categoria;
+import com.tads4.webdois.domain.Solicitacao;
+import com.tads4.webdois.domain.LogHistorico;
 import com.tads4.webdois.domain.enums.RoleUsuario;
 import com.tads4.webdois.infra.repository.CategoriaRepository;
 import com.tads4.webdois.infra.repository.ClienteRepository;
 import com.tads4.webdois.infra.repository.FuncionarioRepository;
+import com.tads4.webdois.infra.repository.LogHistoricoRepository;
+import com.tads4.webdois.infra.repository.SolicitacaoRepository;
 import com.tads4.webdois.infra.repository.UsuarioRepository;
 
 @Service
@@ -36,6 +41,12 @@ public class SeedService {
 
     @Autowired
     ClienteRepository clienteRepository;
+
+    @Autowired
+    SolicitacaoRepository solicitacaoRepository;
+
+    @Autowired
+    LogHistoricoRepository logHistoricoRepository;
 
     public Funcionario createAdminUser() {
         if (!usuarioRepository.existsByEmail("a@a.c")) {
@@ -173,6 +184,38 @@ public class SeedService {
             endJoaquina.setUf("PR");
             joaquina.setEndereco(endJoaquina);
             clienteRepository.save(joaquina);
+        }
+    }
+
+    public void createDefaultCategorias() {
+        if (!categoriaEquipamentoRepo.existsByNome("Notebook")) {
+            Categoria notebook = new Categoria();
+            notebook.setNome("Notebook");
+            categoriaEquipamentoRepo.save(notebook);
+        }
+
+        if (!categoriaEquipamentoRepo.existsByNome("Desktop")) {
+            Categoria desktop = new Categoria();
+            desktop.setNome("Desktop");
+            categoriaEquipamentoRepo.save(desktop);
+        }
+
+        if (!categoriaEquipamentoRepo.existsByNome("Impressora")) {
+            Categoria impressora = new Categoria();
+            impressora.setNome("Impressora");
+            categoriaEquipamentoRepo.save(impressora);
+        }
+
+        if (!categoriaEquipamentoRepo.existsByNome("Mouse")) {
+            Categoria mouse = new Categoria();
+            mouse.setNome("Mouse");
+            categoriaEquipamentoRepo.save(mouse);
+        }
+
+        if (!categoriaEquipamentoRepo.existsByNome("Teclado")) {
+            Categoria teclado = new Categoria();
+            teclado.setNome("Teclado");
+            categoriaEquipamentoRepo.save(teclado);
         }
     }
 }
