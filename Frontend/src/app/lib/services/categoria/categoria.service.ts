@@ -1,50 +1,31 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CategoriaRequest } from '@/app/@types';
-
-const LS_CHAVE = 'categorias';
+import { CategoriaHttpService } from './categoria-http.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoriaService {
-  constructor() { }
+  constructor(private httpService: CategoriaHttpService) { }
 
-  listarTodas() : CategoriaRequest[] {
-    const categorias = localStorage[LS_CHAVE];
-    return categorias ? JSON.parse(categorias) : [];
+  listarTodas(): Observable<CategoriaRequest[] | null> {
+    return this.httpService.listar();
   }
 
-  inserir(categoria: CategoriaRequest): void {
-    const categorias = this.listarTodas();
-    if (categorias.length === 0) {
-      categoria.value = 1;
-    } else {
-      const maxId = Math.max(...categorias.map((c) => c.value));
-      categoria.value = maxId + 1;
-    }
-    categorias.push(categoria);
-    localStorage.setItem(LS_CHAVE, JSON.stringify(categorias));
+  inserir(categoria: CategoriaRequest): Observable<CategoriaRequest | null> {
+    return this.httpService.inserir(categoria);
   }
 
-  buscaPorId(value: number): CategoriaRequest | undefined {
-    const categorias = this.listarTodas();
-    return categorias.find((categoria) => categoria.value === value);
+  buscaPorId(value: number): Observable<CategoriaRequest | null> {
+    return this.httpService.buscarPorId(value);
   }
   
-  atualizar(categoria: CategoriaRequest): void {       
-    const categorias = this.listarTodas();
-    categorias.forEach((obj, index, objs) => {
-      if (categoria.value === obj.value) {
-        objs[index] = categoria;
-      }
-    });
-
-    localStorage[LS_CHAVE] = JSON.stringify(categorias);
+  atualizar(categoria: CategoriaRequest): Observable<CategoriaRequest | null> {
+    return this.httpService.alterar(categoria.value, categoria);
   }
 
-  remover(value: number): void {
-    let categorias = this.listarTodas();
-    categorias = categorias.filter((categoria) => categoria.value !== value);
-    localStorage[LS_CHAVE] = JSON.stringify(categorias);
+  remover(value: number): Observable<CategoriaRequest | null> {
+    return this.httpService.remover(value);
   }
 }

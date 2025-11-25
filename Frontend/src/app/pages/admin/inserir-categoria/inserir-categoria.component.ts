@@ -35,8 +35,9 @@ export class InserirCategoriaComponent {
 
   inserir(): void {
     if (this.formCategoria.form.valid) {
-      this.categoriaService.inserir(this.categoria);
-      this.close.emit(); // fecha o modal
+      this.categoriaService.inserir(this.categoria).subscribe(() => {
+        this.close.emit();
+      });
     }
   }
   closeModal(): void {

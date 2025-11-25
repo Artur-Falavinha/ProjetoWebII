@@ -28,7 +28,7 @@ public class ClienteController {
     @Autowired
     private ClienteService service;
 
-    @GetMapping("/cliente")
+    @GetMapping("/clientes")
     @Operation(summary = "Listar todos os clientes", description = "Retorna uma lista de clientes cadastrados.")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
     @SecurityRequirement(name = "bearerAuth")
@@ -37,7 +37,7 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
-    @GetMapping("/cliente/{id}")
+    @GetMapping("/clientes/{id}")
     @Operation(summary = "Buscar cliente por ID", description = "Retorna um cliente pelo seu ID.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Cliente encontrado"),
@@ -49,7 +49,7 @@ public class ClienteController {
         return ResponseEntity.ok(cliente);
     }
 
-    @PutMapping("/cliente/{id}")
+    @PutMapping("/clientes/{id}")
     @Operation(summary = "Atualizar cliente", description = "Atualiza os dados de um cliente existente.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso"),
@@ -61,7 +61,7 @@ public class ClienteController {
         return ResponseEntity.ok(updatedCliente);
     }
 
-    @DeleteMapping("/cliente/{id}")
+    @DeleteMapping("/clientes/{id}")
     @Operation(summary = "Excluir cliente", description = "Remove um cliente pelo ID.")
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "Cliente excluído com sucesso"),

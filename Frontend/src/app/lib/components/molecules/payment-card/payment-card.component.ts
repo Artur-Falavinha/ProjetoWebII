@@ -49,27 +49,20 @@ export class PaymentCardComponent {
   ) {}
 
   onSubmit() {
-    this.order!.situation = SituationEnum.PAGA;
-    this.order!.payment_date = getFormattedDate();
-
-    if (!this.order!.history) {
-      this.order!.history = [];
-    }
-
-    this.order!.history.push({
-      action: SituationEnum.PAGA,
-      date: getFormattedDateOnly(),
-      time: getFormattedTimeOnly(),
-      description: 'Pagamento confirmado'
+    this.solicitacaoService.atualizarStatus(this.order!.id, SituationEnum.PAGA).subscribe({
+      next: () => {
+        this.snackBar.open('Pagamento Confirmado com Sucesso', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-success'],
+        });
+        this.router.navigate(['/client']);
+      },
+      error: (err) => {
+        this.snackBar.open('Erro ao confirmar pagamento', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-error'],
+        });
+      }
     });
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open('Pagamento Confirmado com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
-
-    this.router.navigate(['/client']);
   }
 }

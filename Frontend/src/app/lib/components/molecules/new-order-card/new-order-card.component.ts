@@ -66,11 +66,17 @@ export class NewOrderCardComponent implements OnInit {
     private solicitacaoService: SolicitacaoService,
     private categoriaService: CategoriaService,
     private snackBar: MatSnackBar
-  ) {
-    this.categories = this.categoriaService.listarTodas();
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.categoriaService.listarTodas().subscribe({
+      next: (categorias) => {
+        if (categorias) {
+          this.categories = categorias;
+        }
+      }
+    });
+
     this.newOrderForm = this.fb.group({
       product: ['', [Validators.required, Validators.maxLength(100)]],
       category: ['', [Validators.required]],
@@ -98,11 +104,13 @@ export class NewOrderCardComponent implements OnInit {
 
     const user = this.authService.getCurrentUser();
 
+    const categoriaSelecionada = this.categories.find(c => c.value === this.categoryControl.value);
+
     this.solicitacaoService.inserir({
       client: user!.name,
       clientEmail: user!.email,
       order_date: getFormattedDate(),
-      category: this.categoriaService.buscaPorId(this.categoryControl.value)!.label,
+      category: categoriaSelecionada?.label || '',
       product: this.productControl.value,
       issue_description: this.issue_descriptionControl.value,
       situation: SituationEnum.ABERTA,

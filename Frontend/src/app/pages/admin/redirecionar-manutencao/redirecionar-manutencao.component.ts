@@ -24,7 +24,6 @@ import { getFormattedDate, getFormattedDateOnly, getFormattedTimeOnly } from '@/
     MatSelectModule,
     SidebarComponent,
     ButtonComponent,
-    TextAreaInputComponent,
     SelectInputComponent
   ],
   templateUrl: './redirecionar-manutencao.component.html',
@@ -93,34 +92,33 @@ export class RedirecionarManutencaoComponent implements OnInit {
       return;
     }
 
-    const user = this.authService.getCurrentUser();
-    const dataHora = getFormattedDate();
-    const funcionarioOrigem = this.solicitacao!.atributed_employee;
-    const funcionarioDestino = this.funcionarioControl.value;
+    const funcionarioSelecionado = this.funcionarios.find(
+      f => f.nome === this.funcionarioControl.value
+    );
 
-    this.solicitacao!.atributed_employee = funcionarioDestino;
-    this.solicitacao!.situation = SituationEnum.REDIRECIONADA;
-
-    if (!this.solicitacao!.history) {
-      this.solicitacao!.history = [];
+    if (!funcionarioSelecionado) {
+      this.snackBar.open('Funcionário não encontrado', 'OK', {
+        duration: 5000,
+        panelClass: ['snackbar-error']
+      });
+      return;
     }
 
-    this.solicitacao!.history.push({
-      action: SituationEnum.REDIRECIONADA,
-      date: getFormattedDateOnly(),
-      time: getFormattedTimeOnly(),
-      description: `Redirecionado de ${funcionarioOrigem} para ${funcionarioDestino}`,
-      employee: funcionarioOrigem
+    this.solicitacaoService.redirecionarSolicitacao(this.solicitacao!.id, funcionarioSelecionado.id!).subscribe({
+      next: () => {
+        this.snackBar.open('Manutenção Redirecionada com Sucesso', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-success']
+        });
+        this.router.navigate(['/admin/solicitacoes']);
+      },
+      error: (err) => {
+        this.snackBar.open('Erro ao redirecionar manutenção', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-error']
+        });
+      }
     });
-
-    this.solicitacaoService.atualizar(this.solicitacao!);
-
-    this.snackBar.open('Manutenção Redirecionada com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success']
-    });
-
-    this.router.navigate(['/admin/solicitacoes']);
   }
 
   cancelar(): void {

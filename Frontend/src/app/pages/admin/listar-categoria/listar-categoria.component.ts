@@ -25,11 +25,15 @@ export class ListarCategoriaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.categorias = this.listarTodas();
+    this.listarTodas();
   }
 
-  listarTodas(): CategoriaRequest[] {
-    return this.categoriaService.listarTodas();
+  listarTodas(): void {
+    this.categoriaService.listarTodas().subscribe(categorias => {
+      if (categorias) {
+        this.categorias = categorias;
+      }
+    });
   }
 
   abrirModalInserir(): void {
@@ -40,7 +44,7 @@ export class ListarCategoriaComponent implements OnInit {
     dialogRef.componentInstance.close.subscribe(() => dialogRef.close());
 
     dialogRef.afterClosed().subscribe(() => {
-      this.categorias = this.listarTodas();
+      this.listarTodas();
     });
   }
 
@@ -53,15 +57,16 @@ export class ListarCategoriaComponent implements OnInit {
     dialogRef.componentInstance.close.subscribe(() => dialogRef.close());
 
     dialogRef.afterClosed().subscribe(() => {
-      this.categorias = this.listarTodas();
+      this.listarTodas();
     });
   }
 
   remover($event: any, categoria: CategoriaRequest): void {
     $event.preventDefault();
     if(confirm(`Deseja remover a categoria ${categoria.label}?`)){
-      this.categoriaService.remover(categoria.value!);
-      this.categorias = this.listarTodas();
+      this.categoriaService.remover(categoria.value!).subscribe(() => {
+        this.listarTodas();
+      });
     }
   }
 }

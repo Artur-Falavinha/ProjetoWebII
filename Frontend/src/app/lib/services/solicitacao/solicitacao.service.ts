@@ -137,4 +137,88 @@ export class SolicitacaoService {
     this.solicitacoesSubject.next(solicitacoes);
     localStorage.setItem(LS_CHAVE, JSON.stringify(solicitacoes));
   }
+
+  efetuarOrcamento(id: number, orcamento: any): Observable<any> {
+    return this.http.put<OrderRequest>(`${this.apiUrl}/${id}/orcamento`, orcamento).pipe(
+      tap((solicitacaoAtualizada) => {
+        const atualizadas = this.solicitacoesSubject.getValue().map(item =>
+          item.id === id ? solicitacaoAtualizada as OrderRequest : item
+        );
+        this.substituirEstado(atualizadas);
+      }),
+      catchError((erro) => {
+        console.error('Falha ao efetuar orçamento.', erro);
+        return of(null);
+      })
+    );
+  }
+
+  redirecionarSolicitacao(id: number, funcionarioId: number): Observable<any> {
+    return this.http.put<OrderRequest>(`${this.apiUrl}/${id}/redirect`, { funcionarioDestinoId: funcionarioId }).pipe(
+      tap((solicitacaoAtualizada) => {
+        const atualizadas = this.solicitacoesSubject.getValue().map(item =>
+          item.id === id ? solicitacaoAtualizada as OrderRequest : item
+        );
+        this.substituirEstado(atualizadas);
+      }),
+      catchError((erro) => {
+        console.error('Falha ao redirecionar solicitação.', erro);
+        return of(null);
+      })
+    );
+  }
+
+  rejeitarSolicitacao(id: number, motivo: string): Observable<any> {
+    return this.http.put<OrderRequest>(`${this.apiUrl}/${id}/reject`, { motivoRejeicao: motivo }).pipe(
+      tap((solicitacaoAtualizada) => {
+        const atualizadas = this.solicitacoesSubject.getValue().map(item =>
+          item.id === id ? solicitacaoAtualizada as OrderRequest : item
+        );
+        this.substituirEstado(atualizadas);
+      }),
+      catchError((erro) => {
+        console.error('Falha ao rejeitar solicitação.', erro);
+        return of(null);
+      })
+    );
+  }
+
+  efetuarManutencao(id: number, manutencao: any): Observable<any> {
+    return this.http.put<OrderRequest>(`${this.apiUrl}/${id}/fix`, manutencao).pipe(
+      tap((solicitacaoAtualizada) => {
+        const atualizadas = this.solicitacoesSubject.getValue().map(item =>
+          item.id === id ? solicitacaoAtualizada as OrderRequest : item
+        );
+        this.substituirEstado(atualizadas);
+      }),
+      catchError((erro) => {
+        console.error('Falha ao efetuar manutenção.', erro);
+        return of(null);
+      })
+    );
+  }
+
+  atualizarStatus(id: number, status: any): Observable<any> {
+    return this.http.patch<OrderRequest>(`${this.apiUrl}/${id}`, { status }).pipe(
+      tap((solicitacaoAtualizada) => {
+        const atualizadas = this.solicitacoesSubject.getValue().map(item =>
+          item.id === id ? solicitacaoAtualizada as OrderRequest : item
+        );
+        this.substituirEstado(atualizadas);
+      }),
+      catchError((erro) => {
+        console.error('Falha ao atualizar status.', erro);
+        return of(null);
+      })
+    );
+  }
+
+  buscarHistorico(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${id}/historico`).pipe(
+      catchError((erro) => {
+        console.error('Falha ao buscar histórico.', erro);
+        return of([]);
+      })
+    );
+  }
 }

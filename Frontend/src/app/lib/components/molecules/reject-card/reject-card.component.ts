@@ -67,16 +67,20 @@ export class RejectCardComponent implements OnInit {
       return;
     }
 
-    this.order!.situation = SituationEnum.REJEITADA;
-    this.order!.reject_reason = this.reject_reasonControl.value;
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open('Serviço Rejeitado', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-destructive'],
+    this.solicitacaoService.rejeitarSolicitacao(this.order!.id, this.reject_reasonControl.value).subscribe({
+      next: () => {
+        this.snackBar.open('Serviço Rejeitado', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-destructive'],
+        });
+        this.router.navigate(['/client']);
+      },
+      error: (err) => {
+        this.snackBar.open('Erro ao rejeitar serviço', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-error'],
+        });
+      }
     });
-
-    this.router.navigate(['/client']);
   }
 }

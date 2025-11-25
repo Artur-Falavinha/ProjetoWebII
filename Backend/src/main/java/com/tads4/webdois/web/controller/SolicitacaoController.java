@@ -52,7 +52,7 @@ public class SolicitacaoController {
     @Autowired
     private SolicitacaoService service;
 
-    @PostMapping("/solicitacao")
+    @PostMapping("/solicitacoes")
     @PreAuthorize("hasAuthority('CLIENTE')")
     @Operation(summary = "Criar nova solicitação", description = "Cria uma nova solicitação de manutenção para o cliente autenticado.",
         security = @SecurityRequirement(name = "bearerAuth"))
@@ -66,7 +66,7 @@ public class SolicitacaoController {
         return service.addNewSolicitacao(newChamado, activeUser);
     }
 
-    @GetMapping("/solicitacao")
+    @GetMapping("/solicitacoes")
     @Operation(summary = "Listar solicitações", description = "Retorna todas as solicitações do usuário autenticado. Permite filtrar por status e datas.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
@@ -78,7 +78,7 @@ public class SolicitacaoController {
         return service.buscarSolicitacoes(status, dataInicio, dataFim, activeUser);
     }
 
-    @GetMapping("/solicitacao/{id}")
+    @GetMapping("/solicitacoes/{id}")
     @Operation(summary = "Buscar solicitação por ID", description = "Retorna os detalhes de uma solicitação específica pelo seu ID.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
@@ -104,7 +104,7 @@ public class SolicitacaoController {
     //     return ResponseEntity.ok(dto);
     // }   
 
-    @PatchMapping("solicitacao/{id}")
+    @PatchMapping("/solicitacoes/{id}")
     @Operation(summary = "Atualizar status da solicitação", description = "Atualiza o status da solicitação para ABERTA, FINALIZADA, PAGA ou APROVADA.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
@@ -119,7 +119,7 @@ public class SolicitacaoController {
         return ResponseEntity.ok(dto);
     }   
 
-    @PutMapping("solicitacao/{id}/orcamento")
+    @PutMapping("/solicitacoes/{id}/orcamento")
     @Operation(summary = "Efetuar orçamento", description = "Registra o orçamento de uma solicitação. Apenas funcionários podem executar.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
@@ -135,55 +135,55 @@ public class SolicitacaoController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
-    @PutMapping("solicitacao/{id}/redirect")
+    @PutMapping("/solicitacoes/{id}/redirect")
     @Operation(summary = "Redirecionar solicitação", description = "Redireciona a solicitação para outro funcionário.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Orçamento registrado com sucesso"),
+        @ApiResponse(responseCode = "201", description = "Solicitação redirecionada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "409", description = "Conflito de dados")
     })
-    public ResponseEntity<SolicitacaoResponse> efetuarRedirect(
+    public ResponseEntity<SolicitacaoResponse> redirecionarSolicitacao(
             @PathVariable Integer id,
-            @Valid @RequestBody RedirecionarSolicitacaoRequest redirect,
+            @Valid @RequestBody RedirecionarSolicitacaoRequest redirecionamento,
             @AuthenticationPrincipal UserDetails activeUser) {
-        SolicitacaoResponse dto = service.redirecionarSolicitacao(id, redirect.funcionarioDestinoId(), activeUser);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        SolicitacaoResponse solicitacao = service.redirecionarSolicitacao(id, redirecionamento.funcionarioDestinoId(), activeUser);
+        return new ResponseEntity<>(solicitacao, HttpStatus.CREATED);
     }
     
-    @PutMapping("solicitacao/{id}/reject")
+    @PutMapping("/solicitacoes/{id}/reject")
     @Operation(summary = "Rejeitar solicitação", description = "Rejeita a solicitação informando o motivo.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Orçamento registrado com sucesso"),
+        @ApiResponse(responseCode = "201", description = "Solicitação rejeitada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "409", description = "Conflito de dados")
     })
-    public ResponseEntity<SolicitacaoResponse> efetuarReject(
+    public ResponseEntity<SolicitacaoResponse> rejeitarSolicitacao(
             @PathVariable Integer id,
-            @Valid @RequestBody RejeitarSolicitacaoRequest reject,
+            @Valid @RequestBody RejeitarSolicitacaoRequest rejeicao,
             @AuthenticationPrincipal UserDetails activeUser) {
-        SolicitacaoResponse dto = service.rejeitarSolicitacao(id, reject.motivoRejeicao(), activeUser);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        SolicitacaoResponse solicitacao = service.rejeitarSolicitacao(id, rejeicao.motivoRejeicao(), activeUser);
+        return new ResponseEntity<>(solicitacao, HttpStatus.CREATED);
     }
 
-    @PutMapping("solicitacao/{id}/fix")
+    @PutMapping("/solicitacoes/{id}/fix")
     @Operation(summary = "Efetuar manutenção", description = "Registra a manutenção realizada na solicitação.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Orçamento registrado com sucesso"),
+        @ApiResponse(responseCode = "201", description = "Manutenção registrada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "409", description = "Conflito de dados")
     })
     public ResponseEntity<SolicitacaoResponse> efetuarManutencao(
             @PathVariable Integer id,
-            @Valid @RequestBody ManutencaoRequest reject,
+            @Valid @RequestBody ManutencaoRequest manutencao,
             @AuthenticationPrincipal UserDetails activeUser) {
-        SolicitacaoResponse dto = service.efetuarManutencao(id, reject, activeUser);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        SolicitacaoResponse solicitacao = service.efetuarManutencao(id, manutencao, activeUser);
+        return new ResponseEntity<>(solicitacao, HttpStatus.CREATED);
     }
 
-    @GetMapping("/solicitacao/{id}/historico")
+    @GetMapping("/solicitacoes/{id}/historico")
     @Operation(summary = "Buscar histórico da solicitação", description = "Retorna o histórico de alterações da solicitação pelo seu ID.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({

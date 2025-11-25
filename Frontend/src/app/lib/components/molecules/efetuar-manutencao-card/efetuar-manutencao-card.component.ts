@@ -73,33 +73,25 @@ export class EfetuarManutencaoCardComponent implements OnInit {
       return;
     }
 
-    const user = this.authService.getCurrentUser();
-    const dataHora = getFormattedDate();
+    const manutencao = {
+      descricaoManutencao: this.fixDescriptionControl!.value,
+      orientacoes: this.orientationControl!.value
+    };
 
-    this.order!.situation = SituationEnum.ARRUMADA;
-    this.order!.fix_description = this.fixDescriptionControl!.value;
-    this.order!.orientation = this.orientationControl!.value;
-    this.order!.completion_date = dataHora;
-
-    if (!this.order!.history) {
-      this.order!.history = [];
-    }
-
-    this.order!.history.push({
-      action: SituationEnum.ARRUMADA,
-      date: getFormattedDateOnly(),
-      time: getFormattedTimeOnly(),
-      description: 'Manutenção concluída',
-      employee: user?.name
+    this.solicitacaoService.efetuarManutencao(this.order!.id, manutencao).subscribe({
+      next: () => {
+        this.snackBar.open('Manutenção Concluída com Sucesso', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-success'],
+        });
+        this.router.navigate(['/admin/solicitacoes']);
+      },
+      error: (err) => {
+        this.snackBar.open('Erro ao efetuar manutenção', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-error'],
+        });
+      }
     });
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open('Manutenção Concluída com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
-
-    this.router.navigate(['/admin/solicitacoes']);
   }
 }

@@ -37,7 +37,7 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService service;
 
-    @GetMapping("/funcionario")
+    @GetMapping("/funcionarios")
     @Operation(summary = "Listar todos os funcionários", description = "Retorna uma lista de funcionários ativos.")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
     @SecurityRequirement(name = "bearerAuth")
@@ -46,7 +46,7 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarios);
     }
 
-    @GetMapping("/funcionario-menos-eu")
+    @GetMapping("/funcionarios-menos-eu")
     @PreAuthorize("hasAuthority('FUNCIONARIO')")
     @Operation(summary = "Listar todos os funcionários menos o autenticado", description = "Retorna uma lista de funcionários ativos menos o autenticado.")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
@@ -58,56 +58,64 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarios);
     }
 
-    @GetMapping("/funcionario/{id}")
+    @GetMapping("/funcionarios/{id}")
     @Operation(summary = "Buscar funcionário por ID", description = "Retorna um funcionário pelo seu ID.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Funcionário encontrado"),
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<FuncionarioResponse> buscarFuncionarioPorId(@PathVariable Integer id) {
+    public ResponseEntity<FuncionarioResponse> buscarFuncionarioPorId(
+            @io.swagger.v3.oas.annotations.Parameter(description = "ID do funcionário", example = "1") @PathVariable Integer id) {
         FuncionarioResponse funcionario = service.buscarPorId(id);
         return ResponseEntity.ok(funcionario);
     }
 
-    @PostMapping("/funcionario")
+    @PostMapping("/funcionarios")
     @Operation(summary = "Inserir funcionário", description = "Adiciona um novo funcionário.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Funcionário criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<FuncionarioResponse> inserirFuncionario(@Valid @RequestBody FuncionarioRequest funcionario) {
+    public ResponseEntity<FuncionarioResponse> inserirFuncionario(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do funcionário") @Valid @RequestBody FuncionarioRequest funcionario) {
         FuncionarioResponse newFuncionario = service.addNewFuncionario(funcionario);
         return new ResponseEntity<>(newFuncionario, HttpStatus.CREATED);
     }
 
-    @PutMapping("/funcionario/{id}")
+    @PutMapping("/funcionarios/{id}")
     @Operation(summary = "Atualizar funcionário", description = "Atualiza os dados de uma funcionário existente.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Funcionário atualizado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<FuncionarioResponse> atualizarFuncionario(@PathVariable Integer id,
-            @Valid @RequestBody FuncionarioRequest funcionarioAtualizado) {
+    public ResponseEntity<FuncionarioResponse> atualizarFuncionario(
+            @io.swagger.v3.oas.annotations.Parameter(description = "ID do funcionário", example = "1") @PathVariable Integer id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados atualizados do funcionário") @Valid @RequestBody FuncionarioRequest funcionarioAtualizado) {
         FuncionarioResponse updatedFuncionario = service.updateFuncionario(id, funcionarioAtualizado);
         return ResponseEntity.ok(updatedFuncionario);
     }
 
-    @DeleteMapping("/funcionario/{id}")
+    @DeleteMapping("/funcionarios/{id}")
     @Operation(summary = "Excluir funcionário", description = "Remove um funcionário pelo ID.")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Funcionário excluído com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Não é possível excluir a si mesmo"),
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<?> deletarFuncionario(@PathVariable Integer id, @AuthenticationPrincipal UserDetails me) {
-        FuncionarioResponse toDelete = service.buscarPorId(id);
-        Usuario userMe = (Usuario) me;
-        if (toDelete.id() == userMe.getUserId()) {
-            return ResponseEntity.badRequest().body("Nao pode se deletar");
+    public ResponseEntity<Void> deletarFuncionario(
+            @io.swagger.v3.oas.annotations.Parameter(description = "ID do funcionário", example = "1") @PathVariable Integer id,
+            @AuthenticationPrincipal UserDetails me) {
+        FuncionarioResponse funcionarioParaDeletar = service.buscarPorId(id);
+        Usuario usuarioAutenticado = (Usuario) me;
+        
+        if (funcionarioParaDeletar.id().equals(usuarioAutenticado.getUserId())) {
+            return ResponseEntity.badRequest().build();
         }
+        
         service.deleteFuncionario(id);
         return ResponseEntity.noContent().build();
     }

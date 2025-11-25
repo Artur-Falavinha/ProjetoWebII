@@ -19,7 +19,7 @@ import com.tads4.webdois.exception.NotFoundException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categoria")
+@RequestMapping("/categorias")
 @Tag(name = "Categorias", description = "Operações relacionadas às categorias")
 public class CategoriaController {
 
@@ -43,9 +43,9 @@ public class CategoriaController {
         @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
     public CategoriaResponse findById(@Parameter(description = "ID da categoria", example = "1") @PathVariable Integer id) {
-        Categoria Categoria = repo.findById(id)
+        Categoria categoria = repo.findById(id)
             .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
-        return CategoriaMapper.toResponse(Categoria);
+        return CategoriaMapper.toResponse(categoria);
     }
 
     @PostMapping
@@ -58,8 +58,8 @@ public class CategoriaController {
         if (repo.existsByNome(request.nome())) {
             throw new ConflictException("Categoria já cadastrada");
         }
-        Categoria Categoria = repo.save(CategoriaMapper.toEntity(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaMapper.toResponse(Categoria));
+        Categoria categoria = repo.save(CategoriaMapper.toEntity(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaMapper.toResponse(categoria));
     }
 
     @PutMapping("/{id}")
@@ -72,8 +72,8 @@ public class CategoriaController {
         Categoria foundCategoria = repo.findById(id)
             .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
         foundCategoria.setNome(request.nome());
-        Categoria Categoria = repo.save(foundCategoria);
-        return CategoriaMapper.toResponse(Categoria);
+        Categoria categoria = repo.save(foundCategoria);
+        return CategoriaMapper.toResponse(categoria);
     }
 
     @DeleteMapping("/{id}")

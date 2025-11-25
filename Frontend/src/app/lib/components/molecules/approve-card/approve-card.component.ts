@@ -42,19 +42,24 @@ export class ApproveCardComponent {
   ) {}
 
   public approve() {
-    this.order!.situation = SituationEnum.APROVADA;
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open(
-      `Serviço aprovado no valor de R$ ${this.order?.price}`, // mensagem
-      'Fechar', 
-      {
-        duration: 5000,
-        panelClass: ['snackbar-success'],
+    this.solicitacaoService.atualizarStatus(this.order!.id, SituationEnum.APROVADA).subscribe({
+      next: () => {
+        this.snackBar.open(
+          `Serviço aprovado no valor de R$ ${this.order?.price}`,
+          'Fechar', 
+          {
+            duration: 5000,
+            panelClass: ['snackbar-success'],
+          }
+        );
+        this.router.navigate(['/client']);
+      },
+      error: (err) => {
+        this.snackBar.open('Erro ao aprovar serviço', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-error'],
+        });
       }
-    );
-
-    this.router.navigate(['/client']);
+    });
   }
 }

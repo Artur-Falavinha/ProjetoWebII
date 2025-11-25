@@ -65,35 +65,24 @@ export class BudgetCardComponent implements OnInit {
       return;
     }
 
-    const user = this.authService.getCurrentUser();
-    const dataHora = getFormattedDate();
-
     if (this.order) {
-      this.order.situation = SituationEnum.ORCADA;
-      this.order.price = this.valorControl.value;
-      this.order.atributed_employee = user?.name;
-      this.order.budge_date = dataHora;
-
-      if (!this.order.history) {
-        this.order.history = [];
-      }
-
-      this.order.history.push({
-        action: SituationEnum.ORCADA,
-        date: getFormattedDateOnly(),
-        time: getFormattedTimeOnly(),
-        description: `Orçamento realizado no valor de R$ ${this.valorControl.value}`,
-        employee: user?.name
+      const orcamento = { valor: this.valorControl.value };
+      
+      this.solicitacaoService.efetuarOrcamento(this.order.id, orcamento).subscribe({
+        next: () => {
+          this.snackBar.open('Orçamento Efetuado com Sucesso', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-success'],
+          });
+          this.router.navigate(['/admin/solicitacoes']);
+        },
+        error: (err) => {
+          this.snackBar.open('Erro ao efetuar orçamento', 'OK', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+          });
+        }
       });
-
-      this.solicitacaoService.atualizar(this.order);
     }
-
-    this.snackBar.open('Orçamento Efetuado com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
-
-    this.router.navigate(['/admin/solicitacoes']);
   }
 }

@@ -33,26 +33,20 @@ export class RescueCardComponent {
   ) {}
 
   public rescueService() {
-    this.order!.situation = SituationEnum.APROVADA;
-    
-    if (!this.order!.history) {
-      this.order!.history = [];
-    }
-    
-    this.order!.history.push({
-      action: SituationEnum.APROVADA,
-      date: getFormattedDateOnly(),
-      time: getFormattedTimeOnly(),
-      description: 'Serviço resgatado - passou de REJEITADA para APROVADA'
+    this.solicitacaoService.atualizarStatus(this.order!.id, SituationEnum.APROVADA).subscribe({
+      next: () => {
+        this.snackBar.open('Serviço Resgatado com Sucesso', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-success'],
+        });
+        this.router.navigate(['/client']);
+      },
+      error: (err) => {
+        this.snackBar.open('Erro ao resgatar serviço', 'OK', {
+          duration: 5000,
+          panelClass: ['snackbar-error'],
+        });
+      }
     });
-
-    this.solicitacaoService.atualizar(this.order!);
-
-    this.snackBar.open('Serviço Resgatado com Sucesso', 'OK', {
-      duration: 5000,
-      panelClass: ['snackbar-success'],
-    });
-
-    this.router.navigate(['/client']);
   }
 }

@@ -35,7 +35,7 @@ export class ListarFuncionarioComponent implements OnInit {
 
   listarTodas(): void {
     this.funcionarioService.listarTodas().subscribe({
-      next: (data: FuncionarioRequest[]) => {
+      next: (data) => {
         this.funcionarios = data ?? [];
       },
       error: (err) => {

@@ -40,8 +40,9 @@ export class EditarCategoriaComponent {
 
   atualizar(): void {
     if (this.formCategoria.form.valid) {
-      this.categoriaService.atualizar(this.categoria);
-      this.close.emit();
+      this.categoriaService.atualizar(this.categoria).subscribe(() => {
+        this.close.emit();
+      });
     }
   }
 
