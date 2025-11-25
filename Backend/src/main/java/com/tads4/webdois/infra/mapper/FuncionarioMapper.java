@@ -9,7 +9,8 @@ public class FuncionarioMapper {
             funcionario.getUserId(),
             funcionario.getNome(),
             funcionario.getEmail(),
-            funcionario.getDataNascimento()
+            funcionario.getDataNascimento(),
+            funcionario.getRole()
         );
     }
 
