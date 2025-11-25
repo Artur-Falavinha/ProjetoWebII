@@ -7,7 +7,7 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  role: 'CLIENT' | 'EMPLOYEE' | 'ADMIN';
+  role: 'CLIENTE'| 'FUNCIONARIO';
 }
 
 export interface AuthState {
@@ -44,16 +44,12 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<AuthState> {
     return this.http.post<any>(`${this.BASE_URL}/login`, credentials, this.httpOptions)
       .pipe(
-        // switchMap permite encadear uma nova requisição usando o resultado da anterior
         switchMap(response => {
           if (response && response.token) {
-            this.saveToken(response.token);
-            
             // Prepara o cabeçalho com o Token para bater no endpoint /me
             const authHeader = new HttpHeaders({
               'Authorization': `Bearer ${response.token}`
             });
-
             return this.http.get<any>(`${this.BASE_URL}/me`, { headers: authHeader })
               .pipe(
                 map(userData => {
@@ -69,23 +65,20 @@ export class AuthService {
         }),
         map(combinedData => {
           const userBackend = combinedData.user;
-          
           const userProfile: UserProfile = {
             id: userBackend.id,
             name: userBackend.nome,
             email: userBackend.email,
-            role: this.mapRole(userBackend.role || userBackend.perfil) 
+            role: userBackend.role
           };
-
           const newState: AuthState = {
             isAuthenticated: true,
             user: userProfile,
             token: combinedData.token
           };
-
-          // Atualiza o BehaviorSubject (notifica toda a app que logou)
+          // Salva token e perfil juntos
+          this.saveTokenAndProfile(combinedData.token, userProfile);
           this.authStateSubject.next(newState);
-          
           return newState;
         }),
         catchError(error => {
@@ -104,6 +97,7 @@ export class AuthService {
   // --- LOGOUT ---
   logout(): void {
     localStorage.removeItem('auth-token');
+    localStorage.removeItem('auth-user')
     this.authStateSubject.next({
       isAuthenticated: false,
       user: null,
@@ -111,26 +105,52 @@ export class AuthService {
     });
   }
 
-  // --- MÉTODOS AUXILIARES ---
-  private mapRole(role: string): 'CLIENT' | 'EMPLOYEE' | 'ADMIN' {
-    if (role === 'FUNCIONARIO' || role === 'GERENTE') return 'EMPLOYEE';
-    if (role === 'ADMIN') return 'ADMIN';
-    return 'CLIENT';
-  }
-
-  private saveToken(token: string): void {
+  private saveTokenAndProfile(token: string, user: UserProfile): void {
     localStorage.setItem('auth-token', token);
+    localStorage.setItem('auth-user', JSON.stringify(user));
   }
 
   private checkTokenRecovery(): void {
     const token = localStorage.getItem('auth-token');
-    if (token) {
-      // Aqui idealmente chamaríamos o /me novamente para validar o token
-      // Por enquanto, vamos apenas restaurar o estado básico
+    const userRaw = localStorage.getItem('auth-user');
+    let user: UserProfile | null = null;
+    if (userRaw) {
+      try {
+        user = JSON.parse(userRaw);
+      } catch {
+        user = null;
+      }
+    }
+    if (token && user) {
+      // Restaura estado imediatamente
       this.authStateSubject.next({
         isAuthenticated: true,
-        user: { id: '0', name: 'Usuário (Recuperado)', email: '', role: 'CLIENT' },
-        token: token
+        user,
+        token
+      });
+      // Valida token em background
+      const authHeader = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      this.http.get<any>(`${this.BASE_URL}/me`, { headers: authHeader }).subscribe({
+        next: (userBackend) => {
+          // Atualiza perfil se mudou
+          const userProfile: UserProfile = {
+            id: userBackend.id,
+            name: userBackend.nome,
+            email: userBackend.email,
+            role: userBackend.role
+          };
+          this.authStateSubject.next({
+            isAuthenticated: true,
+            user: userProfile,
+            token
+          });
+          this.saveTokenAndProfile(token, userProfile);
+        },
+        error: () => {
+          this.logout();
+        }
       });
     }
   }

@@ -37,7 +37,7 @@ export class SidebarComponent implements OnInit {
   readonly navigationItems = computed(() => {
     const user = this.userProfile();
     
-    if (user.role === 'EMPLOYEE') {
+    if (user.role === 'FUNCIONARIO') {
       return [
         {
           path: '/admin',
@@ -97,7 +97,7 @@ export class SidebarComponent implements OnInit {
       id: '',
       name: isAdminRoute ? 'Funcionário' : 'Usuário não logado',
       email: isAdminRoute ? 'funcionario@email.com' : '',
-      role: isAdminRoute ? 'EMPLOYEE' as const : 'CLIENT' as const
+      role: isAdminRoute ? 'FUNCIONARIO' as const : 'CLIENTE' as const
     };
   });
 
@@ -120,6 +120,6 @@ export class SidebarComponent implements OnInit {
 
   getUserTypeLabel(): string {
     const user = this.userProfile();
-    return user.role === 'EMPLOYEE' ? 'Funcionário' : 'Cliente';
+    return user.role === 'FUNCIONARIO' ? 'Funcionário' : 'Cliente';
   }
 }

@@ -10,7 +10,6 @@ export type OrderRequest = {
   categoriaNome: string;
   descricaoFalha: string; //descrição feita pelo client
   situation: SituationEnum;
-  precoBase: number;
   orcamentoValor?: number;
   funcionario?: string;
   funcionarioEmail?: string;

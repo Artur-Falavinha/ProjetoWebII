@@ -12,12 +12,7 @@ import { OrderRequest, SituationEnum } from '@/app/@types';
 import { MatIcon } from '@angular/material/icon';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import {
-  getFormattedDate,
-  getFormattedDateOnly,
-  getFormattedTimeOnly,
-} from '@/app/lib/utils/getDateFormatted';
-import { AuthService } from '@/app/lib/services';
+
 
 @Component({
   selector: 'app-finish-card',

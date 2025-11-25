@@ -49,21 +49,7 @@
       <!-- Data de Nascimento -->
       <mat-form-field appearance="outline" class="app-field">
         <mat-label>Data de Nascimento</mat-label>
-            <input
-              matInput
-              type="text"
-              name="dataNascimento"
-              [(ngModel)]="dataNascimentoDisplay"
-              mask="00/00/0000"
-              placeholder="DD/MM/AAAA"
-              [required]="!isPrimeiroFuncionario">
-        <mat-error *ngIf="showErrorDataNascimento && erroDataNascimento">
-          {{ erroDataNascimento }}
-        </mat-error>
-        <mat-error *ngIf="formFuncionario.submitted && !dataNascimentoDisplay && !isPrimeiroFuncionario">
-          A data de nascimento é obrigatória.
-        </mat-error>
-        <mat-hint *ngIf="isPrimeiroFuncionario">Opcional para o primeiro funcionário</mat-hint>
+        <input matInput type="text" name="dataNascimento" [(ngModel)]="dataNascimento" [ngModelOptions]="{standalone: true}" placeholder="DD/MM/AAAA">
       </mat-form-field>
 
       <!-- Senha -->
@@ -119,32 +105,9 @@
       <!-- Data de Admissão -->
       <mat-form-field appearance="outline" class="app-field">
         <mat-label>Data de Admissão</mat-label>
-        <input
-          matInput
-          type="text"
-          name="dataAdmissao"
-          [(ngModel)]="dataAdmissaoDisplay"
-          mask="00/00/0000"
-          placeholder="DD/MM/AAAA"
-          [required]="!isPrimeiroFuncionario"
-          [disabled]="isPrimeiroFuncionario">
-        <mat-error *ngIf="showErrorDataAdmissao && erroDataAdmissao">
-          {{ erroDataAdmissao }}
-        </mat-error>
-        <mat-error *ngIf="formFuncionario.submitted && !dataAdmissaoDisplay && !isPrimeiroFuncionario">
-          A data de admissão é obrigatória.
-        </mat-error>
-        <mat-hint *ngIf="isPrimeiroFuncionario">Definida automaticamente como data atual</mat-hint>
+        <input matInput type="text" name="dataAdmissao" [(ngModel)]="dataAdmissao" [disabled]="isPrimeiroFuncionario" [ngModelOptions]="{standalone: true}" placeholder="DD/MM/AAAA">
       </mat-form-field>
 
-      <!-- Status Ativo -->
-      <div class="checkbox-field">
-        <mat-checkbox
-          name="ativo"
-          [(ngModel)]="funcionario.ativo">
-          Funcionário ativo
-        </mat-checkbox>
-      </div>
 
       <div class="actions">
         <app-button 

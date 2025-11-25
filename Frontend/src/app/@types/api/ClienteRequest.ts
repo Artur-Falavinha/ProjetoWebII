@@ -12,4 +12,5 @@ export type ClienteRequest = {
     cidade: string;
     estado: string;
   };
+  role: string;
 }

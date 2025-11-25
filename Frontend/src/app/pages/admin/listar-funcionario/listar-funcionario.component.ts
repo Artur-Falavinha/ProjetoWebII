@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { InserirFuncionarioComponent } from '../inserir-funcionario/inserir-funcionario.component';
 import { EditarFuncionarioComponent } from '../editar-funcionario/editar-funcionario.component';
+import { FuncionarioResponse } from '@/app/@types/api/FuncionarioResponse';
 
 @Component({
   selector: 'app-listar-funcionario',
@@ -19,7 +20,7 @@ import { EditarFuncionarioComponent } from '../editar-funcionario/editar-funcion
 })
 export class ListarFuncionarioComponent implements OnInit {
   
-  funcionarios: FuncionarioRequest[] = [];
+  funcionarios: FuncionarioResponse[] = [];
   mensagem: string = "";
   mensagem_detalhes: string = "";
 
@@ -35,7 +36,7 @@ export class ListarFuncionarioComponent implements OnInit {
 
   listarTodas(): void {
     this.funcionarioService.listarTodas().subscribe({
-      next: (data: FuncionarioRequest[]) => {
+      next: (data: FuncionarioResponse[]) => {
         this.funcionarios = data ?? [];
       },
       error: (err) => {
@@ -68,7 +69,7 @@ export class ListarFuncionarioComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => this.listarTodas());
   }
 
-  abrirModalEditar(funcionario: FuncionarioRequest): void {
+  abrirModalEditar(funcionario: FuncionarioResponse): void {
     const dialogRef = this.dialog.open(EditarFuncionarioComponent, {
       width: '600px',
       data: funcionario
@@ -78,7 +79,7 @@ export class ListarFuncionarioComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => this.listarTodas());
   }
 
-  remover($event: any, funcionario: FuncionarioRequest): void {
+  remover($event: any, funcionario: FuncionarioResponse): void {
     $event.preventDefault();
     this.mensagem = "";
     this.mensagem_detalhes = "";

@@ -1,4 +1,5 @@
 export type FuncionarioResponse = {
+    id: number;
     nome: string;
     email: string;
     dataNascimento: string;

@@ -31,7 +31,6 @@ import { TextAreaInputComponent } from '../text-area-input/text-area-input.compo
 import { AuthService, CategoriaService } from '@/app/lib/services';
 import { SolicitacaoService } from '@/app/lib/services/solicitacao/solicitacao.service';
 import { SituationEnum } from '@/app/@types';
-import { getFormattedDate } from '@/app/lib/utils/getDateFormatted';
 import { map, Observable } from 'rxjs';
 import { CategoriaResponse } from '@/app/@types/api/CategoriaResponse';
 
@@ -101,7 +100,7 @@ export class NewOrderCardComponent implements OnInit {
       .inserir({
         categoriaId: this.categoriaNomeControl.value,
         descricaoEquipamento: this.descricaoEquipamentoControl.value,
-        descricaoDefeito: this.descricaoFalhaControl.value,
+        descricaoFalha: this.descricaoFalhaControl.value,
       })
       .subscribe({
         next: (result) => {
@@ -110,7 +109,7 @@ export class NewOrderCardComponent implements OnInit {
               duration: 5000,
               panelClass: ['snackbar-success'],
             });
-            this.router.navigate(['/client']);
+            this.router.navigate(['/client']);  
           } else {
             this.snackBar.open('Erro ao enviar solicitação', 'OK', {
               duration: 5000,

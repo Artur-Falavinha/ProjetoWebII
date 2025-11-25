@@ -21,8 +21,8 @@ export class OrderCardComponent {
   }
 
   public get actionButton() {
+    console.log(this.order.situation)
     if (!this.order) return null;
-
     switch (this.order.situation) {
       case SituationEnum.ORCADA:
         return {

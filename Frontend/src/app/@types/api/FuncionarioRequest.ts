@@ -1,5 +1,4 @@
 export type FuncionarioRequest = {
-    id: number;
     nome: string;
     email: string;
     dataNascimento: string;
@@ -7,5 +6,4 @@ export type FuncionarioRequest = {
     cargo: string;
     telefone: string;
     dataAdmissao: string;
-    ativo: boolean;
 }

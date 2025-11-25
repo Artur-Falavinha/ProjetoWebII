@@ -7,7 +7,7 @@ export interface SolicitacaoData {
   id?: number;
   descricaoEquipamento: string;
   categoriaEquipamento: string;
-  descricaoDefeito: string;
+  descricaoFalha: string;
   dataHora: Date;
   estado: 'ABERTA' | 'ORCAMENTO' | 'CONCLUIDA';
   valor?: number;

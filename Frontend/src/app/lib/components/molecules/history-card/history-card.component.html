@@ -11,17 +11,21 @@
     @if (history) { @for (item of history; track $index) {
     <div class="historic-item">
       <div class="icon-box">
-        <mat-icon>{{ get_situation_icon(item.action)!.icon }}</mat-icon>
+        <mat-icon>{{ get_situation_icon(item.status)?.icon }}</mat-icon>
       </div>
       <div class="text-wrap">
         <p>
-          {{ get_situation_icon(item.action)!.action }}
+          {{ get_situation_icon(item.status)?.action }}
         </p>
-        <span style="margin-bottom: 4px;">{{ item.date }}@if (item.time) { - {{ item.time }}}</span>
-        @if (item.employee) {
-        <span style="margin-bottom: 4px;">Funcionário: {{ item.employee }}</span>
+        <span style="margin-bottom: 4px">{{
+          item.dataCriacao | formatDate
+        }}</span>
+        @if (item.funcionarioNome) {
+        <span style="margin-bottom: 4px"
+          >Funcionário: {{ item.funcionarioNome }}</span
+        >
         }
-        <span>{{ item.description }}</span>
+        <span>{{ item.comentario }}</span>
       </div>
     </div>
     } }

@@ -1,9 +1,14 @@
-import { SituationEnum } from "../enums/SituationEnum"
+import { SituationEnum } from "../enums/SituationEnum";
 
 export type HistoryType = {
-    action: SituationEnum;
-    date: string;
-    time: string;
-    description: string;
-    employee?: string;
+    id: number;
+    solicitacaoId: number;
+    comentario: string;
+    dataCriacao: string;
+    funcionarioId: number | null;
+    funcionarioNome: string | null;
+    funcionarioAnteriorId: number | null;
+    funcionarioAnteriorNome: string | null;
+    motivoRejeicao: string | null;
+    status: SituationEnum;
 }

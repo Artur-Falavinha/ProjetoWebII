@@ -15,7 +15,7 @@
         </div>
       </div>
       <ng-container *ngIf="order$ | async as order; else loading">
-        @if (order.situation === 1) {
+        @if (order.situation === 'ORCADA') {
         <app-reject-card [order]="order"></app-reject-card>
         } @else {
         <app-rescue-card [order]="order"></app-rescue-card>

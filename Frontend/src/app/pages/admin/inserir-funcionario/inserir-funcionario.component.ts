@@ -41,15 +41,13 @@ export class InserirFuncionarioComponent implements OnInit {
   @ViewChild('formFuncionario') formFuncionario!: NgForm;
 
   funcionario: FuncionarioRequest = {
-    id: 0,
     nome: '',
     email: '',
     dataNascimento: '',
     senha: '',
     cargo: '',
     telefone: '',
-    dataAdmissao: '',
-    ativo: true
+    dataAdmissao: ''
   };
 
   // Mensagens
@@ -59,9 +57,10 @@ export class InserirFuncionarioComponent implements OnInit {
   showErrorDataNascimento: boolean = false;
   showErrorDataAdmissao: boolean = false;
 
-  // Datas para exibição
-  dataNascimentoDisplay: string = '';
-  dataAdmissaoDisplay: string = '';
+  // Datas para o datepicker
+  dataNascimento: Date | null = null;
+  dataAdmissao: Date | null = null;
+
 
   // Primeiro funcionário
   isPrimeiroFuncionario: boolean = false;
@@ -110,6 +109,7 @@ export class InserirFuncionarioComponent implements OnInit {
   }
 
   inserir(): void {
+    console.log("a")
     // Reset mensagens
     this.erroGeral = '';
     this.erroDataNascimento = '';
@@ -117,12 +117,30 @@ export class InserirFuncionarioComponent implements OnInit {
     this.showErrorDataNascimento = false;
     this.showErrorDataAdmissao = false;
 
-    // Conversão de datas
-    if (this.dataNascimentoDisplay) {
-      this.funcionario.dataNascimento = this.convertDisplayToISO(this.dataNascimentoDisplay);
+    // Conversão de datas para yyyy-MM-dd
+    this.funcionario.dataNascimento = '';
+    this.funcionario.dataAdmissao = '';
+    if (this.dataNascimento) {
+      if (typeof this.dataNascimento === 'string') {
+        // Espera formato DD/MM/YYYY
+        const parts = String(this.dataNascimento).split('/');
+        if (parts.length === 3) {
+          this.funcionario.dataNascimento = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        }
+      } else if (this.dataNascimento instanceof Date) {
+        this.funcionario.dataNascimento = this.dataNascimento.toISOString().slice(0, 10);
+      }
     }
-    if (this.dataAdmissaoDisplay) {
-      this.funcionario.dataAdmissao = this.convertDisplayToISO(this.dataAdmissaoDisplay);
+    if (this.dataAdmissao) {
+      if (typeof this.dataAdmissao === 'string') {
+        // Espera formato DD/MM/YYYY
+        const parts = String(this.dataAdmissao).split('/');
+        if (parts.length === 3) {
+          this.funcionario.dataAdmissao = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        }
+      } else if (this.dataAdmissao instanceof Date) {
+        this.funcionario.dataAdmissao = this.dataAdmissao.toISOString().slice(0, 10);
+      }
     }
 
     // Validações
@@ -132,23 +150,21 @@ export class InserirFuncionarioComponent implements OnInit {
         return;
       }
     } else {
-      if (!this.dataNascimentoDisplay) {
+      // Apenas bloqueia se algum campo obrigatório estiver vazio
+      if (!this.dataNascimento) {
         this.erroDataNascimento = 'A data de nascimento é obrigatória.';
         this.showErrorDataNascimento = true;
+        return;
       }
-
-      if (!this.dataAdmissaoDisplay) {
+      if (!this.dataAdmissao) {
         this.erroDataAdmissao = 'A data de admissão é obrigatória.';
         this.showErrorDataAdmissao = true;
-      }
-
-      if (this.showErrorDataNascimento || this.showErrorDataAdmissao) {
         return;
       }
     }
 
-    // Chamada ao backend (INTEGRAÇÃO)
-    this.funcionarioService.inserir(this.funcionario).subscribe({
+    // Chamada ao backend (INTEGRAÇÃO) reativa
+    this.funcionarioService.inserir({ ...this.funcionario }).subscribe({
       next: (resp) => {
         if (resp) {
           this.close.emit();

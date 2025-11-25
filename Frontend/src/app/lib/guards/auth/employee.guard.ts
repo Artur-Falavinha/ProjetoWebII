@@ -8,7 +8,7 @@ export const employeeGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const user = authService.getCurrentUser();
 
-  if (user && (user.role === 'EMPLOYEE' || user.role === 'ADMIN')) {
+  if (user && user.role == 'FUNCIONARIO') {
     return true;
   }
 

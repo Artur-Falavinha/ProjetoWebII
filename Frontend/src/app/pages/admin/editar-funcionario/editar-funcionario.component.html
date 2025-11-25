@@ -45,17 +45,13 @@
       <!-- Data de Nascimento -->
       <mat-form-field appearance="outline" class="app-field">
         <mat-label>Data de Nascimento</mat-label>
-        <input
-          matInput
-          type="text"
-          name="dataNascimento"
-          [(ngModel)]="dataNascimentoDisplay"
-          mask="00/00/0000"
-          placeholder="DD/MM/AAAA">
+        <input matInput [matDatepicker]="pickerNascimento" name="dataNascimento" [(ngModel)]="dataNascimento" required>
+        <mat-datepicker-toggle matSuffix [for]="pickerNascimento"></mat-datepicker-toggle>
+        <mat-datepicker #pickerNascimento></mat-datepicker>
         <mat-error *ngIf="showErrorDataNascimento && erroDataNascimento">
           {{ erroDataNascimento }}
         </mat-error>
-        <mat-error *ngIf="formFuncionario.submitted && !dataNascimentoDisplay">
+        <mat-error *ngIf="formFuncionario.submitted && !dataNascimento">
           A data de nascimento é obrigatória.
         </mat-error>
       </mat-form-field>
@@ -111,29 +107,16 @@
       <!-- Data de Admissão -->
       <mat-form-field appearance="outline" class="app-field">
         <mat-label>Data de Admissão</mat-label>
-        <input
-          matInput
-          type="text"
-          name="dataAdmissao"
-          [(ngModel)]="dataAdmissaoDisplay"
-          mask="00/00/0000"
-          placeholder="DD/MM/AAAA">
+        <input matInput [matDatepicker]="pickerAdmissao" name="dataAdmissao" [(ngModel)]="dataAdmissao" required>
+        <mat-datepicker-toggle matSuffix [for]="pickerAdmissao"></mat-datepicker-toggle>
+        <mat-datepicker #pickerAdmissao></mat-datepicker>
         <mat-error *ngIf="showErrorDataAdmissao && erroDataAdmissao">
           {{ erroDataAdmissao }}
         </mat-error>
-        <mat-error *ngIf="formFuncionario.submitted && !dataAdmissaoDisplay">
+        <mat-error *ngIf="formFuncionario.submitted && !dataAdmissao">
           A data de admissão é obrigatória.
         </mat-error>
       </mat-form-field>
-
-      <!-- Status Ativo -->
-      <div class="checkbox-field">
-        <mat-checkbox
-          name="ativo"
-          [(ngModel)]="funcionario.ativo">
-          Funcionário ativo
-        </mat-checkbox>
-      </div>
 
       <div class="actions">
         <button mat-button type="button" (click)="closeModal()">Cancelar</button>

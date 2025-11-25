@@ -64,7 +64,7 @@ export class EditarCategoriaComponent implements OnInit {
     }
 
     const categoriaAtualizada: CategoriaRequest = {
-      id: this.data.id,
+      id: (this.data as any).value,
       nome: this.nomeControl.value,
     };
 

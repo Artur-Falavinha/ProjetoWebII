@@ -23,11 +23,7 @@ import {
   SelectInputComponent,
 } from '@/app/lib/components';
 import { AuthService } from '@/app/lib/services';
-import {
-  getFormattedDate,
-  getFormattedDateOnly,
-  getFormattedTimeOnly,
-} from '@/app/lib/utils/getDateFormatted';
+
 
 @Component({
   selector: 'app-redirecionar-manutencao',

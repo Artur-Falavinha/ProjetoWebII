@@ -18,7 +18,7 @@ import { HistoryType } from '@/app/@types/misc/HistoryType';
   providedIn: 'root',
 })
 export class SolicitacaoService {
-  private readonly apiUrl = SOLICITACOES_ENDPOINT;
+  private readonly apiUrl = 'http://localhost:8080/solicitacao';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -52,6 +52,7 @@ export class SolicitacaoService {
     const bearer: HttpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
+    console.log(solicitacao)
     return this.http
       .post<SolicitacaoRequest>(this.apiUrl, solicitacao, { headers: bearer })
       .pipe(

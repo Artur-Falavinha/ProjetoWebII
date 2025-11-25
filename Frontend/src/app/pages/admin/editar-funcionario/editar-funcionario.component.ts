@@ -39,6 +39,7 @@ export class EditarFuncionarioComponent {
   @Output() close = new EventEmitter<void>();
   @ViewChild('formFuncionario') formFuncionario!: NgForm;
 
+  funcionarioAntigo: any; // FuncionarioResponse
   funcionario: FuncionarioRequest;
   erroGeral: string = '';
   erroDataNascimento: string = '';
@@ -46,9 +47,9 @@ export class EditarFuncionarioComponent {
   showErrorDataNascimento: boolean = false;
   showErrorDataAdmissao: boolean = false;
 
-  // Propriedades para exibição das datas no formato DD/MM/YYYY
-  dataNascimentoDisplay: string = '';
-  dataAdmissaoDisplay: string = '';
+  // Propriedades para o datepicker
+  dataNascimento: Date | null = null;
+  dataAdmissao: Date | null = null;
 
   /**Opções para o select de cargo**/
   cargos = [
@@ -67,131 +68,68 @@ export class EditarFuncionarioComponent {
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: FuncionarioRequest
   ) {
-    // copia defensiva dos dados recebidos
-    this.funcionario = { ...data };
-    // Converte as datas para exibição
-    this.dataNascimentoDisplay = this.convertISOToDisplay(this.funcionario.dataNascimento);
-    this.dataAdmissaoDisplay = this.convertISOToDisplay(this.funcionario.dataAdmissao);
-  }
-
-  /**Converte data para formato DD/MM/YYYY (já está no formato correto)**/
-  convertISOToDisplay(dateString: string): string {
-    if (!dateString) return '';
-
-    // Se já está no formato DD/MM/YYYY, retorna como está
-    if (dateString.includes('/') && dateString.length === 10) {
-      return dateString;
-    }
-
-    // Tenta interpretar como ISO (yyyy-mm-dd ou iso)
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return '';
-
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString();
-
-    return `${day}/${month}/${year}`;
-  }
-
-  /**Converte data DD/MM/YYYY para formato DD/MM/YYYY (mantém formato)**/
-  convertDisplayToISO(displayDate: string): string {
-    if (!displayDate) return '';
-
-    // Se tem 8 dígitos (DDMMYYYY), converte para DD/MM/YYYY
-    if (displayDate.length === 8) {
-      const day = displayDate.substring(0, 2);
-      const month = displayDate.substring(2, 4);
-      const year = displayDate.substring(4, 8);
-      return `${day}/${month}/${year}`;
-    }
-
-    // Se já está no formato DD/MM/YYYY, retorna como está
-    if (displayDate.length === 10 && displayDate.includes('/')) {
-      return displayDate;
-    }
-
-    return '';
+    // Recebe FuncionarioResponse do buscarId
+    this.funcionarioAntigo = { ...data };
+    // Inicializa FuncionarioRequest para edição
+    this.funcionario = {
+      nome: this.funcionarioAntigo.nome,
+      email: this.funcionarioAntigo.email,
+      dataNascimento: this.funcionarioAntigo.dataNascimento,
+      senha: this.funcionarioAntigo.senha,
+      cargo: this.funcionarioAntigo.cargo,
+      telefone: this.funcionarioAntigo.telefone,
+      dataAdmissao: this.funcionarioAntigo.dataAdmissao
+    };
+    this.dataNascimento = this.funcionarioAntigo.dataNascimento ? new Date(this.funcionarioAntigo.dataNascimento) : null;
+    this.dataAdmissao = this.funcionarioAntigo.dataAdmissao ? new Date(this.funcionarioAntigo.dataAdmissao) : null;
   }
 
   atualizar(): void {
-    console.log('=== DEBUG ATUALIZAR FUNCIONÁRIO ===');
-    console.log('Form válido:', this.formFuncionario?.form.valid);
-    console.log('Data nascimento display:', this.dataNascimentoDisplay);
-    console.log('Data admissão display:', this.dataAdmissaoDisplay);
-    console.log('Funcionário antes da conversão:', this.funcionario);
-
-    // reset mensagens
     this.erroGeral = '';
     this.erroDataNascimento = '';
     this.erroDataAdmissao = '';
     this.showErrorDataNascimento = false;
     this.showErrorDataAdmissao = false;
 
-    // Converte as datas do formato de exibição para o formato esperado pelo backend (mantendo padrão DD/MM/AAAA)
-    this.funcionario.dataNascimento = this.convertDisplayToISO(this.dataNascimentoDisplay);
-    this.funcionario.dataAdmissao = this.convertDisplayToISO(this.dataAdmissaoDisplay);
+    // Cria novo objeto FuncionarioRequest para envio
+    const funcionarioNovo: FuncionarioRequest = {
+      nome: this.funcionario.nome,
+      email: this.funcionario.email,
+      dataNascimento: this.dataNascimento ? this.dataNascimento.toISOString().slice(0, 10) : '',
+      senha: this.funcionario.senha,
+      cargo: this.funcionario.cargo,
+      telefone: this.funcionario.telefone,
+      dataAdmissao: this.dataAdmissao ? this.dataAdmissao.toISOString().slice(0, 10) : ''
+    };
 
-    console.log('Data nascimento convertida:', this.funcionario.dataNascimento);
-    console.log('Data admissão convertida:', this.funcionario.dataAdmissao);
-
-    // Validações manuais para os campos de data (mantendo suas mensagens)
-    if (!this.dataNascimentoDisplay || (this.dataNascimentoDisplay.length !== 8 && this.dataNascimentoDisplay.length !== 10)) {
-      this.erroDataNascimento = 'A data de nascimento é obrigatória e deve estar no formato DD/MM/AAAA.';
+    if (!this.dataNascimento) {
+      this.erroDataNascimento = 'A data de nascimento é obrigatória.';
       this.showErrorDataNascimento = true;
-      console.log('Erro data nascimento:', this.erroDataNascimento);
+      return;
     }
-
-    if (!this.dataAdmissaoDisplay || (this.dataAdmissaoDisplay.length !== 8 && this.dataAdmissaoDisplay.length !== 10)) {
-      this.erroDataAdmissao = 'A data de admissão é obrigatória e deve estar no formato DD/MM/AAAA.';
+    if (!this.dataAdmissao) {
+      this.erroDataAdmissao = 'A data de admissão é obrigatória.';
       this.showErrorDataAdmissao = true;
-      console.log('Erro data admissão:', this.erroDataAdmissao);
-    }
-
-    // Verifica se há erros de validação
-    if (this.showErrorDataNascimento || this.showErrorDataAdmissao) {
-      console.log('Retornando por erro de validação');
       return;
     }
-
-    console.log('Funcionário final:', this.funcionario);
-
-    // Validação final local (mantém seu comportamento)
-    if (!(this.funcionario.nome && this.funcionario.email && this.funcionario.dataNascimento && this.funcionario.dataAdmissao && this.funcionario.senha && this.funcionario.cargo)) {
+    if (!(funcionarioNovo.nome && funcionarioNovo.email && funcionarioNovo.dataNascimento && funcionarioNovo.dataAdmissao && funcionarioNovo.senha && funcionarioNovo.cargo)) {
       this.erroGeral = 'Por favor, preencha todos os campos obrigatórios corretamente.';
-      console.log('Formulário inválido:', this.erroGeral);
-      console.log('Campos obrigatórios:', {
-        nome: this.funcionario.nome,
-        email: this.funcionario.email,
-        dataNascimento: this.funcionario.dataNascimento,
-        dataAdmissao: this.funcionario.dataAdmissao,
-        senha: this.funcionario.senha,
-        cargo: this.funcionario.cargo
-      });
       return;
     }
 
-    // Chamada assíncrona ao serviço (integração com backend)
     this.isSaving = true;
-    this.funcionarioService.atualizar(this.funcionario).subscribe({
+    this.funcionarioService.atualizar(this.funcionarioAntigo.id, funcionarioNovo).subscribe({
       next: (resp) => {
-        // seguindo o padrão dos slides, resp pode ser o objeto atualizado ou null
+        this.isSaving = false;
         if (resp) {
-          console.log('Atualização bem-sucedida:', resp);
           this.close.emit();
         } else {
-          // resp === null -> tratar como erro lógico (por exemplo 404 ou resposta inesperada)
           this.erroGeral = 'Erro ao atualizar funcionário (resposta inválida do servidor).';
-          console.log('Resposta nula na atualização');
         }
       },
       error: (err) => {
-        // Exibe mensagem no formato do slide
-        this.erroGeral = `[${err?.status ?? '000'}] ${err?.message ?? err}`;
-        console.error('Erro ao atualizar funcionário:', err);
-      },
-      complete: () => {
         this.isSaving = false;
+        this.erroGeral = `[${err?.status ?? '000'}] ${err?.message ?? err}`;
       }
     });
   }

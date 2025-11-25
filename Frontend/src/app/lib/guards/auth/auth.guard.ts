@@ -12,15 +12,19 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 
   const currentUser = authService.getCurrentUser();
-  
-  // Se é funcionário (EMPLOYEE) tentando acessar /client, redireciona para /admin
-  if (currentUser?.role === 'EMPLOYEE' && state.url === '/client') {
+
+  // Se é funcionário (FUNCIONARIO) tentando acessar /client, redireciona para /admin
+  if (currentUser?.role === 'FUNCIONARIO' && state.url === '/client') {
     return router.createUrlTree(['/admin']);
   }
 
-  // Se é client (CLIENT) tentando acessar rotas admin, redireciona para /client
-  if (currentUser?.role === 'CLIENT' && state.url.startsWith('/admin')) {
+  // Se é client (CLIENTE) tentando acessar rotas admin, redireciona para /client
+  if (currentUser?.role === 'CLIENTE' && state.url.startsWith('/admin')) {
     return router.createUrlTree(['/client']);
+  }
+
+  if (!currentUser?.role) {
+    return router.createUrlTree(['/login'])
   }
 
   // Permitir acesso para outros casos

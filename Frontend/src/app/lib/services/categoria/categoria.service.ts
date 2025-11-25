@@ -1,8 +1,10 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { CategoriaRequest } from '@/app/@types';
 import { CategoriaResponse } from '@/app/@types/api/CategoriaResponse';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,18 +12,16 @@ import { CategoriaResponse } from '@/app/@types/api/CategoriaResponse';
 export class CategoriaService {
   private readonly BASE_URL = 'http://localhost:8080/categoria';
 
-  httpOptions = {
-    observe: 'response' as 'response',
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  };
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   listarTodas(): Observable<CategoriaResponse[]> {
+    const token = this.auth.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
     return this.http
-      .get<CategoriaResponse[]>(this.BASE_URL, this.httpOptions)
+      .get<CategoriaResponse[]>(this.BASE_URL, { headers, observe: 'response' })
       .pipe(
         map((resp: HttpResponse<CategoriaResponse[]>) => {
           if (resp.status === 200) {
@@ -39,8 +39,13 @@ export class CategoriaService {
   }
 
   buscaPorId(value: number): Observable<CategoriaResponse | null> {
+    const token = this.auth.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
     return this.http
-      .get<CategoriaResponse>(`${this.BASE_URL}/${value}`, this.httpOptions)
+      .get<CategoriaResponse>(`${this.BASE_URL}/${value}`, { headers, observe: 'response' })
       .pipe(
         map((resp: HttpResponse<CategoriaResponse>) => {
           if (resp.status === 200) {
@@ -64,9 +69,13 @@ export class CategoriaService {
         message: 'Nome da categoria é obrigatório.',
       }));
     }
-
+    const token = this.auth.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
     return this.http
-      .post<CategoriaRequest>(this.BASE_URL, categoria, this.httpOptions)
+      .post<CategoriaRequest>(this.BASE_URL, categoria, { headers, observe: 'response' })
       .pipe(
         map((resp: HttpResponse<CategoriaRequest>) => {
           if (resp.status === 201 || resp.status === 200) {
@@ -79,18 +88,23 @@ export class CategoriaService {
   }
 
   atualizar(categoria: CategoriaRequest): Observable<CategoriaRequest | null> {
+    console.log(categoria)
     if (!categoria.id) {
       return throwError(() => ({
         status: 400,
         message: 'ID inválido para atualização.',
       }));
     }
-
+    const token = this.auth.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
     return this.http
       .put<CategoriaRequest>(
         `${this.BASE_URL}/${categoria.id}`,
         categoria,
-        this.httpOptions
+        { headers, observe: 'response' }
       )
       .pipe(
         map((resp: HttpResponse<CategoriaRequest>) => {
@@ -104,7 +118,12 @@ export class CategoriaService {
   }
 
   remover(value: number): Observable<void> {
-    return this.http.delete(`${this.BASE_URL}/${value}`, this.httpOptions).pipe(
+    const token = this.auth.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.delete(`${this.BASE_URL}/${value}`, { headers, observe: 'response' }).pipe(
       map(() => {}),
       catchError((err) => throwError(() => err))
     );
