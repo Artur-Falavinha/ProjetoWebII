@@ -11,7 +11,8 @@ public class ClienteMapper {
             cliente.getEmail(),
             cliente.getTelefone(),
             cliente.getCpf(),
-            EnderecoResponseMapper.toResponse(cliente.getEndereco())
+            EnderecoResponseMapper.toResponse(cliente.getEndereco()),
+            cliente.getRole()
         );
     }
 

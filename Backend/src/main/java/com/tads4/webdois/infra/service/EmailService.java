@@ -24,8 +24,6 @@ public class EmailService {
                 nome, password
             );
             message.setText(text);
-            System.out.println(emailSender.toString());
-            System.out.println(message);
             emailSender.send(message);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao enviar e-mail." + e.getMessage());

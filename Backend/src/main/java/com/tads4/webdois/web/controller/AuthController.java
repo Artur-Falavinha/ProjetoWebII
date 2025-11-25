@@ -98,7 +98,6 @@ public class AuthController {
                 return ResponseEntity.ok(cliente);
             } else if (usuario.getRole() == RoleUsuario.FUNCIONARIO) {
                FuncionarioResponse funcionario = funcionarioService.buscarPorId(usuario.getUserId());
-               System.out.println(funcionario.toString());
                return ResponseEntity.ok(funcionario); 
             }
         }

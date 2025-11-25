@@ -20,7 +20,6 @@ public class SolicitacaoMapper {
             s.getCategoriaEquipamento() != null ? s.getCategoriaEquipamento().getNome() : null,
             s.getDescricaoEquipamento(),
             s.getDescricaoFalha(),
-            s.getPrecoBase(),
             s.getStatus() != null ? s.getStatus() : null,
             s.getDataCriacao(),
             s.getDataResposta(),

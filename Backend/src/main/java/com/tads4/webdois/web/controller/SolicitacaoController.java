@@ -31,8 +31,6 @@ import com.tads4.webdois.web.dto.SolicitacaoResponse;
 import com.tads4.webdois.domain.enums.StatusSolicitacao;
 import com.tads4.webdois.infra.service.SolicitacaoService;
 import com.tads4.webdois.web.dto.SolicitacaoRequest;
-// import com.tads4.webdois.web.dto.EtapaCreateDTO;
-// import com.tads4.webdois.web.dto.EtapaHistoricoDTO;
 import com.tads4.webdois.domain.enums.StatusSolicitacao;
 import jakarta.validation.Valid;
 
@@ -61,16 +59,16 @@ public class SolicitacaoController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos"),
         @ApiResponse(responseCode = "409", description = "Conflito de dados")
     })
-    public SolicitacaoResponse addNewChamado(@Valid @RequestBody SolicitacaoRequest newChamado,
+    public SolicitacaoResponse addNewSolicitacao(@Valid @RequestBody SolicitacaoRequest newSolicitacao,
             @AuthenticationPrincipal UserDetails activeUser) {
-        return service.addNewSolicitacao(newChamado, activeUser);
+        return service.addNewSolicitacao(newSolicitacao, activeUser);
     }
 
     @GetMapping("/solicitacao")
     @Operation(summary = "Listar solicitações", description = "Retorna todas as solicitações do usuário autenticado. Permite filtrar por status e datas.",
         security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
-    public List<SolicitacaoResponse> getChamados(
+    public List<SolicitacaoResponse> getSolicitacoes(
             @RequestParam(required = false) StatusSolicitacao status,
             @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio,
             @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataFim,
@@ -85,7 +83,7 @@ public class SolicitacaoController {
         @ApiResponse(responseCode = "200", description = "Solicitação encontrada"),
         @ApiResponse(responseCode = "404", description = "Solicitação não encontrada")
     })
-    public SolicitacaoResponse getChamadoById(@PathVariable Integer id) {
+    public SolicitacaoResponse getSolicitacaoById(@PathVariable Integer id) {
         return service.getSolicitacaoById(id);
     }
 
@@ -96,11 +94,11 @@ public class SolicitacaoController {
     //     @ApiResponse(responseCode = "200", description = "Solicitação atualizada com sucesso"),
     //     @ApiResponse(responseCode = "404", description = "Solicitação não encontrada")
     // })
-    // public ResponseEntity<SolicitacaoResponse> updateChamado(
+    // public ResponseEntity<SolicitacaoResponse> updateSolicitacao(
     //         @PathVariable Integer id,
-    //         @Valid @RequestBody SolicitacaoPatch updatedChamado,
+    //         @Valid @RequestBody SolicitacaoPatch updatedSolicitacao,
     //         @AuthenticationPrincipal UserDetails activeUser) {
-    //     SolicitacaoResponse dto = service.patchSolicitacao(id, updatedChamado, activeUser);
+    //     SolicitacaoResponse dto = service.patchSolicitacao(id, updatedSolicitacao, activeUser);
     //     return ResponseEntity.ok(dto);
     // }   
 
@@ -113,9 +111,9 @@ public class SolicitacaoController {
     })
     public ResponseEntity<SolicitacaoResponse> patchSolicitacao(
             @PathVariable Integer id,
-            @Valid @RequestBody SolicitacaoPatch updatedChamado,
+            @Valid @RequestBody SolicitacaoPatch updatedSolicitacao,
             @AuthenticationPrincipal UserDetails activeUser) {
-        SolicitacaoResponse dto = service.patchSolicitacao(id, updatedChamado, activeUser);
+        SolicitacaoResponse dto = service.patchSolicitacao(id, updatedSolicitacao, activeUser);
         return ResponseEntity.ok(dto);
     }   
 

@@ -13,7 +13,8 @@ public class FuncionarioMapper {
             funcionario.getDataAdmissao(),
             funcionario.getCargo(),
             funcionario.getTelefone(),
-            funcionario.isStatus()
+            funcionario.isStatus(),
+            funcionario.getRole()
         );
     }
 
@@ -24,6 +25,7 @@ public class FuncionarioMapper {
         funcionario.setDataNascimento(request.dataNascimento());
         funcionario.setDataAdmissao(request.dataAdmissao());
         funcionario.setCargo(request.cargo());
+        funcionario.setSenha(request.senha());
         funcionario.setTelefone(request.telefone());
         return funcionario;
     }

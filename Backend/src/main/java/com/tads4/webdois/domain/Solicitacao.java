@@ -69,9 +69,6 @@ public class Solicitacao {
     @Column(name = "data_resposta")
     private Instant dataResposta;
 
-    @Column(name = "preco_base", nullable = false, precision = 12, scale = 2)
-    private BigDecimal precoBase;
-
     @OneToMany(mappedBy = "solicitacao", fetch = FetchType.EAGER, 
     cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("dataCriacao ASC")

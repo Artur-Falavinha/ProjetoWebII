@@ -1,6 +1,4 @@
 
-
-
 package com.tads4.webdois.web.dto;
 
 import java.time.LocalDate;
@@ -11,24 +9,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record FuncionarioRequest(
-    @NotBlank(message = "Nome é obrigatório")
-    @Size(max = 100, message = "Nome deve ter no máximo 100 caracteres")
-    String nome,
+        @NotBlank(message = "Nome é obrigatório") @Size(max = 100, message = "Nome deve ter no máximo 100 caracteres") String nome,
 
-    @NotBlank(message = "Email é obrigatório")
-    @Email(message = "Email inválido")
-    String email,
+        @NotBlank(message = "Email é obrigatório") @Email(message = "Email inválido") String email,
 
-    @NotNull(message = "Data de nascimento é obrigatória")
-    LocalDate dataNascimento,
+        @NotBlank(message = "Senha é obrigatória") @Size(min = 6, max = 100, message = "Senha deve ter entre 6 e 100 caracteres") String senha,
 
-    @NotNull(message = "Data de admissão é obrigatória")
-    LocalDate dataAdmissao,
+        @NotNull(message = "Data de nascimento é obrigatória") LocalDate dataNascimento,
 
-    @NotBlank(message = "Cargo é obrigatório")
-    String cargo,
+        @NotNull(message = "Data de admissão é obrigatória") LocalDate dataAdmissao,
 
-    @NotBlank(message = "Telefone é obrigatório")
-    @Size(max = 15, message = "Telefone deve ter no máximo 15 caracteres")
-    String telefone
-) {}
+        @NotBlank(message = "Cargo é obrigatório") String cargo,
+
+        @NotBlank(message = "Telefone é obrigatório") @Size(max = 15, message = "Telefone deve ter no máximo 15 caracteres") String telefone) {
+}

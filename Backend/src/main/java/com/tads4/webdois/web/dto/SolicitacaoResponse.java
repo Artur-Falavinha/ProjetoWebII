@@ -15,7 +15,6 @@ public record SolicitacaoResponse(
     String categoriaNome,
     String descricaoEquipamento,
     String descricaoFalha,
-    BigDecimal precoBase,
     StatusSolicitacao situation,
     Instant dataCriacao,
     Instant dataResposta,

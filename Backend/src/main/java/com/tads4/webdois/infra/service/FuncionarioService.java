@@ -17,8 +17,6 @@ import com.tads4.webdois.web.dto.FuncionarioResponse;
 import com.tads4.webdois.exception.ConflictException;
 import com.tads4.webdois.exception.NotFoundException;
 
-
-
 @Service
 public class FuncionarioService {
     @Autowired
@@ -36,36 +34,34 @@ public class FuncionarioService {
     @Transactional(readOnly = true)
     public List<FuncionarioResponse> getAllFuncionariosAtivos() {
         return funcionarioRepository.findByStatus(true)
-            .stream()
-            .map(FuncionarioMapper::toResponse)
-            .toList();
+                .stream()
+                .map(FuncionarioMapper::toResponse)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     public List<FuncionarioResponse> getAllFuncionariosAtivosMenosEu(Integer id) {
         return funcionarioRepository.findByStatus(true)
-            .stream()
-            .filter(f -> !f.getUserId().equals(id))
-            .map(FuncionarioMapper::toResponse)
-            .toList();
+                .stream()
+                .filter(f -> !f.getUserId().equals(id))
+                .map(FuncionarioMapper::toResponse)
+                .toList();
     }
-    
+
     @Transactional(readOnly = true)
     public FuncionarioResponse buscarPorId(Integer id) {
         Funcionario funcionario = funcionarioRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
         return FuncionarioMapper.toResponse(funcionario);
     }
 
     @Transactional
     public FuncionarioResponse addNewFuncionario(FuncionarioRequest funcionario) {
-        if (usuarioRepository.existsByEmail(funcionario.email())){
+        if (usuarioRepository.existsByEmail(funcionario.email())) {
             throw new ConflictException("Funcionário já existe");
         }
         Funcionario newFuncionario = FuncionarioMapper.fromRequest(funcionario);
-        String senha = String.format("%04d", new Random().nextInt(10000));
-
-        emailService.sendPasswordEmail(newFuncionario.getNome(), newFuncionario.getEmail(), senha);
+        newFuncionario.setSenha(passwordEncoder.encode(newFuncionario.getSenha()));
         newFuncionario.setStatus(true);
         funcionarioRepository.save(newFuncionario);
         return FuncionarioMapper.toResponse(newFuncionario);
@@ -74,10 +70,10 @@ public class FuncionarioService {
     @Transactional
     public FuncionarioResponse updateFuncionario(Integer id, FuncionarioRequest funcionarioAtualizado) {
         Funcionario funcionarioExistente = funcionarioRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
 
         if (!funcionarioExistente.getEmail().equals(funcionarioAtualizado.email()) &&
-            usuarioRepository.existsByEmail(funcionarioAtualizado.email())) {
+                usuarioRepository.existsByEmail(funcionarioAtualizado.email())) {
             throw new ConflictException("Email já cadastrado");
         }
 
@@ -86,6 +82,7 @@ public class FuncionarioService {
         funcionarioExistente.setDataNascimento(funcionarioAtualizado.dataNascimento());
         funcionarioExistente.setDataAdmissao(funcionarioAtualizado.dataAdmissao());
         funcionarioExistente.setCargo(funcionarioAtualizado.cargo());
+        funcionarioExistente.setSenha(passwordEncoder.encode(funcionarioAtualizado.senha()));
         funcionarioExistente.setTelefone(funcionarioAtualizado.telefone());
         Funcionario saved = funcionarioRepository.save(funcionarioExistente);
         return FuncionarioMapper.toResponse(saved);
@@ -94,8 +91,8 @@ public class FuncionarioService {
     @Transactional
     public void deleteFuncionario(Integer id) {
         Funcionario funcionario = funcionarioRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
-        
+                .orElseThrow(() -> new NotFoundException("Funcionário não encontrado"));
+
         funcionario.setStatus(false);
         funcionarioRepository.save(funcionario);
     }
